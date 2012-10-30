@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- XML -->
+    <color name="xml_divider">#E0E8F0</color>
+    <color name="xml_decorators">#70A0D0</color>
+    <color name="xml_text">#202020</color>
+    <color name="xml_comment">#208020</color>
+    <color name="xml_tag">#2020C0</color>
+    <color name="xml_attribute">#2060C0</color>
+    <color name="xml_attribute_value">#6020C0</color>
+    <color name="xml_processing_instruction">#C06020</color>
+    <color name="xml_doctype">#C02020</color>
+    <color name="xml_document">#D0D0D0</color>
+    <color name="xml_cdata">#D0D0D0</color>
+
+</resources>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/submenu_new"
+        android:icon="@drawable/ic_menu_file_new"
+        android:showAsAction="never"
+        android:title="@string/menu_new">
+        <menu>
+            <item
+                android:id="@+id/menu_new"
+                android:title="@string/menu_new_empty"/>
+            <item
+                android:id="@+id/menu_open_template"
+                android:title="@string/menu_new_template"/>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/menu_open"
+        android:icon="@drawable/ic_menu_file_open"
+        android:showAsAction="never"
+        android:title="@string/menu_open"/>
+    <item
+        android:id="@+id/menu_open_recent"
+        android:icon="@drawable/ic_menu_recent"
+        android:showAsAction="never"
+        android:title="@string/menu_open_recent"/>
+    <item
+        android:id="@+id/menu_save"
+        android:icon="@drawable/ic_menu_save"
+        android:showAsAction="never"
+        android:title="@string/menu_save"/>
+    <item
+        android:id="@+id/menu_expand_collapse_all"
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_expand_all"/>
+    <item
+        android:id="@+id/menu_save_as"
+        android:title="@string/menu_save_as"/>
+    <item
+        android:id="@+id/menu_save_as_template"
+        android:title="@string/menu_save_as_template"/>
+    <item
+        android:id="@+id/menu_settings"
+        android:title="@string/menu_settings"/>
+    <item
+        android:id="@+id/menu_about"
+        android:title="@string/menu_about"/>
+
+</menu>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/submenu_add_child"
+        android:title="@string/action_add_child">
+        <menu>
+            <item
+                android:id="@+id/action_add_doctype"
+                android:title="@string/action_add_doctype"/>
+            <item
+                android:id="@+id/action_add_process"
+                android:title="@string/action_add_pi"/>
+            <item
+                android:id="@+id/action_add_element"
+                android:title="@string/action_add_element"/>
+            <item
+                android:id="@+id/action_add_comment"
+                android:title="@string/action_add_comment"/>
+        </menu>
+    </item>
+
+</menu>

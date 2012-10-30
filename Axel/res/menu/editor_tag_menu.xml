@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/submenu_add_attribute"
+        android:title="@string/menu_add_attribute">
+        <menu>
+            <item
+                android:id="@+id/menu_add_attribute"
+                android:title="@string/menu_add_attribute_custom"/>
+            <item
+                android:id="@+id/menu_add_namespace"
+                android:title="@string/menu_add_namespace"/>
+            <item
+                android:id="@+id/menu_add_default_namespace"
+                android:title="@string/menu_add_default_namespace"/>
+            <item
+                android:id="@+id/menu_add_xml_schema_public"
+                android:title="@string/menu_add_xml_schema_public"/>
+            <item
+                android:id="@+id/menu_add_xml_schema_local"
+                android:title="@string/menu_add_xml_schema_local"/>
+        </menu>
+    </item>
+
+</menu>

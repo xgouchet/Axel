@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- THEMES ICS / JB + -->
+
+    <style name="Axel" parent="@android:style/Theme.Holo.Light.DarkActionBar"></style>
+
+    <style name="Axel.Dark" parent="@android:style/Theme.Holo"></style>
+
+</resources>

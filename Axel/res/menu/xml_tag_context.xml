@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/submenu_add_child"
+        android:title="@string/action_add_child">
+        <menu>
+            <item
+                android:id="@+id/action_add_element"
+                android:title="@string/action_add_element"/>
+
+            <group android:id="@+id/group_action_text" >
+                <item
+                    android:id="@+id/action_add_text"
+                    android:title="@string/action_add_text"/>
+                <item
+                    android:id="@+id/action_add_cdata"
+                    android:title="@string/action_add_cdata"/>
+            </group>
+            <group android:id="@+id/group_action_misc" >
+                <item
+                    android:id="@+id/action_add_process"
+                    android:title="@string/action_add_pi"/>
+                <item
+                    android:id="@+id/action_add_comment"
+                    android:title="@string/action_add_comment"/>
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/action_sort_children"
+        android:title="@string/action_order_children">
+    </item>
+
+</menu>

@@ -1,0 +1,98 @@
+<resources>
+
+    <string name="app_name">Axel</string>
+    <string name="app_name_full">Axel (Editeur de XML)</string>
+
+    <!-- Titles -->
+    <string name="title_editor">Axel - %1$s</string>
+    <string name="title_editor_dirty">Axel - * %1$s</string>
+    <string name="title_editor_readonly">Axel - [%1$s]</string>
+    <string name="title_save_as">Axel - Sauver sous &#8230; </string>
+    <string name="title_open_recent">Axel - Documents récents</string>
+    <string name="title_open_template">Axel - Ouvrir un modèle</string>
+    <string name="title_settings">Axel - Paramètres </string>
+    <string name="title_about">Axel - A propos &#8230; </string>
+
+    <!-- Options Menu -->
+    <string name="menu_new">Nouveau</string>
+    <string name="menu_new_empty">Document vierge</string>
+    <string name="menu_new_template">"D'après un modèle"</string>
+    <string name="menu_open">Ouvrir</string>
+    <string name="menu_open_recent">Documents récents</string>
+    <string name="menu_save">Sauver</string>
+    <string name="menu_save_as">Sauver sous</string>
+    <string name="menu_save_as_template">Sauver comme modèle</string>
+    <string name="menu_settings">Paramètres</string>
+    <string name="menu_about">A propos</string>
+    <string name="menu_expand_all">Tout déplier</string>
+    <string name="menu_collapse_all">Tout replier</string>
+    <string name="menu_undo">Annuler</string>
+    <string name="menu_quit">Quitter</string>
+    <string name="menu_add_attribute">Ajouter un attribut</string>
+    <string name="menu_add_attribute_custom">Attribut</string>
+    <string name="menu_add_namespace">Espace de nom</string>
+    <string name="menu_add_default_namespace">Espace de nom par défaut</string>
+    <string name="menu_add_xml_schema_public">XML Schema (publique)</string>
+    <string name="menu_add_xml_schema_local">XML Schema (local)</string>
+    <string name="menu_presets">Modèles</string>
+
+    <!-- Context menu -->
+    <string name="action_add_child">Ajouter un noeud</string>
+    <string name="action_edit">Modifier</string>
+    <string name="action_delete">Supprimer</string>
+    <string name="action_comment">Commenter</string>
+    <string name="action_uncomment">Décommenter</string>
+    <string name="action_add_comment">Commentaire</string>
+    <string name="action_add_element">Element</string>
+    <string name="action_add_doctype">Doctype</string>
+    <string name="action_add_pi">Processing instruction</string>
+    <string name="action_add_text">Block de texte</string>
+    <string name="action_add_cdata">Block CData</string>
+    <string name="action_order_children">Arranger les noeuds enfants</string>
+
+    <!-- Misc UI strings -->
+    <string name="ui_save_text">"Voulez vous sauver votre document? \nTout changement non sauvé sera perdu. "</string>
+    <string name="ui_save">Sauver</string>
+    <string name="ui_no_save">"Ne pas sauver"</string>
+    <string name="ui_cancel">Annuler</string>
+    <string name="ui_delete">Supprimer</string>
+    <string name="ui_reset">Remise à zéro</string>
+    <string name="ui_invalid_syntax">"Erreur de syntaxe"</string>
+    <string name="ui_invalid_namespace_uri">"Espace de nom invalide"</string>
+    <string name="ui_invalid_duplicate">"Un autre attribut utilise déjà ce nom"</string>
+    <string name="ui_invalid_namespace">"Cet espace de nom n'existe pas dans ce document"</string>
+    <string name="ui_standalone">"Standalone"</string>
+    <string name="ui_hint_file_name">Nom du fichier</string>
+    <string name="ui_hint_search">Rechercher</string>
+    <string name="ui_hint_prefix">Préfixe</string>
+    <string name="ui_hint_name">Nom</string>
+    <string name="ui_hint_value">Valeur</string>
+    <string name="ui_hint_content">Contenu</string>
+    <string name="ui_hint_version">Version</string>
+    <string name="ui_hint_encoding">Encodage</string>
+    <string name="ui_prompt_delete_node">"Voulez vous réellement supprimer ce noeud?"</string>
+    <string name="ui_open_error">Erreur de lecture</string>
+    <string name="ui_prompt_open_error">"Une erreur est survenue lors de la lecture de ce fichier. 
+        
+Si votre document est valide, envoyez le moi afin que je corrige ce problème.  
+         
+Si vous essayez de lire un fichier HTML, vous pouvez essayer de le convertir en document xHTML valide. "</string>
+    <string name="ui_send_file">Envoyer le fichier</string>
+    <string name="ui_convert_html">Lire comme HTML</string>
+    <!--  -->
+    <string name="ui_additional_licences">Licences supplémentaires</string>
+    <string name="ui_licence_dragsortlistview">"Axel utilise la bibliothèque <b>DragSortListView</b>, écrite par Carl Bauer (carl.a.bauer@gmail.com), sous licence Apache (version 2.0)."</string>
+    <string name="ui_licence_crouton">"Axel utilise la bibliothèque <b>Crouton</b>, écrite par Benjamin Weiss (d\'après une idée de Cyril Mottier), sous licence Apache (version 2.0)."</string>
+    <string name="ui_licence_htmlcleaner">"Axel utilise la bibliothèque <b>HTML Cleaner</b>, écrite par Vladimir Nikic (nikic_vladimir@yahoo.com), sous licence BSD."</string>
+
+    <!--  -->
+    <string name="config_title_max_recent">Fichiers récents</string>
+    <string name="config_title_keep_text_exact">Garder les noeuds texte intactes</string>
+    <string name="config_summary_on_keep_text_exact">"Le contenu des noeuds texte apparait tel qu'il est dans le document source"</string>
+    <string name="config_summary_off_keep_text_exact">"Les espaces en début et fin de textes sont suprimés à la lecture, des indentations ajoutées à l'écriture"</string>
+    <string name="config_title_attributes_inline">Afficher les attributs en ligne</string>
+    <string name="config_summary_on_attributes_inline">Les attributs sont affichés sur une seule ligne</string>
+    <string name="config_summary_off_attributes_inline">Chaque attribut est affiché sur une nouvelle ligne, les attributs sont sauvés sur une seule ligne</string>
+    <string name="config_title_edit_on_create">Ouvrir un éditeur à la création de nouveaux noeuds</string>
+
+</resources>

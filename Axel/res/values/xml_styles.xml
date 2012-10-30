@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="Axel.Xml" parent="@android:style/TextAppearance">
+        <item name="android:typeface">monospace</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Axel.Xml.Comment" parent="@style/Axel.Xml">
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/xml_comment</item>
+    </style>
+
+    <style name="Axel.Xml.Text" parent="@style/Axel.Xml">
+        <item name="android:textColor">@color/xml_text</item>
+    </style>
+
+    <style name="Axel.Xml.Tag" parent="@style/Axel.Xml">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/xml_tag</item>
+    </style>
+
+    <style name="Axel.Xml.Tag.Attribute" parent="@style/Axel.Xml">
+        <item name="android:textColor">@color/xml_attribute</item>
+    </style>
+
+    <style name="Axel.Xml.Tag.AttributeValue" parent="@style/Axel.Xml">
+        <item name="android:textColor">@color/xml_attribute_value</item>
+    </style>
+
+    <style name="Axel.Xml.ProcessingInstruction" parent="@style/Axel.Xml">
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/xml_processing_instruction</item>
+    </style>
+
+    <style name="Axel.Xml.Doctype" parent="@style/Axel.Xml">
+        <item name="android:textColor">@color/xml_doctype</item>
+    </style>
+
+    <style name="Axel.Xml.Document" parent="@style/Axel.Xml">
+        <item name="android:textColor">@color/xml_document</item>
+    </style>
+
+    <style name="Axel.Xml.CData" parent="@style/Axel.Xml">
+        <item name="android:textColor">@color/xml_cdata</item>
+    </style>
+
+    <style name="Axel.Xml.Decorators" parent="@style/Axel.Xml">
+        <item name="android:textColor">@color/xml_decorators</item>
+    </style>
+
+</resources>
