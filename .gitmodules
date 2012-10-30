@@ -1,3 +1,6 @@
 [submodule "AndroidLib"]
 	path = AndroidLib
 	url = git@github.com:xgouchet/AndroidLib
+[submodule "Drag-sort-listview"]
+	path = Drag-sort-listview
+	url = git://github.com/bauerca/drag-sort-listview
