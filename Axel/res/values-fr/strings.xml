@@ -7,6 +7,7 @@
     <string name="title_editor">Axel - %1$s</string>
     <string name="title_editor_dirty">Axel - * %1$s</string>
     <string name="title_editor_readonly">Axel - [%1$s]</string>
+    <string name="title_preview">Axel - [%1$s]</string>
     <string name="title_save_as">Axel - Sauver sous &#8230; </string>
     <string name="title_open_recent">Axel - Documents récents</string>
     <string name="title_open_template">Axel - Ouvrir un modèle</string>
@@ -25,9 +26,8 @@
     <string name="menu_settings">Paramètres</string>
     <string name="menu_about">A propos</string>
     <string name="menu_expand_all">Tout déplier</string>
+    <string name="menu_preview">Aperçu</string>
     <string name="menu_collapse_all">Tout replier</string>
-    <string name="menu_undo">Annuler</string>
-    <string name="menu_quit">Quitter</string>
     <string name="menu_add_attribute">Ajouter un attribut</string>
     <string name="menu_add_attribute_custom">Attribut</string>
     <string name="menu_add_namespace">Espace de nom</string>
@@ -63,7 +63,7 @@
     <string name="ui_invalid_namespace">"Cet espace de nom n'existe pas dans ce document"</string>
     <string name="ui_standalone">"Standalone"</string>
     <string name="ui_hint_file_name">Nom du fichier</string>
-    <string name="ui_hint_search">Rechercher</string>
+    <string name="ui_hint_template_name">Nom du modèle</string>
     <string name="ui_hint_prefix">Préfixe</string>
     <string name="ui_hint_name">Nom</string>
     <string name="ui_hint_value">Valeur</string>
@@ -76,7 +76,10 @@
         
 Si votre document est valide, envoyez le moi afin que je corrige ce problème.  
          
-Si vous essayez de lire un fichier HTML, vous pouvez essayer de le convertir en document xHTML valide. "</string>
+Erreur : %s "</string>
+    <string name="ui_prompt_open_error_html">"Une erreur est survenue lors de la lecture de ce fichier. 
+        
+Il semble que vous essayez de lire un fichier HTML, vous pouvez essayer de le convertir en document xHTML valide. "</string>
     <string name="ui_send_file">Envoyer le fichier</string>
     <string name="ui_convert_html">Lire comme HTML</string>
     <!--  -->
@@ -84,6 +87,7 @@ Si vous essayez de lire un fichier HTML, vous pouvez essayer de le convertir en 
     <string name="ui_licence_dragsortlistview">"Axel utilise la bibliothèque <b>DragSortListView</b>, écrite par Carl Bauer (carl.a.bauer@gmail.com), sous licence Apache (version 2.0)."</string>
     <string name="ui_licence_crouton">"Axel utilise la bibliothèque <b>Crouton</b>, écrite par Benjamin Weiss (d\'après une idée de Cyril Mottier), sous licence Apache (version 2.0)."</string>
     <string name="ui_licence_htmlcleaner">"Axel utilise la bibliothèque <b>HTML Cleaner</b>, écrite par Vladimir Nikic (nikic_vladimir@yahoo.com), sous licence BSD."</string>
+    <string name="ui_licence_juniversalchardet">"Axel utilise la bibliothèque <b>JUniversalCharDet</b>, écrite par Takscape (takscape@gmail.com), sous licence Mozilla Publique (version 1.1)."</string>
 
     <!--  -->
     <string name="config_title_max_recent">Fichiers récents</string>

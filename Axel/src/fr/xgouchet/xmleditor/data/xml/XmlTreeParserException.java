@@ -21,16 +21,9 @@ public final class XmlTreeParserException extends RuntimeException {
 		/** */
 		ioException,
 		/** */
-		parseException
-	}
-
-	/**
-	 * @param error
-	 *            the error to set
-	 */
-	public XmlTreeParserException(XmlError error) {
-		super();
-		mError = error;
+		parseException,
+		/** */
+		outOfMemory
 	}
 
 	/**
@@ -42,6 +35,7 @@ public final class XmlTreeParserException extends RuntimeException {
 	public XmlTreeParserException(XmlError error, Throwable cause) {
 		super(cause);
 		mError = error;
+		mDocStarted = false;
 	}
 
 	/**
@@ -50,6 +44,7 @@ public final class XmlTreeParserException extends RuntimeException {
 	 */
 	public void setXmlContext(String xmlContext) {
 		mXmlContext = xmlContext;
+		mDocStarted = (xmlContext != null);
 	}
 
 	/**
@@ -64,7 +59,7 @@ public final class XmlTreeParserException extends RuntimeException {
 	 *            the current application context
 	 * @return the message to toast
 	 */
-	public CharSequence getMessage(Context context) {
+	public String getMessage(Context context) {
 		String message;
 
 		switch (mError) {
@@ -90,7 +85,23 @@ public final class XmlTreeParserException extends RuntimeException {
 		return message;
 	}
 
+	/**
+	 * @see java.lang.Throwable#getMessage()
+	 */
+	public String getMessage() {
+		return getCause().getMessage();
+	}
+
+	/**
+	 * @return if the document has started (parser found at least a starting tag
+	 *         or doc decl)
+	 */
+	public boolean hasDocStarted() {
+		return mDocStarted;
+	}
+
 	private final XmlError mError;
 	private String mXmlContext;
+	private boolean mDocStarted;
 
 }

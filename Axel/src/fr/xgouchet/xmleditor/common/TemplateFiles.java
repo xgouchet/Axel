@@ -1,13 +1,10 @@
 package fr.xgouchet.xmleditor.common;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import fr.xgouchet.androidlib.data.FileUtils;
 
 /**
@@ -28,29 +25,7 @@ public class TemplateFiles {
 	public static void copyTemplatesFromAssets(Context context) {
 		File templateFolder = getTemplateFolder(context);
 
-		String templates[] = null;
-		String assetTemplate;
-		InputStream assetStream;
-		File appTemplate;
-
-		try {
-			templates = context.getAssets().list(TEMPLATE_FOLDER);
-		} catch (IOException e) {
-			Log.w("Axel", "Default templates not found !");
-		}
-
-		if (templates != null) {
-			for (String template : templates) {
-				appTemplate = new File(templateFolder, template);
-				assetTemplate = TEMPLATE_FOLDER + File.separatorChar + template;
-				try {
-					assetStream = context.getAssets().open(assetTemplate);
-					FileUtils.copyFile(assetStream, appTemplate);
-				} catch (IOException e) {
-					Log.w("Axel", "unable to copy template " + template);
-				}
-			}
-		}
+		FileUtils.copyAssetsToAppData(context, templateFolder, TEMPLATE_FOLDER);
 	}
 
 	/**

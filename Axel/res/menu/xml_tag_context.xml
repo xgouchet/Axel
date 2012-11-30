@@ -28,6 +28,9 @@
         </menu>
     </item>
     <item
+        android:id="@+id/menu_add_attribute"
+        android:title="@string/menu_add_attribute"/>
+    <item
         android:id="@+id/action_sort_children"
         android:title="@string/action_order_children">
     </item>

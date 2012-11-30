@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
-import fr.xgouchet.androidlib.R;
 import fr.xgouchet.xmleditor.common.Settings;
 import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
@@ -49,7 +48,7 @@ public class AxelNodeEditorActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_node_editor);
 
-		mNode = ((AxelApplication) getApplication()).mCurrentSelection;
+		mNode = ((AxelApplication) getApplication()).getCurrentSelection();
 		mData = mNode.getContent();
 		setTitle(getString(R.string.title_editor, mData.getTypeName()));
 
@@ -119,6 +118,7 @@ public class AxelNodeEditorActivity extends Activity {
 	 */
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		boolean result;
+
 		if (mData.isElement()) {
 			menu.findItem(R.id.menu_add_default_namespace).setEnabled(
 					!hasDefaultNamespace());
@@ -259,9 +259,8 @@ public class AxelNodeEditorActivity extends Activity {
 		mEditEncoding.setText(mData.getAttributeValue("encoding"));
 
 		mCheckStandalone = (CheckBox) findViewById(R.id.checkStandalone);
-		mCheckStandalone
-				.setEnabled(((AxelApplication) getApplication()).mCurrentDocument
-						.hasDoctype());
+		mCheckStandalone.setEnabled(((AxelApplication) getApplication())
+				.getCurrentDocument().hasDoctype());
 	}
 
 	/**
@@ -344,9 +343,6 @@ public class AxelNodeEditorActivity extends Activity {
 			break;
 		}
 
-		if (result && Settings.sDocumentValidation) {
-			// TODO validate using document validator
-		}
 		return result;
 	}
 

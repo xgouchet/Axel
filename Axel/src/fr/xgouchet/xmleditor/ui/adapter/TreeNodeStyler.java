@@ -2,8 +2,6 @@ package fr.xgouchet.xmleditor.ui.adapter;
 
 import android.content.Context;
 import android.text.SpannableString;
-import fr.xgouchet.xmleditor.data.tree.TreeNode;
-import fr.xgouchet.xmleditor.data.xml.XmlNode;
 
 /**
  * A utility class to build {@link SpannableString} to represent a

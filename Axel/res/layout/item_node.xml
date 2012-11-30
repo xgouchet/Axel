@@ -23,7 +23,7 @@
 
         <TextView
             android:id="@+id/textNode"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/list_item_pading"
             android:gravity="center_vertical"
@@ -31,8 +31,6 @@
             android:paddingRight="8dp"
             android:paddingTop="8dp"
             android:typeface="monospace" />
-
-        <!-- android:layout_weight="1" -->
     </HorizontalScrollView>
 
 </LinearLayout>

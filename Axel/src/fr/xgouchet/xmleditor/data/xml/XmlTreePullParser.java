@@ -1,7 +1,7 @@
 package fr.xgouchet.xmleditor.data.xml;
 
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -24,11 +24,14 @@ public class XmlTreePullParser extends XmlTreeParser {
 	 *            the input character stream
 	 * @param createDocDecl
 	 *            create the document declaration ?
+	 * @param encoding
+	 *            the encoding of the input stream
 	 * @return an XML Node from the parser
 	 * @throws XmlTreeParserException
 	 *             if an error occurs during the parsing
 	 */
-	public static XmlNode parseXmlTree(Reader input, boolean createDocDecl)
+	public static XmlNode parseXmlTree(InputStream input,
+			boolean createDocDecl, String encoding)
 			throws XmlTreeParserException {
 
 		XmlPullParserFactory factory;
@@ -52,12 +55,17 @@ public class XmlTreePullParser extends XmlTreeParser {
 		}
 
 		try {
-			xpp.setInput(input);
+			xpp.setInput(input, encoding);
 			parser.parse(xpp);
 			if (createDocDecl) {
 				parser.pullDocumentDeclaration(xpp);
 			}
 		} catch (XmlPullParserException e) {
+			XmlTreeParserException xtpe = new XmlTreeParserException(
+					XmlError.parseException, e);
+			xtpe.setXmlContext(sLastNode);
+			throw xtpe;
+		} catch (IllegalStateException e) {
 			XmlTreeParserException xtpe = new XmlTreeParserException(
 					XmlError.parseException, e);
 			xtpe.setXmlContext(sLastNode);
@@ -69,6 +77,8 @@ public class XmlTreePullParser extends XmlTreeParser {
 			throw xtpe;
 		} catch (IOException e) {
 			throw new XmlTreeParserException(XmlError.ioException, e);
+		} catch (OutOfMemoryError e) {
+			throw new XmlTreeParserException(XmlError.outOfMemory, e);
 		}
 
 		return parser.getRoot();

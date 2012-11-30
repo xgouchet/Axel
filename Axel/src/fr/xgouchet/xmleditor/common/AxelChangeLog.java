@@ -24,8 +24,11 @@ public class AxelChangeLog extends ChangeLog {
 			title = R.string.release3;
 			break;
 		case 4:
-		default:
 			title = R.string.release4;
+			break;
+		case 5:
+		default:
+			title = R.string.release5;
 			break;
 		}
 		return title;
@@ -47,8 +50,11 @@ public class AxelChangeLog extends ChangeLog {
 			log = R.string.release3_log;
 			break;
 		case 4:
-		default:
 			log = R.string.release4_log;
+			break;
+		case 5:
+		default:
+			log = R.string.release5_log;
 			break;
 		}
 		return log;

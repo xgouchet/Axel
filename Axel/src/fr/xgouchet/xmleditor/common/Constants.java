@@ -21,8 +21,6 @@ public class Constants {
 	public static final String PREFERENCE_RECENTS = "recent_files";
 	/** the max number of recent file to save ( = {@value} ) */
 	public static final String PREFERENCE_MAX_RECENTS = "max_recent_files";
-	/** Use document type validation */
-	public static final String PREFERENCE_DOCUMENT_VALIDATION = "document_validation";
 	/** Keep Text nodes exact content */
 	public static final String PREFERENCE_KEEP_TEXT_EXACT = "keep_text_exact";
 	/** Display attributes on a single line */

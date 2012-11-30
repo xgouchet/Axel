@@ -27,8 +27,9 @@ public class AxelSortActivity extends Activity implements DropListener {
 	 */
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 
-		mNode = ((AxelApplication) getApplication()).mCurrentSelection;
+		mNode = ((AxelApplication) getApplication()).getCurrentSelection();
 
 		setContentView(R.layout.layout_sort);
 		setTitle(getString(R.string.title_editor, mNode.toString()));

@@ -2,7 +2,13 @@
 <resources>
 
     <!--  -->
-    <string name="release4">Axel 1.4 (# oct. 2012)</string>
+    <string name="release5">Axel 1.5 (30 nov. 2012)</string>
+    <string name="release5_log">"- File encoding detection (UTF-8, UTF-16, UTF-32, Japanese, Chinese, Korean, Hebrew, Greek)
+- Support of plist and svg files
+- Preview in browser for supported files (html, svg)"</string>
+
+    <!--  -->
+    <string name="release4">Axel 1.4 (30 oct. 2012)</string>
     <string name="release4_log">"- Some people had issues when trying to read HTML documents. HTML being less strict than XML, this led to errors. 
 This version will try to read the HTML anyway and convert it to well formed xHTML
 - This version also let you send me files that Axel can't open to let me improve this application

@@ -63,7 +63,7 @@ public class HtmlCleanerParser extends XmlTreeParser implements TagNodeVisitor {
 	protected static void setupHtmlCleanerProperties(HtmlCleaner cleaner) {
 		CleanerProperties props = cleaner.getProperties();
 
-		// TODO do something with this
+		// TODO check the cleaner properties
 		props.setUseEmptyElementTags(true);
 	}
 

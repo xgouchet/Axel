@@ -1,6 +1,5 @@
 package fr.xgouchet.xmleditor.data.xml;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import android.text.TextUtils;
@@ -511,21 +510,6 @@ public class XmlNode extends TreeNode<XmlData> {
 		}
 
 		return result;
-	}
-
-	/**
-	 * @return the list of names of the children in the order they are
-	 */
-	public List<String> getChildrenNames() {
-		List<String> names = new LinkedList<String>();
-
-		for (TreeNode<XmlData> child : mChildren) {
-			if (child.getContent().isElement()) {
-				names.add(child.getContent().getName());
-			}
-		}
-
-		return names;
 	}
 
 	/**

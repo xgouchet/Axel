@@ -18,21 +18,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/ui_additional_licences" />
-
+
         <TextView
             style="@style/TextContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="email"
             android:text="@string/ui_licence_crouton" />
-
+
         <TextView
             style="@style/TextContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="email"
             android:text="@string/ui_licence_dragsortlistview" />
-
+
         <TextView
             style="@style/TextContent"
             android:layout_width="match_parent"
@@ -41,11 +41,30 @@
             android:text="@string/ui_licence_htmlcleaner" />
 
         <TextView
+            style="@style/TextContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="email"
+            android:text="@string/ui_licence_juniversalchardet" />
+
+        <TextView
             style="@style/TextTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/ui_history" />
+
+        <TextView
+            style="@style/TextSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/release5" />
+
+        <TextView
+            style="@style/TextContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/release5_log" />
 
         <TextView
             style="@style/TextSubTitle"

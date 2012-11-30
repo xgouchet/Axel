@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+            <!--  -->
+    <string name="release5">Axel 1.5 (30 nov. 2012)</string>
+    <string name="release5_log">"- Détection de l'encodage des fichiers (UTF-8, UTF-16, UTF-32, Japonais, Chinois, Coréen, Hebreux, Grec)
+- Support des fichiers svg et plist
+- Prévisualisation des fichiers web (html, svg)"</string>
 
     <!--  -->
-    <string name="release4">Axel 1.4 (# oct. 2012)</string>
+    <string name="release4">Axel 1.4 (30 oct. 2012)</string>
     <string name="release4_log">"- Certaines personnes ont eu des souci pour lire des fichiers HTML. Le format HTML est moins strict que le XML, et pouvait entrainer des erreurs.  
 Cette persion permet de tenter de lire un fichier HTML et de le convertir en xHTML. 
 - Il est également possible de m'envoyer les fichiers qu'Axel n'arrive pas à ouvrir pour que j'améliore cette application

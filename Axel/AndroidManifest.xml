@@ -1,17 +1,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.xgouchet.xmleditor"
-    android:versionCode="4"
+    android:versionCode="5"
     android:versionName="1.4" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="16" />
+        android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".AxelApplication"
+        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name_full"
         android:theme="@style/Axel" >
@@ -30,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- Default Text file view / edit -->
+            <!-- Mime Type filters -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.EDIT" />
@@ -41,33 +42,90 @@
                 <data android:mimeType="text/html" />
             </intent-filter>
 
-            <!-- File not recognized as Text Files by Android -->
+            <!-- File extensions filters -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.EDIT" />
 
                 <category android:name="android.intent.category.DEFAULT" />
 
+                <!-- Standard XML extension -->
                 <data
-                    android:host=""
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\\.xml"
+                    android:scheme="file" />
+
+                <!-- HTML extensions -->
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
                     android:pathPattern=".*\\.htm"
                     android:scheme="file" />
                 <data
-                    android:host=""
+                    android:host="*"
+                    android:mimeType="*/*"
                     android:pathPattern=".*\\.html"
                     android:scheme="file" />
                 <data
-                    android:host=""
+                    android:host="*"
+                    android:mimeType="*/*"
                     android:pathPattern=".*\\.xhtml"
                     android:scheme="file" />
+
+                <!-- XML Schema -->
                 <data
-                    android:host=""
-                    android:pathPattern=".*\\.xml"
-                    android:scheme="file" />
-                <data
-                    android:host=""
+                    android:host="*"
+                    android:mimeType="*/*"
                     android:pathPattern=".*\\.xsd"
                     android:scheme="file" />
+
+                <!-- .aiml -->
+                <!-- .atom -->
+                <!-- .cml -->
+                <!-- .dae -->
+                <!-- .dbk -->
+                <!-- .ficml -->
+                <!-- .gml -->
+                <!-- .kml -->
+                <!-- .ofx -->
+                <!-- .opml -->
+                <!-- .rnd -->
+                <!-- .rng -->
+                <!-- .rss -->
+
+
+                <!-- Scalable Vector Graphics -->
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\\.svg"
+                    android:scheme="file" />
+
+                <!-- Apple Property list format (iOS) -->
+                <data
+                    android:host="*"
+                    android:mimeType="*/*"
+                    android:pathPattern=".*\\.plist"
+                    android:scheme="file" />
+
+                <!-- .sbml -->
+                <!-- .scxml -->
+                <!-- .smil -->
+                <!-- .wml -->
+                <!-- .wsdl -->
+                <!-- .x3d -->
+                <!-- .xaml -->
+                <!-- .xbrl -->
+                <!-- .xlf -->
+                <!-- .xmi -->
+                <!-- .xpl -->
+                <!-- .xq -->
+                <!-- .xqy -->
+                <!-- .xquery -->
+                <!-- .xrc -->
+                <!-- .xspf -->
+                <!-- .xul -->
+                
             </intent-filter>
         </activity>
 
@@ -79,12 +137,20 @@
             android:windowSoftInputMode="adjustResize" >
         </activity>
 
-        <!-- Axel Edit Node activity -->
+        <!-- Axel Sort Node Children activity -->
         <activity
             android:name=".AxelSortActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
             android:label="@string/title_editor"
             android:windowSoftInputMode="stateHidden" >
+        </activity>
+
+        <!-- Axel preview activity -->
+        <activity
+            android:name=".AxelPreviewActivity"
+            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
+            android:label="@string/title_preview"
+            android:windowSoftInputMode="adjustResize" >
         </activity>
 
         <!-- Ted settings activity -->

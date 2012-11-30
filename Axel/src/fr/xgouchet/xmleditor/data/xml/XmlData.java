@@ -3,7 +3,6 @@ package fr.xgouchet.xmleditor.data.xml;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.renderscript.Element.DataType;
 import android.text.TextUtils;
 
 /**
@@ -128,6 +127,27 @@ public class XmlData {
 		}
 
 		return result;
+	}
+
+	/**
+	 * Adds an attribute to an Xml Node element. The {@link XmlData} must have
+	 * its {@link DataType} set to {@link #XML_ELEMENT} or {@link #XML_DOCTYPE}
+	 * 
+	 * @param prefix
+	 *            the namespace prefix of the attribute
+	 * @param name
+	 *            the name of the attribute
+	 * @param value
+	 *            the value of the attribute
+	 */
+	public void addAttribute(XmlAttribute attr) {
+		if (mAttributes != null) {
+			mAttributes.add(attr);
+
+			if ("xmlns".equals(attr.getPrefix())) {
+				mLocalNamespaces.add(attr);
+			}
+		}
 	}
 
 	/**

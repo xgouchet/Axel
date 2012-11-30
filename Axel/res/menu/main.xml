@@ -35,6 +35,10 @@
         android:showAsAction="ifRoom"
         android:title="@string/menu_expand_all"/>
     <item
+        android:id="@+id/menu_preview_in_browser"
+        android:showAsAction="never"
+        android:title="@string/menu_preview"/>
+    <item
         android:id="@+id/menu_save_as"
         android:title="@string/menu_save_as"/>
     <item

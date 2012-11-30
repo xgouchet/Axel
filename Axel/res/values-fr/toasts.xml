@@ -31,7 +31,6 @@
     <string name="toast_folder_cant_write">"Le dossier selectionné est verrouillé"</string>
     <string name="toast_file_cant_read">"Le dossier selectionné est protegé"</string>
     <string name="toast_filename_empty">Le nom de fichier ne peut pas etre vide</string>
-    <string name="toast_open_select">Selectionner un fichier à ouvrir</string>
 
     <!--  -->
     <string name="toast_xml_no_parser_found">"Impossible de lire les document XML sur cet appareil"</string>

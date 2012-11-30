@@ -11,9 +11,6 @@ public class Settings {
 	public static int sMaxRecentFiles = 10;
 
 	/** */
-	public static boolean sDocumentValidation = false;
-
-	/** */
 	public static boolean sKeepTextExact = true;
 
 	/** */
@@ -34,9 +31,6 @@ public class Settings {
 
 		sMaxRecentFiles = getStringPreferenceAsInteger(preferences,
 				Constants.PREFERENCE_MAX_RECENTS, "10");
-
-		sDocumentValidation = preferences.getBoolean(
-				Constants.PREFERENCE_DOCUMENT_VALIDATION, false);
 
 		sKeepTextExact = preferences.getBoolean(
 				Constants.PREFERENCE_KEEP_TEXT_EXACT, true);

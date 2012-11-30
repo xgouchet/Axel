@@ -107,6 +107,10 @@ public class AttributeEditDialog implements OnShowListener {
 			mEditPrefix.setText(mAttribute.getPrefix());
 			mEditName.setText(mAttribute.getName());
 			mEditValue.setText(mAttribute.getValue());
+		} else {
+			mEditPrefix.setText("");
+			mEditName.setText("");
+			mEditValue.setText("");
 		}
 	}
 
@@ -174,6 +178,10 @@ public class AttributeEditDialog implements OnShowListener {
 	 * Apply the fields values to the attribute
 	 */
 	protected void applyValues() {
+		if (mAttribute == null) {
+			mAttribute = new XmlAttribute("", "", "");
+		}
+
 		mAttribute.setPrefix(mEditPrefix.getText().toString());
 		mAttribute.setName(mEditName.getText().toString());
 		mAttribute.setValue(mEditValue.getText().toString());
@@ -201,6 +209,10 @@ public class AttributeEditDialog implements OnShowListener {
 	 */
 	public void setSiblingsAttribute(List<XmlAttribute> siblings) {
 		mSiblingsAttribute = siblings;
+	}
+
+	public XmlAttribute getAttribute() {
+		return mAttribute;
 	}
 
 	/**

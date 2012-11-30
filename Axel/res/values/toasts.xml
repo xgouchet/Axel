@@ -5,8 +5,8 @@
     <string name="toast_no_recent_files">There are no recent files to load</string>
     <string name="toast_recent_file_invalid">"File doesn't exist anymore, removing from recent list."</string>
     <string name="toast_recent_file_deleted">File deleted from recent list</string>
-    
-     <!--  -->
+
+    <!--  -->
     <string name="toast_no_template_files">There are no template files to load</string>
     <string name="toast_template_file_invalid">"File doesn't exist anymore, removing from templates."</string>
     <string name="toast_template_file_deleted">File deleted from templates</string>
@@ -31,7 +31,6 @@
     <string name="toast_folder_cant_write">"Can't use this folder cause it isn't writeable"</string>
     <string name="toast_file_cant_read">"Can't use this file cause it isn't readable"</string>
     <string name="toast_filename_empty">The filename must not be empty</string>
-    <string name="toast_open_select">Select a file to open</string>
 
     <!--  -->
     <string name="toast_xml_no_parser_found">Unable to read the XML input, no available parser</string>
