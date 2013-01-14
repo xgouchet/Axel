@@ -4,3 +4,9 @@
 [submodule "Drag-sort-listview"]
 	path = Drag-sort-listview
 	url = git://github.com/bauerca/drag-sort-listview
+[submodule "AXML"]
+	path = AXML
+	url = git://github.com/xgouchet/AXML.git
+[submodule "PList"]
+	path = PList
+	url = git://github.com/xgouchet/PList.git
