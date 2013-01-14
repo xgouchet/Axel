@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+     <string name="help_edit_title">Edition</string>
+    <string name="help_edit_content">"Un appui long sur un noeud permet de faire apparaitre un menu permettant de l'éditer. \n\n
+Certains fichiers peuvent être protégé en écriture par le système. Leur nom apparait alors entre [crochets] dans la barre de titre et le fichier ne pourra pas être éditer.  \n\n
+Vous pouvez cependant utiliser l'option sauvegarder sous pour en faire une copie et le modifier."</string>
+    <string name="help_preview_title">Prévisualisation</string>
+    <string name="help_preview_content">"Certains formats génériques sont basé sur le format XML, comme lt HTML ou le SVG. \n\n
+Ces fichiers peuvent être prévisualisés depuis l'application dans un navigateur web."</string>
+    <string name="help_format_title">Format XML</string>
+    <string name="help_format_content">"Le format XML est un ensemble de règles strictes permettant à un fichier d'être lisible par n'importe quelle application. Axel suit à la lettre ces spécifications. \n\n
+Cela implique que certains fichiers qui ne suivent pas ces spécifications ne seront pas lisibles. Cela peut arriver le plus souvent avec les documents HTML, aussi Axel essaye de convertir un document HTML en document XML valide."</string>
+    <string name="help_binary_title">XML binaire</string>
+    <string name="help_binary_content">"Certains fichiers XML sont compressés dans un fichier binaire, pour optimiser la taille du fichier. Sous ce format binaire, il ne s'agit plus de fichier XML valides. \n\n
+Cependant, Axel peut lire certains de ces formats, à savoir les fichiers XML Android (ceux présent à l'intérieur d'archives APK) ainsi que les fichiers PList (Apple). Ces fichiers sont ouverts en lecture seule, mais peuvent être sauver en tant que copie modifiable."</string>
+    
+</resources>

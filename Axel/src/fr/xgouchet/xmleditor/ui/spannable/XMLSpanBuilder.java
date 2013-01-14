@@ -1,6 +1,7 @@
 package fr.xgouchet.xmleditor.ui.spannable;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import android.text.SpannableString;
 
@@ -28,7 +29,7 @@ public class XMLSpanBuilder {
 	 * @param str
 	 *            the string to append
 	 */
-	public void append(String str) {
+	public void append(final String str) {
 		mBuilder.append(str);
 	}
 
@@ -41,10 +42,11 @@ public class XMLSpanBuilder {
 	 * @param span
 	 *            the span to apply to the appended string
 	 */
-	public void append(String str, Object span) {
-		int start = mBuilder.length();
+	public void append(final String str, final Object span) {
+		int start, end;
+		start = mBuilder.length();
 		mBuilder.append(str);
-		int end = mBuilder.length();
+		end = mBuilder.length();
 		setSpan(span, start, end);
 	}
 
@@ -55,7 +57,7 @@ public class XMLSpanBuilder {
 	 * @param span
 	 *            the span object
 	 */
-	public void setSpan(Object span) {
+	public void setSpan(final Object span) {
 		setSpan(span, 0, mBuilder.length());
 	}
 
@@ -69,8 +71,9 @@ public class XMLSpanBuilder {
 	 * @param end
 	 *            the end index
 	 */
-	public void setSpan(Object span, int start, int end) {
-		XMLSpanInfo info = new XMLSpanInfo();
+	public void setSpan(final Object span, final int start, final int end) {
+		XMLSpanInfo info;
+		info = new XMLSpanInfo();
 		info.span = span;
 		info.start = start;
 		info.end = end;
@@ -94,6 +97,6 @@ public class XMLSpanBuilder {
 	/** the string builder */
 	protected StringBuilder mBuilder;
 	/** the list of spans */
-	protected LinkedList<XMLSpanInfo> mSpans;
+	protected List<XMLSpanInfo> mSpans;
 
 }

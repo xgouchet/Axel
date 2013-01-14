@@ -13,7 +13,7 @@ public class XMLDoctypeSpan extends TextAppearanceSpan {
 	 * @param context
 	 *            the current application context
 	 */
-	public XMLDoctypeSpan(Context context) {
+	public XMLDoctypeSpan(final Context context) {
 		super(context, R.style.Axel_Xml_Doctype);
 	}
 

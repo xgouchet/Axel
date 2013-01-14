@@ -10,7 +10,7 @@ import fr.xgouchet.androidlib.data.FileUtils;
 /**
  * 
  */
-public class TemplateFiles {
+public final class TemplateFiles {
 
 	/** */
 	public static final String TEMPLATE_FOLDER = "templates";
@@ -22,8 +22,8 @@ public class TemplateFiles {
 	 * 
 	 * @param context
 	 */
-	public static void copyTemplatesFromAssets(Context context) {
-		File templateFolder = getTemplateFolder(context);
+	public static void copyTemplatesFromAssets(final Context context) {
+		final File templateFolder = getTemplateFolder(context);
 
 		FileUtils.copyAssetsToAppData(context, templateFolder, TEMPLATE_FOLDER);
 	}
@@ -35,8 +35,9 @@ public class TemplateFiles {
 	 *            the name to validate
 	 * @return if the name valid for a new template file
 	 */
-	public static boolean validateTemplateName(Context context, String name) {
-		List<File> files = getTemplateFiles(context);
+	public static boolean validateTemplateName(final Context context,
+			final String name) {
+		final List<File> files = getTemplateFiles(context);
 
 		boolean valid = true;
 
@@ -55,7 +56,7 @@ public class TemplateFiles {
 	 *            the context file to remove
 	 * @return if the file was removed
 	 */
-	public static boolean removeFile(File contextFile) {
+	public static boolean removeFile(final File contextFile) {
 		return contextFile.delete();
 	}
 
@@ -67,7 +68,7 @@ public class TemplateFiles {
 	 * @return a path to write output to
 	 * 
 	 */
-	public static String getOuputPath(Context context, String name) {
+	public static String getOuputPath(final Context context, final String name) {
 		return getTemplateFolder(context).getPath() + File.separator + name;
 	}
 
@@ -76,10 +77,10 @@ public class TemplateFiles {
 	 *            the current application context
 	 * @return the list of template files
 	 */
-	public static List<File> getTemplateFiles(Context context) {
-		File[] files = getTemplateFolder(context).listFiles();
+	public static List<File> getTemplateFiles(final Context context) {
+		final File[] files = getTemplateFolder(context).listFiles();
 
-		LinkedList<File> res = new LinkedList<File>();
+		final LinkedList<File> res = new LinkedList<File>();
 
 		for (File f : files) {
 			if (!f.canRead()) {
@@ -101,12 +102,16 @@ public class TemplateFiles {
 	 *            the current application context
 	 * @return the template folder
 	 */
-	protected static File getTemplateFolder(Context context) {
+	private static File getTemplateFolder(final Context context) {
 		if (sTemplateFolder == null) {
 			sTemplateFolder = context.getDir(TEMPLATE_FOLDER,
 					Context.MODE_PRIVATE);
 		}
 
 		return sTemplateFolder;
+	}
+
+	private TemplateFiles() {
+		// TODO Auto-generated constructor stub
 	}
 }

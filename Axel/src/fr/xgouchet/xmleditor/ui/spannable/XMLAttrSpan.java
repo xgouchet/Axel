@@ -13,7 +13,7 @@ public class XMLAttrSpan extends TextAppearanceSpan {
 	 * @param context
 	 *            the current application context
 	 */
-	public XMLAttrSpan(Context context) {
+	public XMLAttrSpan(final Context context) {
 		super(context, R.style.Axel_Xml_Tag_Attribute);
 	}
 

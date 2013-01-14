@@ -10,7 +10,7 @@ import android.content.SharedPreferences.Editor;
 /**
  * Storage for a recent files list
  */
-public class RecentFiles {
+public final class RecentFiles {
 
 	/**
 	 * loads the recent files from shared preferences
@@ -18,16 +18,17 @@ public class RecentFiles {
 	 * @param saved
 	 *            the previously saved string
 	 */
-	public static void loadRecentFiles(String saved) {
-		PATHS = new LinkedList<String>();
-		String[] paths = saved.split(File.pathSeparator);
+	public static void loadRecentFiles(final String saved) {
+		sPaths = new LinkedList<String>();
+		String[] paths;
+		paths = saved.split(File.pathSeparator);
 
 		for (String path : paths) {
 			if (path.length() > 0) {
-				PATHS.add(path);
+				sPaths.add(path);
 			}
 
-			if (PATHS.size() == Settings.sMaxRecentFiles) {
+			if (sPaths.size() == Settings.sMaxRecentFiles) {
 				break;
 			}
 		}
@@ -39,11 +40,11 @@ public class RecentFiles {
 	 * @param prefs
 	 *            the preferences to save to
 	 */
-	public static void saveRecentList(SharedPreferences prefs) {
+	public static void saveRecentList(final SharedPreferences prefs) {
 		String str = "";
 		Editor editor;
 
-		for (String path : PATHS) {
+		for (String path : sPaths) {
 			str += path;
 			str += File.pathSeparator;
 		}
@@ -57,7 +58,7 @@ public class RecentFiles {
 	 * @return the list of most recent files
 	 */
 	public static List<String> getRecentFiles() {
-		return PATHS;
+		return sPaths;
 	}
 
 	/**
@@ -67,14 +68,14 @@ public class RecentFiles {
 	 * @param path
 	 *            the path to insert
 	 */
-	public static void updateRecentList(String path) {
-		if (PATHS.contains(path)) {
-			PATHS.remove(path);
+	public static void updateRecentList(final String path) {
+		if (sPaths.contains(path)) {
+			sPaths.remove(path);
 		}
 
-		PATHS.add(0, path);
-		while (PATHS.size() > Settings.sMaxRecentFiles) {
-			PATHS.remove(Settings.sMaxRecentFiles);
+		sPaths.add(0, path);
+		while (sPaths.size() > Settings.sMaxRecentFiles) {
+			sPaths.remove(Settings.sMaxRecentFiles);
 		}
 
 	}
@@ -85,16 +86,15 @@ public class RecentFiles {
 	 * @param path
 	 *            the path to remove
 	 */
-	public static void removePath(String path) {
-		if (PATHS.contains(path)) {
-			PATHS.remove(path);
+	public static void removePath(final String path) {
+		if (sPaths.contains(path)) {
+			sPaths.remove(path);
 		}
 	}
 
 	/** the list of paths in the recent list */
-	private static LinkedList<String> PATHS;
+	private static List<String> sPaths;
 
 	private RecentFiles() {
-
 	}
 }

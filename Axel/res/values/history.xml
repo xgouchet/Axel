@@ -2,6 +2,17 @@
 <resources>
 
     <!--  -->
+    <string name="release7">Axel 2.1 (14 Jan. 2013)</string>
+    <string name="release7_log">"- Better support of compressed XML files from APK archives
+- Support of binary PList files
+- Optimisation for faster use when browsing or openning a big file"</string>
+
+    <!--  -->
+    <string name="release6">Axel 2.0 (02 Jan. 2013)</string>
+    <string name="release6_log">"- Bug corrected when saving a file
+- Support of compressed XML files from APK archives"</string>
+
+    <!--  -->
     <string name="release5">Axel 1.5 (30 nov. 2012)</string>
     <string name="release5_log">"- File encoding detection (UTF-8, UTF-16, UTF-32, Japanese, Chinese, Korean, Hebrew, Greek)
 - Support of plist and svg files

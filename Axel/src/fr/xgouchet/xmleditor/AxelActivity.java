@@ -43,12 +43,15 @@ import android.widget.ListView;
 import de.neofonie.mobile.app.android.widget.crouton.Crouton;
 import de.neofonie.mobile.app.android.widget.crouton.Style;
 import fr.xgouchet.androidlib.data.FileUtils;
+import fr.xgouchet.androidlib.data.TextFileUtils;
 import fr.xgouchet.xmleditor.common.AxelChangeLog;
+import fr.xgouchet.xmleditor.common.AxelUtils;
 import fr.xgouchet.xmleditor.common.Constants;
 import fr.xgouchet.xmleditor.common.RecentFiles;
 import fr.xgouchet.xmleditor.common.Settings;
 import fr.xgouchet.xmleditor.common.TemplateFiles;
-import fr.xgouchet.xmleditor.common.TextFileUtils;
+import fr.xgouchet.xmleditor.data.AsyncXmlFileLoader;
+import fr.xgouchet.xmleditor.data.XmlFileLoaderResult;
 import fr.xgouchet.xmleditor.data.html.HtmlCleanerParser;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
 import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
@@ -77,11 +80,9 @@ public class AxelActivity extends Activity {
 		Settings.updateFromPreferences(getSharedPreferences(
 				Constants.PREFERENCES_NAME, MODE_PRIVATE));
 
-		//
-		mIsResumingFromRequest = false;
-
 		// Editor
 		mListView = (ListView) findViewById(android.R.id.list);
+		mListView.setFastScrollEnabled(true);
 		registerForContextMenu(mListView);
 		doClearContents();
 
@@ -111,15 +112,16 @@ public class AxelActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 
-		mIsResumingFromRequest = false;
-
 		if (mDocument == null) {
 			mDocument = XmlNode.createDocument();
 			getAxelApplication().setCurrentDocument(mDocument, null, null);
+		} else {
+			// TODO check file Hash
 		}
 
 		onXmlContentChanged();
-		updateFromSettings();
+		Settings.updateFromPreferences(getSharedPreferences(
+				Constants.PREFERENCES_NAME, MODE_PRIVATE));
 	}
 
 	/**
@@ -146,10 +148,9 @@ public class AxelActivity extends Activity {
 					doSaveFile(extras.getString(Constants.EXTRA_PATH));
 					break;
 				case Constants.REQUEST_OPEN:
-					doOpenFile(
-							new File(extras.getString(Constants.EXTRA_PATH)),
-							false, extras.getBoolean(
-									Constants.EXTRA_IGNORE_FILE, false));
+					File file = new File(extras.getString(Constants.EXTRA_PATH));
+					onOpenFile(file, extras.getBoolean(
+							Constants.EXTRA_IGNORE_FILE, false));
 					break;
 				case Constants.REQUEST_EDIT_NODE:
 					getAxelApplication().getCurrentSelection()
@@ -180,17 +181,17 @@ public class AxelActivity extends Activity {
 
 		menu.findItem(R.id.menu_save).setEnabled(!mReadOnly);
 
-		boolean isRootExpanded = (mAdapter != null)
-				&& mAdapter.isRootExpanded();
-		if (isRootExpanded) {
-			menu.findItem(R.id.menu_expand_collapse_all)
-					.setTitle(R.string.menu_collapse_all)
-					.setIcon(R.drawable.ic_menu_collapse);
-		} else {
-			menu.findItem(R.id.menu_expand_collapse_all)
-					.setTitle(R.string.menu_expand_all)
-					.setIcon(R.drawable.ic_menu_expand);
-		}
+		// boolean isRootExpanded = (mAdapter != null)
+		// && mAdapter.isRootExpanded();
+		// if (isRootExpanded) {
+		// menu.findItem(R.id.menu_expand_collapse_all)
+		// .setTitle(R.string.menu_collapse_all)
+		// .setIcon(R.drawable.ic_menu_collapse);
+		// } else {
+		// menu.findItem(R.id.menu_expand_collapse_all)
+		// .setTitle(R.string.menu_expand_all)
+		// .setIcon(R.drawable.ic_menu_expand);
+		// }
 
 		menu.findItem(R.id.menu_preview_in_browser).setEnabled(
 				getAxelApplication().canBePreviewed());
@@ -230,14 +231,20 @@ public class AxelActivity extends Activity {
 		case R.id.menu_save_as_template:
 			promptTemplateName();
 			break;
-		case R.id.menu_expand_collapse_all:
-			expandCollapseAll();
+		// case R.id.menu_expand_collapse_all:
+		// expandCollapseAll();
+		// break;
+		case R.id.menu_help:
+			startActivity(new Intent(getApplicationContext(),
+					AxelHelpActivity.class));
 			break;
 		case R.id.menu_settings:
-			settingsActivity();
+			startActivity(new Intent(getApplicationContext(),
+					AxelSettingsActivity.class));
 			break;
 		case R.id.menu_about:
-			aboutActivity();
+			startActivity(new Intent(getApplicationContext(),
+					AxelAboutActivity.class));
 			break;
 		default:
 			result = super.onOptionsItemSelected(item);
@@ -364,14 +371,106 @@ public class AxelActivity extends Activity {
 	}
 
 	/**
+	 * Send the order to open a file into the app
+	 * 
+	 * @param file
+	 *            the source file
+	 * @param ignore
+	 *            ignore the file link
+	 */
+	private void onOpenFile(File file, boolean ignore) {
+		if (mLoader == null) {
+			mLoader = new AsyncXmlFileLoader(this);
+			mLoader.execute(file);
+		}
+	}
+
+	/**
+	 * Callback when the file has been read
+	 * 
+	 * @param result
+	 */
+	public void onFileOpened(final XmlFileLoaderResult result) {
+		File file = result.getFile();
+
+		Log.i("Axel", "onFileOpened Start");
+
+		if (result.getError() == XmlError.noError) {
+			mDocument = result.getDocument();
+
+			if ((file == null) || (result.hasIgnoreFile())) {
+				mCurrentEncoding = null;
+				mCurrentFileName = null;
+				mCurrentFilePath = null;
+				mReadOnly = false;
+
+			} else {
+				mCurrentEncoding = result.getEncoding();
+				mCurrentFileName = file.getName();
+				mCurrentFilePath = file.getPath();
+				mReadOnly = result.hasForceReadOnly() || (!file.canWrite());
+
+				RecentFiles.updateRecentList(mCurrentFilePath);
+				RecentFiles.saveRecentList(getSharedPreferences(
+						Constants.PREFERENCES_NAME, MODE_PRIVATE));
+			}
+
+			onXmlDocumentChanged();
+		} else {
+			switch (result.getError()) {
+			case featureUnavailable:
+				Crouton.showText(this, R.string.toast_xml_unsupported_feature,
+						Style.ALERT);
+				break;
+			case noParser:
+				Crouton.showText(this, R.string.toast_xml_no_parser_found,
+						Style.ALERT);
+				break;
+			case fileNotFound:
+			case noInput:
+				Crouton.showText(this, R.string.toast_open_not_found_error,
+						Style.ALERT);
+				break;
+			case outOfMemory:
+				Crouton.showText(this, R.string.toast_open_memory_error,
+						Style.ALERT);
+				break;
+			case noError:
+				break;
+			case parseException:
+				if (AxelUtils.isHtmlDocument(file)) {
+					promptOpenHtmlError(file, result.hasForceReadOnly());
+				} else if (AxelUtils.isXmlDocument(file)) {
+					promptOpenError(file);
+				} else {
+					Crouton.showText(this, R.string.toast_xml_parse_error,
+							Style.ALERT);
+				}
+				break;
+			case ioException:
+				Crouton.showText(this, R.string.toast_xml_io_exception,
+						Style.ALERT);
+				break;
+			case unknown:
+			default:
+				Crouton.showText(this, R.string.toast_open_error, Style.ALERT);
+				break;
+
+			}
+		}
+
+		Log.i("Axel", "onFileOpened end");
+		mLoader = null;
+	}
+
+	/**
 	 * Call this when the document changes
 	 */
-	protected void onXmlDocumentChanged() {
+	private void onXmlDocumentChanged() {
 		getAxelApplication().setCurrentDocument(mDocument, mCurrentFileName,
 				mCurrentFilePath);
 
 		mAdapter = new TreeAdapter<XmlData>(this, mDocument);
-		mAdapter.setExpanded(true, true);
 		mAdapter.setNodeStyler(new XmlNodeStyler());
 		mListView.setAdapter(mAdapter);
 
@@ -381,7 +480,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Call when something in the xml tree changes
 	 */
-	protected void onXmlContentChanged() {
+	private void onXmlContentChanged() {
 		updateTreeView();
 		updateTitle();
 		getAxelApplication().documentContentChanged();
@@ -390,7 +489,10 @@ public class AxelActivity extends Activity {
 	/**
 	 * updates the tree view
 	 */
-	protected void updateTreeView() {
+	private void updateTreeView() {
+		if (mDocument != null) {
+			// mDocument.updateViewCount();
+		}
 		if (mAdapter != null) {
 			mAdapter.notifyDataSetChanged();
 		}
@@ -401,7 +503,7 @@ public class AxelActivity extends Activity {
 	 * as the non configuration instance if activity is started after a screen
 	 * rotate
 	 */
-	protected void readIntent() {
+	private void readIntent() {
 		Intent intent;
 		String action;
 		File file;
@@ -419,7 +521,7 @@ public class AxelActivity extends Activity {
 				|| (action.equals(Intent.ACTION_EDIT))) {
 			try {
 				file = new File(new URI(intent.getData().toString()));
-				doOpenFile(file, false, false);
+				onOpenFile(file, false);
 			} catch (URISyntaxException e) {
 				Crouton.makeText(this, R.string.toast_intent_invalid_uri,
 						Style.ALERT).show();
@@ -436,7 +538,7 @@ public class AxelActivity extends Activity {
 	 * Expands / collapses the whole tree
 	 */
 	@TargetApi(11)
-	protected void expandCollapseAll() {
+	private void expandCollapseAll() {
 		if (mAdapter != null) {
 			boolean isRootExpanded = mAdapter.isRootExpanded();
 
@@ -452,7 +554,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Clears the current content to make a new file
 	 */
-	protected void newContent() {
+	private void newContent() {
 		mAfterSave = new Runnable() {
 			public void run() {
 				doClearContents();
@@ -465,7 +567,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Starts an activity to choose a file to open
 	 */
-	protected void openFile() {
+	private void openFile() {
 
 		mAfterSave = new Runnable() {
 			public void run() {
@@ -484,7 +586,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Open the recent files activity to open
 	 */
-	protected void openRecentFile() {
+	private void openRecentFile() {
 
 		if (RecentFiles.getRecentFiles().size() == 0) {
 			Crouton.makeText(this, R.string.toast_no_recent_files, Style.INFO)
@@ -509,7 +611,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Open the template files activity to open a template
 	 */
-	protected void openTemplateFile() {
+	private void openTemplateFile() {
 
 		if (TemplateFiles.getTemplateFiles(this).size() == 0) {
 			Crouton.makeText(this, R.string.toast_no_template_files, Style.INFO)
@@ -533,7 +635,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Prompts to save if dirty before openning the current file
 	 */
-	protected void previewFile() {
+	private void previewFile() {
 		mAfterSave = new Runnable() {
 			public void run() {
 				doPreviewFile();
@@ -548,7 +650,7 @@ public class AxelActivity extends Activity {
 	 * then save it , else invoke the {@link AxelActivity#saveContentAs()}
 	 * method
 	 */
-	protected void saveContent() {
+	private void saveContent() {
 		if ((mCurrentFilePath == null) || (mCurrentFilePath.length() == 0)) {
 			saveContentAs();
 		} else {
@@ -560,7 +662,7 @@ public class AxelActivity extends Activity {
 	 * General Save as command : prompt the user for a location and file name,
 	 * then save the editor'd content
 	 */
-	protected void saveContentAs() {
+	private void saveContentAs() {
 		Intent saveAs;
 
 		saveAs = new Intent(getApplicationContext(), AxelSaveAsActivity.class);
@@ -570,7 +672,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Runs the after save to complete
 	 */
-	protected void runAfterSave() {
+	private void runAfterSave() {
 		if (mAfterSave != null) {
 			mAfterSave.run();
 			mAfterSave = null;
@@ -580,7 +682,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Prompt the user before deleting a Node
 	 */
-	protected void promptDeleteNode() {
+	private void promptDeleteNode() {
 		final AlertDialog.Builder builder;
 
 		builder = new AlertDialog.Builder(this);
@@ -612,16 +714,14 @@ public class AxelActivity extends Activity {
 	 *            force the file as read only
 	 * @param e
 	 */
-	protected void promptOpenError(final File file,
-			final boolean forceReadOnly, XmlTreeParserException e) {
+	private void promptOpenError(final File file) {
 		final AlertDialog.Builder builder;
 
 		builder = new AlertDialog.Builder(this);
 		builder.setIcon(R.drawable.ic_dialog_alert);
 		builder.setTitle(R.string.ui_open_error);
 		builder.setCancelable(true);
-		builder.setMessage(getString(R.string.ui_prompt_open_error,
-				e.getMessage(this)));
+		builder.setMessage(R.string.ui_prompt_open_error);
 
 		builder.setPositiveButton(R.string.ui_send_file,
 				new DialogInterface.OnClickListener() {
@@ -647,8 +747,8 @@ public class AxelActivity extends Activity {
 	 *            force the file as read only
 	 * @param e
 	 */
-	protected void promptOpenHtmlError(final File file,
-			final boolean forceReadOnly, XmlTreeParserException e) {
+	private void promptOpenHtmlError(final File file,
+			final boolean forceReadOnly) {
 		final AlertDialog.Builder builder;
 
 		builder = new AlertDialog.Builder(this);
@@ -681,7 +781,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Prompt the user to save the current file before doing something else
 	 */
-	protected void promptSaveDirty() {
+	private void promptSaveDirty() {
 		Builder builder;
 
 		if (!mDirty) {
@@ -719,7 +819,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Prompt the user for a template name
 	 */
-	protected void promptTemplateName() {
+	private void promptTemplateName() {
 
 		final EditText input = new EditText(this);
 		input.setHint(R.string.ui_hint_name);
@@ -751,7 +851,7 @@ public class AxelActivity extends Activity {
 				});
 	}
 
-	protected void promptElementAttribute() {
+	private void promptElementAttribute() {
 		final AttributeEditDialog dlg;
 
 		dlg = new AttributeEditDialog(this, LayoutInflater.from(this), null);
@@ -773,7 +873,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Run the default startup action
 	 */
-	protected void doDefaultAction() {
+	private void doDefaultAction() {
 		doClearContents();
 	}
 
@@ -781,7 +881,7 @@ public class AxelActivity extends Activity {
 	 * Clears the content of the editor. Assumes that user was prompted and
 	 * previous data was saved
 	 */
-	protected void doClearContents() {
+	private void doClearContents() {
 		mCurrentFilePath = null;
 		mCurrentFileName = null;
 		mCurrentEncoding = null;
@@ -791,82 +891,10 @@ public class AxelActivity extends Activity {
 		mDocument = XmlNode.createDocument();
 		mDocument.addChildNode(XmlNode.createDocumentDeclaration("1.0",
 				"UTF-8", null));
+		mDocument.setExpanded(true, true);
+		mDocument.updateViewCount(true);
 
 		onXmlDocumentChanged();
-	}
-
-	/**
-	 * Opens the given file and replace the editors content with the file.
-	 * Assumes that user was prompted and previous data was saved
-	 * 
-	 * @param file
-	 *            the file to load
-	 * @param forceReadOnly
-	 *            force the file to be used as read only
-	 * @param ignoreFile
-	 *            ignore the file link
-	 * @return if the file was loaded successfully
-	 */
-	protected boolean doOpenFile(File file, boolean forceReadOnly,
-			boolean ignoreFile) {
-		boolean result = false;
-		InputStream input = null;
-
-		if (file != null) {
-			try {
-				XmlNode document;
-				String encoding = TextFileUtils.getFileEncoding(file);
-				input = new FileInputStream(file);
-				document = parseXml(input, true, encoding);
-
-				if (document != null) {
-					result = true;
-					onFileParsed(file, document, encoding, forceReadOnly,
-							ignoreFile);
-				}
-			} catch (FileNotFoundException e) {
-				Crouton.makeText(this, R.string.toast_open_not_found_error,
-						Style.ALERT).show();
-			} catch (OutOfMemoryError e) {
-				Crouton.makeText(this, R.string.toast_open_memory_error,
-						Style.ALERT).show();
-			} catch (XmlTreeParserException e) {
-				if (e.getError() == XmlError.parseException) {
-					Log.w("AXEL", e.getMessage(this));
-					String ext = FileUtils.getFileExtension(file);
-
-					if ("htm".equalsIgnoreCase(ext)
-							|| "html".equalsIgnoreCase(ext)
-							|| "xhtml".equalsIgnoreCase(ext)) {
-						promptOpenHtmlError(file, forceReadOnly, e);
-					} else if ("xml".equalsIgnoreCase(ext)
-							|| "xsd".equalsIgnoreCase(ext)
-							|| "svg".equalsIgnoreCase(ext)
-							|| "plist".equalsIgnoreCase(ext)) {
-						promptOpenError(file, forceReadOnly, e);
-					} else {
-						Crouton.makeText(this, R.string.toast_open_parse_error,
-								Style.ALERT).show();
-					}
-				} else {
-					Crouton.makeText(this, e.getMessage(this), Style.ALERT)
-							.show();
-				}
-			} catch (Exception e) {
-				Crouton.makeText(this, R.string.toast_open_error, Style.ALERT)
-						.show();
-			} finally {
-				try {
-					if (input != null) {
-						input.close();
-					}
-				} catch (IOException e) {
-					Log.w("Axel", "Error while closing input reader");
-				}
-			}
-		}
-
-		return result;
 	}
 
 	/**
@@ -880,7 +908,7 @@ public class AxelActivity extends Activity {
 	 *            force the file to be used as read only
 	 * @return if the file was loaded successfully
 	 */
-	protected boolean doOpenFileAsHtml(File file, boolean forceReadOnly) {
+	private boolean doOpenFileAsHtml(File file, boolean forceReadOnly) {
 		boolean result = false;
 
 		Reader input = null;
@@ -889,7 +917,7 @@ public class AxelActivity extends Activity {
 			try {
 				XmlNode document;
 				input = new InputStreamReader(new FileInputStream(file));
-				document = parseHtml(input);
+				document = HtmlCleanerParser.parseHtmlTree(input);
 
 				if (document != null) {
 					result = true;
@@ -900,6 +928,8 @@ public class AxelActivity extends Activity {
 							Style.INFO).show();
 				}
 
+			} catch (XmlTreeParserException e) {
+				Crouton.makeText(this, e.getMessage(this), Style.ALERT).show();
 			} catch (FileNotFoundException e) {
 				Crouton.makeText(this, R.string.toast_open_not_found_error,
 						Style.ALERT).show();
@@ -940,7 +970,7 @@ public class AxelActivity extends Activity {
 	 * @param ignoreFile
 	 *            ignore the file
 	 */
-	protected void onFileParsed(File file, XmlNode document, String encoding,
+	private void onFileParsed(File file, XmlNode document, String encoding,
 			boolean forceReadOnly, boolean ignoreFile) {
 		mDocument = document;
 		mReadOnly = forceReadOnly;
@@ -961,48 +991,9 @@ public class AxelActivity extends Activity {
 	}
 
 	/**
-	 * Parses an input to create a document hierarchy
-	 * 
-	 * @param input
-	 *            the input stream
-	 * @param createDocDecl
-	 *            create a document declaration in the hierarchy
-	 * @param encoding
-	 *            the encoding of the source file or null
-	 * @return the root document node
-	 */
-	protected XmlNode parseXml(InputStream input, boolean isFile,
-			String encoding) throws XmlTreeParserException {
-		XmlNode node = null;
-
-		node = XmlTreePullParser.parseXmlTree(input, isFile, encoding);
-
-		return node;
-	}
-
-	/**
-	 * Parses an input to create a document hierarchy
-	 * 
-	 * @param input
-	 *            the input node
-	 * @return the root document node
-	 */
-	protected XmlNode parseHtml(Reader input) {
-		XmlNode node = null;
-
-		try {
-			node = HtmlCleanerParser.parseHtmlTree(input);
-		} catch (XmlTreeParserException e) {
-			Crouton.makeText(this, e.getMessage(this), Style.ALERT).show();
-		}
-
-		return node;
-	}
-
-	/**
 	 * Opens a Web view to preview the current file
 	 */
-	protected void doPreviewFile() {
+	private void doPreviewFile() {
 		Intent intent = new Intent();
 		intent.setClass(getBaseContext(), AxelPreviewActivity.class);
 		startActivity(intent);
@@ -1015,7 +1006,7 @@ public class AxelActivity extends Activity {
 	 * @param path
 	 *            the path to the file (must be a valid path and not null)
 	 */
-	protected void doSaveFile(String path) {
+	private void doSaveFile(String path) {
 		StringBuilder builder;
 
 		if (path == null) {
@@ -1065,7 +1056,7 @@ public class AxelActivity extends Activity {
 	 * @param fileName
 	 *            saves the template
 	 */
-	protected void doSaveTemplate(String fileName) {
+	private void doSaveTemplate(String fileName) {
 		StringBuilder builder;
 		String path = TemplateFiles.getOuputPath(this, fileName);
 
@@ -1086,7 +1077,7 @@ public class AxelActivity extends Activity {
 	 * @param file
 	 *            the file to send for report
 	 */
-	protected void doSendFile(File file) {
+	private void doSendFile(File file) {
 
 		Intent intent = new Intent(Intent.ACTION_SEND);
 		// intent.setData(Uri.fromFile(file));
@@ -1108,7 +1099,7 @@ public class AxelActivity extends Activity {
 	 * @param edit
 	 *            edit the added node ?
 	 */
-	protected void doAddChildToNode(XmlNode node, boolean edit) {
+	private void doAddChildToNode(XmlNode node, boolean edit) {
 		if (mCurrentSelection.addChildNode(node)) {
 			if (mCurrentSelection.getContent().isDocument()) {
 				mCurrentSelection.reorderDocumentChildren();
@@ -1135,7 +1126,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Comment or uncomment a node
 	 */
-	protected void doCommentUncommentNode() {
+	private void doCommentUncommentNode() {
 		if (mCurrentSelection.getContent().isComment()) {
 			doUncommentNode();
 		} else {
@@ -1149,7 +1140,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Uncomment a comment node
 	 */
-	protected void doUncommentNode() {
+	private void doUncommentNode() {
 		XmlNode doc = null, node, parent;
 		int index;
 		InputStream input;
@@ -1157,7 +1148,7 @@ public class AxelActivity extends Activity {
 		input = new ByteArrayInputStream(mCurrentSelection.getContent()
 				.getText().getBytes());
 		try {
-			doc = parseXml(input, false, null);
+			doc = XmlTreePullParser.parseXmlTree(input, false, null);
 		} catch (XmlTreeParserException e) {
 			Crouton.makeText(this, e.getMessage(this), Style.ALERT).show();
 		}
@@ -1183,7 +1174,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Comment a node
 	 */
-	protected void doCommentNode() {
+	private void doCommentNode() {
 
 		TreeNode<XmlData> parent = mCurrentSelection.getParent();
 		int index = parent.getChildPosition(mCurrentSelection);
@@ -1199,7 +1190,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Opens an editor for the selected node
 	 */
-	protected void doEditNode() {
+	private void doEditNode() {
 		getAxelApplication().setCurrentSelection(mCurrentSelection);
 
 		Intent edit = new Intent(getApplicationContext(),
@@ -1213,7 +1204,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Opens an editor to sort an element's children;
 	 */
-	protected void doSortChildren() {
+	private void doSortChildren() {
 		getAxelApplication().setCurrentSelection(mCurrentSelection);
 
 		Intent edit = new Intent(getApplicationContext(),
@@ -1227,7 +1218,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * Deletes a node from its parent
 	 */
-	protected void doDeleteNode() {
+	private void doDeleteNode() {
 
 		if ((mCurrentSelection != null) && mCurrentSelection.removeFromParent()) {
 			mCurrentSelection = null;
@@ -1240,7 +1231,7 @@ public class AxelActivity extends Activity {
 	 * Update the window title
 	 */
 	@TargetApi(11)
-	protected void updateTitle() {
+	private void updateTitle() {
 		String title;
 		String name;
 
@@ -1264,35 +1255,7 @@ public class AxelActivity extends Activity {
 		}
 	}
 
-	/**
-	 * Update the adapter's settings
-	 */
-	protected void updateFromSettings() {
-		Settings.updateFromPreferences(getSharedPreferences(
-				Constants.PREFERENCES_NAME, MODE_PRIVATE));
-	}
-
-	/**
-	 * Opens the about activity
-	 */
-	protected void settingsActivity() {
-		Intent about = new Intent(getApplicationContext(),
-				AxelSettingsActivity.class);
-
-		startActivity(about);
-	}
-
-	/**
-	 * Opens the about activity
-	 */
-	protected void aboutActivity() {
-		Intent about = new Intent(getApplicationContext(),
-				AxelAboutActivity.class);
-
-		startActivity(about);
-	}
-
-	protected AxelApplication getAxelApplication() {
+	private AxelApplication getAxelApplication() {
 		if (mAxelApplication == null) {
 			mAxelApplication = (AxelApplication) getApplication();
 		}
@@ -1300,36 +1263,34 @@ public class AxelActivity extends Activity {
 	}
 
 	/** */
-	protected XmlNode mCurrentSelection;
+	private XmlNode mCurrentSelection;
 	/** */
-	protected XmlNode mDocument;
+	private XmlNode mDocument;
 	/** */
-	protected ListView mListView;
+	private ListView mListView;
 	/** */
-	protected TreeAdapter<XmlData> mAdapter;
+	private TreeAdapter<XmlData> mAdapter;
 
 	/** the path of the file currently opened */
-	protected String mCurrentFilePath;
+	private String mCurrentFilePath;
+	/** the last known hash of the file currently opened */
+	private String mCurrentFileHash;
 	/** the name of the file currently opened */
-	protected String mCurrentFileName;
+	private String mCurrentFileName;
 	/** the file's encoding */
-	protected String mCurrentEncoding;
+	private String mCurrentEncoding;
+
+	/** the loader for async load */
+	private AsyncXmlFileLoader mLoader;
 
 	/** the runable to run after a save */
-	protected Runnable mAfterSave; // Mennen ? Axe ?
+	private Runnable mAfterSave; // Mennen ? Axe ?
 
 	/** is dirty ? */
-	protected boolean mDirty;
+	private boolean mDirty;
 	/** is read only */
-	protected boolean mReadOnly;
+	private boolean mReadOnly;
 
-	/** the search layout root */
-	protected View mSearchLayout;
-	/** the search input */
-	protected EditText mSearchInput;
+	private AxelApplication mAxelApplication;
 
-	/** are we in a post activity result ? */
-	protected boolean mIsResumingFromRequest;
-
-	protected AxelApplication mAxelApplication;
 }

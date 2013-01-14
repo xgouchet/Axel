@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ROOT>
+
+	<EDIT howto="Long press a node to display an edit menu" />
+
+	<VIEW expand="or collapse a node&apos;s hierarchy using the arrow on the left"
+		scroll="from left to right to view all a node&apos;s content" />
+
+	<!-- Add comments ... -->text content ...<?processing instructions ... ?>
+	<![CDATA[ & <unparsed> content. ]]>
+
+	<MORE menu="use the menu to get more feature"
+		contact="me for any question, suggestion or feedback on this application" />
+
+</ROOT>

@@ -77,8 +77,6 @@ public class XmlTreePullParser extends XmlTreeParser {
 			throw xtpe;
 		} catch (IOException e) {
 			throw new XmlTreeParserException(XmlError.ioException, e);
-		} catch (OutOfMemoryError e) {
-			throw new XmlTreeParserException(XmlError.outOfMemory, e);
 		}
 
 		return parser.getRoot();

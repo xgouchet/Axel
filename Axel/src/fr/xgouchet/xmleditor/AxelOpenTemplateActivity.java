@@ -94,11 +94,9 @@ public class AxelOpenTemplateActivity extends Activity implements
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.buttonCancel:
+		if (v.getId() == R.id.buttonCancel) {
 			setResult(RESULT_CANCELED);
 			finish();
-			break;
 		}
 	}
 

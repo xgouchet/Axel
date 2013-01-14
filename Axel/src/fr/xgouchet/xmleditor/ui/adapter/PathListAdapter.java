@@ -26,31 +26,31 @@ public class PathListAdapter extends ArrayAdapter<String> {
 	 * @param objects
 	 *            The objects to represent in the ListView.
 	 */
-	public PathListAdapter(Context context, List<String> objects) {
+	public PathListAdapter(final Context context, final List<String> objects) {
 		super(context, R.layout.item_file, objects);
+		mInflater = LayoutInflater.from(context);
 	}
 
 	/**
 	 * @see ArrayAdapter#getView(int, View, ViewGroup)
 	 */
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View v;
+	public View getView(final int position, final View convertView,
+			final ViewGroup parent) {
+		View view;
 		String path;
 		TextView compound;
 
 		// recycle view
-		v = convertView;
-		if (v == null) {
-			LayoutInflater vi = (LayoutInflater) getContext().getSystemService(
-					Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.item_file, null);
+		view = convertView;
+		if (view == null) {
+			view = mInflater.inflate(R.layout.item_file, null);
 		}
 
 		// get displayed file and current view
 		path = getItem(position);
 
 		// set the layout content
-		compound = (TextView) v.findViewById(R.id.textFileName);
+		compound = (TextView) view.findViewById(R.id.textFileName);
 		if (compound != null) {
 			if (path == null) {
 				compound.setText("");
@@ -62,7 +62,8 @@ public class PathListAdapter extends ArrayAdapter<String> {
 						R.drawable.file, 0, 0, 0);
 			}
 		}
-		return v;
+		return view;
 	}
 
+	private final LayoutInflater mInflater;
 }

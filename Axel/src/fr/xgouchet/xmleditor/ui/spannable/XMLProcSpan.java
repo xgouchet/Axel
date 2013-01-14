@@ -13,7 +13,7 @@ public class XMLProcSpan extends TextAppearanceSpan {
 	 * @param context
 	 *            the current application context
 	 */
-	public XMLProcSpan(Context context) {
+	public XMLProcSpan(final Context context) {
 		super(context, R.style.Axel_Xml_ProcessingInstruction);
 	}
 

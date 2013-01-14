@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-            <!--  -->
+
+    <!--  -->
+    <string name="release7">Axel 2.1 (14 jan. 2013)</string>
+    <string name="release7_log">"- Amélioration du support des fichiers XML compressé provenant d'archives APK
+- Support des fichiers PList binaires
+- Optimisation lors de la navigation et de l'ouverture de fichiers"</string>
+
+    <!--  -->
+    <string name="release6">Axel 2.0 (02 jan. 2013)</string>
+    <string name="release6_log">"- Correction d'un bug lors de la sauvegarde
+- Support des fichiers XML compressé provenant d'archives APK"</string>
+
+    <!--  -->
     <string name="release5">Axel 1.5 (30 nov. 2012)</string>
     <string name="release5_log">"- Détection de l'encodage des fichiers (UTF-8, UTF-16, UTF-32, Japonais, Chinois, Coréen, Hebreux, Grec)
 - Support des fichiers svg et plist

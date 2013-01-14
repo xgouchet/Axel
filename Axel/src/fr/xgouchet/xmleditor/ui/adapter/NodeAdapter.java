@@ -27,7 +27,7 @@ public class NodeAdapter<T> extends ArrayAdapter<TreeNode<T>> {
 	 * @param nodes
 	 *            the nodes to display
 	 */
-	public NodeAdapter(Context context, List<TreeNode<T>> nodes) {
+	public NodeAdapter(final Context context, final List<TreeNode<T>> nodes) {
 		super(context, R.layout.item_node_sort, nodes);
 
 		mInflater = LayoutInflater.from(context);
@@ -37,22 +37,26 @@ public class NodeAdapter<T> extends ArrayAdapter<TreeNode<T>> {
 	 * @see android.widget.ArrayAdapter#getView(int, android.view.View,
 	 *      android.view.ViewGroup)
 	 */
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, final View convertView,
+			final ViewGroup parent) {
 
-		View v = convertView;
+		View view = convertView;
 
-		if (v == null) {
-			v = mInflater.inflate(R.layout.item_node_sort, parent, false);
+		if (view == null) {
+			view = mInflater.inflate(R.layout.item_node_sort, parent, false);
 		}
 
-		TextView text = (TextView) v.findViewById(R.id.textNode);
+		TextView text;
+		text = (TextView) view.findViewById(R.id.textNode);
 		text.setHorizontallyScrolling(true);
 		text.setMovementMethod(new ScrollingMovementMethod());
 		text.scrollTo(0, 0);
 
-		ImageView decorator = (ImageView) v.findViewById(R.id.imageDecorator);
+		ImageView decorator;
+		decorator = (ImageView) view.findViewById(R.id.imageDecorator);
 
-		TreeNode<T> node = getItem(position);
+		TreeNode<T> node;
+		node = getItem(position);
 
 		if (node != null) {
 			text.setVisibility(View.VISIBLE);
@@ -70,18 +74,17 @@ public class NodeAdapter<T> extends ArrayAdapter<TreeNode<T>> {
 			}
 		}
 
-		return v;
+		return view;
 	}
 
 	/**
 	 * @param nodeStyler
 	 *            the node styler to use
 	 */
-	public void setNodeStyler(TreeNodeStyler<T> nodeStyler) {
+	public void setNodeStyler(final AbstractTreeNodeStyler<T> nodeStyler) {
 		mNodeStyler = nodeStyler;
 	}
 
-	private TreeNodeStyler<T> mNodeStyler;
-
-	private LayoutInflater mInflater;
+	private AbstractTreeNodeStyler<T> mNodeStyler;
+	private final LayoutInflater mInflater;
 }

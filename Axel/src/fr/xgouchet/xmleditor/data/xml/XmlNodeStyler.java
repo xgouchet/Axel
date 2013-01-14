@@ -6,7 +6,7 @@ import android.content.Context;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import fr.xgouchet.xmleditor.common.Settings;
-import fr.xgouchet.xmleditor.ui.adapter.TreeNodeStyler;
+import fr.xgouchet.xmleditor.ui.adapter.AbstractTreeNodeStyler;
 import fr.xgouchet.xmleditor.ui.spannable.XMLAttrSpan;
 import fr.xgouchet.xmleditor.ui.spannable.XMLAttrValueSpan;
 import fr.xgouchet.xmleditor.ui.spannable.XMLCDataSpan;
@@ -22,7 +22,7 @@ import fr.xgouchet.xmleditor.ui.spannable.XMLTextSpan;
  * A utility class to build {@link SpannableString} to represent an
  * {@link XmlNode}
  */
-public class XmlNodeStyler extends TreeNodeStyler<XmlData> {
+public class XmlNodeStyler extends AbstractTreeNodeStyler<XmlData> {
 
 	/**
 	 * @param attr
@@ -141,7 +141,7 @@ public class XmlNodeStyler extends TreeNodeStyler<XmlData> {
 
 		List<XmlAttribute> attrs = data.getAttributes();
 		for (XmlAttribute attr : attrs) {
-			if (!Settings.sDisplayAttributesInline) {
+			if (!Settings.sShowAttrInline) {
 				builder.append("\n    ");
 			} else {
 				builder.append(" ");

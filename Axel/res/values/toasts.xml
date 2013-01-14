@@ -18,7 +18,6 @@
 
     <!--  -->
     <string name="toast_open_memory_error">Unable to open the file, not enough memory</string>
-    <string name="toast_open_parse_error">Unable to open the xml file, the document may be malformed</string>
     <string name="toast_open_not_found_error">"Unable to open the file, the source file can't be found"</string>
     <string name="toast_open_error">Unable to open the file (maybe the file is too big, or corrupted)</string>
     <string name="toast_save_null">Unable to save, path is null</string>
@@ -35,9 +34,7 @@
     <!--  -->
     <string name="toast_xml_no_parser_found">Unable to read the XML input, no available parser</string>
     <string name="toast_xml_unsupported_feature">"Unable to create parser, this device doesn't support required features"</string>
-    <string name="toast_xml_parse_error">Parse error while reading the XML input</string>
-    <string name="toast_xml_parse_error_verbose">"Parse error while reading the XML input after: 
-%1$s"</string>
+    <string name="toast_xml_parse_error">Parse error while reading the XML input, the document may be malformed</string>
     <string name="toast_xml_io_exception">Unable to read from input</string>
     <string name="toast_xml_uncomment">Unable to uncomment this node at this location</string>
 

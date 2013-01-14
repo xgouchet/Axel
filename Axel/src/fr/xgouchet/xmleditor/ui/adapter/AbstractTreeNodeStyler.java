@@ -10,7 +10,7 @@ import android.text.SpannableString;
  * @param <T>
  *            the content type to display
  */
-public abstract class TreeNodeStyler<T> {
+public abstract class AbstractTreeNodeStyler<T> {
 
 	/**
 	 * @param data

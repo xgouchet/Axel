@@ -13,6 +13,7 @@
     <string name="title_open_template">Axel - Open Template</string>
     <string name="title_settings">Axel - Settings </string>
     <string name="title_about">Axel - About &#8230; </string>
+    <string name="title_help">Axel - Help</string>
 
     <!-- Options Menu -->
     <string name="menu_new">New</string>
@@ -53,10 +54,16 @@
     <!-- Misc UI strings -->
     <string name="ui_save_text">"Do you want to save your document? \nAny unsaved changes will be lost. "</string>
     <string name="ui_save">Save</string>
+    <string name="ui_purchase">Purchase</string>
     <string name="ui_delete">Delete</string>
     <string name="ui_no_save">"Don't save"</string>
     <string name="ui_cancel">Cancel</string>
+    <string name="ui_loading">Loading</string>
+    <string name="ui_parsing">Parsing file</string>
+    <string name="ui_generating">Generating Xml tree</string>
+    <string name="ui_wait">Please wait</string>
     <string name="ui_reset">Reset</string>
+    <string name="ui_help">Help</string>
     <string name="ui_invalid_syntax">"Invalid syntax"</string>
     <string name="ui_invalid_namespace_uri">"Invalid namespace uri"</string>
     <string name="ui_invalid_duplicate">"Another attribute already uses this name"</string>
@@ -74,9 +81,7 @@
     <string name="ui_open_error">File error</string>
     <string name="ui_prompt_open_error">"An error occurred while reading this file. 
          
-If your document is well formed, you can send it to me and I'll try fixing this problem.
-
-Error : %s"</string>
+If your document is well formed, you can send it to me and I'll try fixing this problem."</string>
     <string name="ui_prompt_open_error_html">"An error occurred while reading this file. 
          
 It seems you try to read an HTML document, you can try converting it to a well formed xHTML file. "</string>
@@ -84,7 +89,6 @@ It seems you try to read an HTML document, you can try converting it to a well f
     <string name="ui_convert_html">Read as HTML</string>
 
     <!--  -->
-    <string name="ui_additional_licences">Additional Licences</string>
     <string name="ui_licence_dragsortlistview">"Axel uses the <b>DragSortListView</b> library, made by Carl Bauer (carl.a.bauer@gmail.com), under the Apache License (version 2.0)."</string>
     <string name="ui_licence_crouton">"Axel uses the <b>Crouton</b> library, made by Benjamin Weiss (based on an idea by Cyril Mottier), under the Apache License (version 2.0)."</string>
     <string name="ui_licence_htmlcleaner">"Axel uses the <b>HTML Cleaner</b> library, made by Vladimir Nikic (nikic_vladimir@yahoo.com), under the BSD License."</string>

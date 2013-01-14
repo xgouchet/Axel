@@ -17,8 +17,6 @@ import org.htmlcleaner.TagNodeVisitor;
 import android.text.TextUtils;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.data.xml.XmlTreeParser;
-import fr.xgouchet.xmleditor.data.xml.XmlTreeParserException;
-import fr.xgouchet.xmleditor.data.xml.XmlTreeParserException.XmlError;
 
 public class HtmlCleanerParser extends XmlTreeParser implements TagNodeVisitor {
 
@@ -31,20 +29,17 @@ public class HtmlCleanerParser extends XmlTreeParser implements TagNodeVisitor {
 	 * @throws XmlTreeParserException
 	 *             if an error occurs during the parsing
 	 */
-	public static XmlNode parseHtmlTree(Reader input)
-			throws XmlTreeParserException {
+	public static XmlNode parseHtmlTree(final Reader input) throws IOException {
 
-		HtmlCleanerParser parser = new HtmlCleanerParser();
+		HtmlCleanerParser parser;
+		HtmlCleaner cleaner;
 
-		HtmlCleaner cleaner = new HtmlCleaner();
+		parser = new HtmlCleanerParser();
+		cleaner = new HtmlCleaner();
 		setupHtmlCleanerProperties(cleaner);
 
 		TagNode node;
-		try {
-			node = cleaner.clean(input);
-		} catch (IOException e) {
-			throw new XmlTreeParserException(XmlError.ioException, e);
-		}
+		node = cleaner.clean(input);
 
 		parser.createRootDocument();
 		parser.getRoot().addChildNode(
@@ -60,8 +55,9 @@ public class HtmlCleanerParser extends XmlTreeParser implements TagNodeVisitor {
 	 * @param cleaner
 	 *            the cleaner object to setup
 	 */
-	protected static void setupHtmlCleanerProperties(HtmlCleaner cleaner) {
-		CleanerProperties props = cleaner.getProperties();
+	protected static void setupHtmlCleanerProperties(final HtmlCleaner cleaner) {
+		CleanerProperties props;
+		props = cleaner.getProperties();
 
 		// TODO check the cleaner properties
 		props.setUseEmptyElementTags(true);
@@ -71,14 +67,16 @@ public class HtmlCleanerParser extends XmlTreeParser implements TagNodeVisitor {
 	 * @see org.htmlcleaner.TagNodeVisitor#visit(org.htmlcleaner.TagNode,
 	 *      org.htmlcleaner.HtmlNode)
 	 */
-	public boolean visit(TagNode parentNode, HtmlNode htmlNode) {
+	public boolean visit(final TagNode parentNode, final HtmlNode htmlNode) {
+		Class<?> nodeClass;
+		XmlNode parent;
 
-		Class<?> nodeClass = htmlNode.getClass();
-		XmlNode parent = getMap().get(parentNode);
+		parent = getMap().get(parentNode);
 		if (parent == null) {
 			parent = getRoot();
 		}
 
+		nodeClass = htmlNode.getClass();
 		if (CommentNode.class.isAssignableFrom(nodeClass)) {
 			visitComment(parent, (CommentNode) htmlNode);
 		} else if (ContentNode.class.isAssignableFrom(nodeClass)) {
@@ -90,11 +88,15 @@ public class HtmlCleanerParser extends XmlTreeParser implements TagNodeVisitor {
 		return true;
 	}
 
-	protected void visitTag(XmlNode parent, TagNode tag) {
-		XmlNode elt = XmlNode.createElement(tag.getName());
+	protected void visitTag(final XmlNode parent, final TagNode tag) {
+		XmlNode elt;
+		Map<String, String> attrs;
+		Set<String> keys;
 
-		Map<String, String> attrs = tag.getAttributes();
-		Set<String> keys = attrs.keySet();
+		elt = XmlNode.createElement(tag.getName());
+		attrs = tag.getAttributes();
+		keys = attrs.keySet();
+
 		for (String key : keys) {
 			elt.getContent().addAttribute(null, key, attrs.get(key));
 		}
@@ -104,20 +106,18 @@ public class HtmlCleanerParser extends XmlTreeParser implements TagNodeVisitor {
 
 	}
 
-	protected void visitText(XmlNode parent, ContentNode content) {
+	protected void visitText(final XmlNode parent, final ContentNode content) {
 		String textContent = content.toString();
 		if (!TextUtils.isEmpty(textContent)) {
 			textContent = textContent.trim();
 			if (!TextUtils.isEmpty(textContent)) {
-				XmlNode text = XmlNode.createText(textContent);
-				parent.addChildNode(text);
+				parent.addChildNode(XmlNode.createText(textContent));
 			}
 		}
 	}
 
-	protected void visitComment(XmlNode parent, CommentNode com) {
-		XmlNode comment = XmlNode.createComment(com.getContent().toString());
-		parent.addChildNode(comment);
+	protected void visitComment(final XmlNode parent, final CommentNode com) {
+		parent.addChildNode(XmlNode.createComment(com.getContent().toString()));
 	}
 
 	protected Map<TagNode, XmlNode> getMap() {

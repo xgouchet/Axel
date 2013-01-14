@@ -58,8 +58,8 @@ public class AxelApplication extends Application {
 		// test on root node
 		XmlNode root = mCurrentDocument.getRootChild();
 		if (root != null) {
-			String tag = root.getContent().getName().toLowerCase();
-			if (tag.equals("html") || tag.equals("svg")) {
+			String tag = root.getContent().getName();
+			if ("html".equalsIgnoreCase(tag) || "svg".equalsIgnoreCase(tag)) {
 				res = true;
 			}
 		}

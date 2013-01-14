@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="help_edit_title">Edit</string>
+    <string name="help_edit_content">"A long press on any node will display a menu which will let you edit the selected node. \n\n
+Note that if the file you are viewing is set as read-only by the file system, you'll see it's name displayed between [square brackets] in the title bar and you won't be able to edit this document. \n\n
+You can use the save as option to create a copy of a read only document and edit it."</string>
+    <string name="help_preview_title">Preview</string>
+    <string name="help_preview_content">"Some common files are based on the XML format, for example HTML or SVG. \n\n
+Those files can be previewed directly from the menu inside a web browser."</string>
+    <string name="help_format_title">XML Format</string>
+    <string name="help_format_content">"The XML format is a set of strict rules ensuring that a file can be readable by any software. Axel follows to the letter the XML Specification. \n\n
+As a result, some files may not be readable as they do not follow the XML specification. This is often the case with HTML documents, so Axel tries to extract a valid document from HTML documents."</string>
+    <string name="help_binary_title">Binary XML</string>
+    <string name="help_binary_content">"Some XML files are compressed inside a binary format, for performance or size optimisation purpose. Once in binary format, these files are not XML document anymore. \n\n
+However Axel can still read some of those, namely the Android XML files (eg : XML files from an APK archive) and binary PList (Apple PList files). These files are opened as read only but you can still save them in a copy and edit it."</string>
+
+</resources>

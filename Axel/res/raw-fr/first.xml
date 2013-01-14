@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<RACINE>
+
+	<MODIFIER comment="En faisant un appui long sur un noeud" />
+
+	<NAVUGUER ouvrir="ou fermer une hierarchie avec la flèche à gauche d'un noeud"
+		scroll="faire défiler de gauche à droite un noeud trop long" />
+
+	<!-- Ajouter commentaires ... -->texte brut ...<?instructions de traitement... ?>
+	<![CDATA[ & <contenu non traité> ]]>
+
+	<PLUS menu="utiliser le menu pour avoir plus d'options"
+		contact="me contacter pour toute question, suggestion ou remarque sur cette application" />
+
+</RACINE>

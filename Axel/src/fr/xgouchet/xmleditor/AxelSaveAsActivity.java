@@ -11,13 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import de.neofonie.mobile.app.android.widget.crouton.Crouton;
 import de.neofonie.mobile.app.android.widget.crouton.Style;
-import fr.xgouchet.androidlib.ui.activity.BrowsingActivity;
+import fr.xgouchet.androidlib.ui.activity.AbstractBrowsingActivity;
 import fr.xgouchet.xmleditor.common.Constants;
 
 /**
  *  
  */
-public class AxelSaveAsActivity extends BrowsingActivity implements
+public class AxelSaveAsActivity extends AbstractBrowsingActivity implements
 		OnClickListener {
 
 	/**
@@ -54,14 +54,14 @@ public class AxelSaveAsActivity extends BrowsingActivity implements
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
 	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.buttonCancel:
+		final int viewId = v.getId();
+		if (viewId == R.id.buttonCancel) {
 			setResult(RESULT_CANCELED);
 			finish();
-			break;
-		case R.id.buttonOk:
-			if (setSaveResult())
+		} else if (viewId == R.id.buttonOk) {
+			if (setSaveResult()) {
 				finish();
+			}
 		}
 	}
 

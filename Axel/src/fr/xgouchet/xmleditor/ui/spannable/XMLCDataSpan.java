@@ -13,7 +13,7 @@ public class XMLCDataSpan extends TextAppearanceSpan {
 	 * @param context
 	 *            the current application context
 	 */
-	public XMLCDataSpan(Context context) {
+	public XMLCDataSpan(final Context context) {
 		super(context, R.style.Axel_Xml_CData);
 	}
 

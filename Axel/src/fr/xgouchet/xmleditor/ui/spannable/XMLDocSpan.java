@@ -13,7 +13,7 @@ public class XMLDocSpan extends TextAppearanceSpan {
 	 * @param context
 	 *            the current application context
 	 */
-	public XMLDocSpan(Context context) {
+	public XMLDocSpan(final Context context) {
 		super(context, R.style.Axel_Xml_Document);
 	}
 

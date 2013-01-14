@@ -9,7 +9,7 @@ import fr.xgouchet.xmleditor.data.tree.TreeNode;
 /**
  * A node containing {@link XmlData}
  */
-public class XmlNode extends TreeNode<XmlData> {
+public final class XmlNode extends TreeNode<XmlData> {
 
 	/** XML Schema Instance Namespace URI */
 	public static final String XSI_URI = "http://www.w3.org/2001/XMLSchema-instance";
@@ -26,7 +26,7 @@ public class XmlNode extends TreeNode<XmlData> {
 	private XmlNode(XmlData data) {
 		super(null, data);
 		if (data == null) {
-			throw new IllegalArgumentException(new NullPointerException());
+			throw new IllegalArgumentException("Data can't be null");
 		}
 	}
 
@@ -54,6 +54,8 @@ public class XmlNode extends TreeNode<XmlData> {
 	 * @see fr.xgouchet.xmleditor.data.tree.TreeNode#onChildListChanged()
 	 */
 	public void onChildListChanged() {
+		super.onChildListChanged();
+
 		if (mContent.isElement()) {
 			if (mContent.hasFlag(XmlData.FLAG_EMPTY)) {
 				if (mChildren.size() > 0) {
@@ -90,17 +92,19 @@ public class XmlNode extends TreeNode<XmlData> {
 	 *            is the file standalone
 	 * @return an XML Document Declaration node
 	 */
-	public static XmlNode createDocumentDeclaration(String version,
-			String encoding, Boolean standalone) {
+	public static XmlNode createDocumentDeclaration(final String version,
+			final String encoding, final Boolean standalone) {
 		XmlNode node = new XmlNode(
 				new XmlData(XmlData.XML_DOCUMENT_DECLARATION));
 
 		node.mContent.setName("xml");
-
+		String xmlVersion;
 		if (version == null) {
-			version = "1.0";
+			xmlVersion = "1.0";
+		} else {
+			xmlVersion = version;
 		}
-		node.mContent.addAttribute(null, "version", version);
+		node.mContent.addAttribute(null, "version", xmlVersion);
 
 		if (encoding != null) {
 			node.mContent.addAttribute(null, "encoding", encoding);
@@ -111,7 +115,7 @@ public class XmlNode extends TreeNode<XmlData> {
 			node.mContent.addAttribute(null, "standalone", value);
 		}
 
-		node.forceLeaf();
+		node.setLeaf();
 
 		return node;
 	}
@@ -126,7 +130,7 @@ public class XmlNode extends TreeNode<XmlData> {
 
 		node.mContent.setText(text);
 
-		node.forceLeaf();
+		node.setLeaf();
 
 		return node;
 	}
@@ -145,7 +149,7 @@ public class XmlNode extends TreeNode<XmlData> {
 		node.mContent.setName(target);
 		node.mContent.setText(text);
 
-		node.forceLeaf();
+		node.setLeaf();
 
 		return node;
 	}
@@ -192,7 +196,7 @@ public class XmlNode extends TreeNode<XmlData> {
 		XmlNode node = new XmlNode(new XmlData(XmlData.XML_COMMENT));
 
 		node.mContent.setText(comment);
-		node.forceLeaf();
+		node.setLeaf();
 
 		return node;
 	}
@@ -210,7 +214,7 @@ public class XmlNode extends TreeNode<XmlData> {
 		} else {
 			node.mContent.setText(text.trim());
 		}
-		node.forceLeaf();
+		node.setLeaf();
 
 		return node;
 	}
@@ -224,7 +228,7 @@ public class XmlNode extends TreeNode<XmlData> {
 		XmlNode node = new XmlNode(new XmlData(XmlData.XML_CDATA));
 
 		node.mContent.setText(text);
-		node.forceLeaf();
+		node.setLeaf();
 
 		return node;
 	}
@@ -552,6 +556,7 @@ public class XmlNode extends TreeNode<XmlData> {
 			mChildren.add(1, child);
 		}
 
+		onChildListChanged();
 	}
 
 	/**

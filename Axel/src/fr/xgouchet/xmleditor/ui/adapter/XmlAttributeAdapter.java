@@ -33,8 +33,8 @@ public class XmlAttributeAdapter extends ArrayAdapter<XmlAttribute> {
 	 * @param node
 	 *            the node containing those attributes
 	 */
-	public XmlAttributeAdapter(Context context, List<XmlAttribute> list,
-			XmlNode node) {
+	public XmlAttributeAdapter(final Context context,
+			final List<XmlAttribute> list, final XmlNode node) {
 		super(context, R.layout.item_attribute, list);
 		mInflater = (LayoutInflater) getContext().getSystemService(
 				Context.LAYOUT_INFLATER_SERVICE);
@@ -46,18 +46,19 @@ public class XmlAttributeAdapter extends ArrayAdapter<XmlAttribute> {
 	 * @see android.widget.ArrayAdapter#getView(int, android.view.View,
 	 *      android.view.ViewGroup)
 	 */
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View v = convertView;
+	public View getView(final int position, final View convertView,
+			final ViewGroup parent) {
+		View view = convertView;
 
-		if (v == null) {
-			v = mInflater.inflate(R.layout.item_attribute, parent, false);
+		if (view == null) {
+			view = mInflater.inflate(R.layout.item_attribute, parent, false);
 		}
 
 		final XmlAttribute attr = getItem(position);
 
 		if (attr != null) {
 			TextView text;
-			text = (TextView) v.findViewById(R.id.textAttribute);
+			text = (TextView) view.findViewById(R.id.textAttribute);
 			text.setText(XmlNodeStyler.getAttributeSpan(attr, getContext()),
 					BufferType.SPANNABLE);
 
@@ -65,22 +66,22 @@ public class XmlAttributeAdapter extends ArrayAdapter<XmlAttribute> {
 			text.setMovementMethod(new ScrollingMovementMethod());
 			text.scrollTo(0, 0);
 
-			v.findViewById(R.id.buttonDelete).setOnClickListener(
+			view.findViewById(R.id.buttonDelete).setOnClickListener(
 					new OnClickListener() {
-						public void onClick(View v) {
+						public void onClick(final View view) {
 							promptDeleteAttribute(attr);
 						}
 					});
 
-			v.findViewById(R.id.buttonEdit).setOnClickListener(
+			view.findViewById(R.id.buttonEdit).setOnClickListener(
 					new OnClickListener() {
-						public void onClick(View v) {
+						public void onClick(final View view) {
 							promptEditAttribute(attr);
 						}
 					});
 		}
 
-		return v;
+		return view;
 	}
 
 	/**
@@ -88,7 +89,7 @@ public class XmlAttributeAdapter extends ArrayAdapter<XmlAttribute> {
 	 *            the attribute to delete
 	 */
 	protected void promptDeleteAttribute(final XmlAttribute attr) {
-		final AlertDialog.Builder builder;
+		AlertDialog.Builder builder;
 
 		builder = new AlertDialog.Builder(getContext());
 		builder.setTitle(R.string.ui_delete);
@@ -97,14 +98,17 @@ public class XmlAttributeAdapter extends ArrayAdapter<XmlAttribute> {
 
 		builder.setPositiveButton(R.string.ui_delete,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 						remove(attr);
 						notifyDataSetChanged();
 					}
 				});
 		builder.setNegativeButton(R.string.ui_cancel,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					public void onClick(final DialogInterface dialog,
+							final int which) {
+						// cancel
 					}
 				});
 
@@ -123,7 +127,7 @@ public class XmlAttributeAdapter extends ArrayAdapter<XmlAttribute> {
 		dlg.setSiblingsAttribute(mList);
 
 		dlg.setOnDismissListener(new OnDismissListener() {
-			public void onDismiss(DialogInterface dialog) {
+			public void onDismiss(final DialogInterface dialog) {
 				notifyDataSetChanged();
 			}
 		});
@@ -136,14 +140,14 @@ public class XmlAttributeAdapter extends ArrayAdapter<XmlAttribute> {
 	 * @param attr
 	 *            the attribute to edit
 	 */
-	public void editAttribute(XmlAttribute attr) {
+	public void editAttribute(final XmlAttribute attr) {
 		if (mList.contains(attr)) {
 			promptEditAttribute(attr);
 		}
 	}
 
-	private LayoutInflater mInflater;
-	private List<XmlAttribute> mList;
-	private XmlNode mNode;
+	private final LayoutInflater mInflater;
+	private final List<XmlAttribute> mList;
+	private final XmlNode mNode;
 
 }

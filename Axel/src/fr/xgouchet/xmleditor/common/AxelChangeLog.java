@@ -1,15 +1,15 @@
 package fr.xgouchet.xmleditor.common;
 
-import fr.xgouchet.androidlib.common.ChangeLog;
+import fr.xgouchet.androidlib.common.AbstractChangeLog;
 import fr.xgouchet.xmleditor.R;
 
 /**
  * 
  */
-public class AxelChangeLog extends ChangeLog {
+public class AxelChangeLog extends AbstractChangeLog {
 
 	/**
-	 * @see fr.xgouchet.androidlib.common.ChangeLog#getTitleResourceForVersion(int)
+	 * @see fr.xgouchet.androidlib.common.AbstractChangeLog#getTitleResourceForVersion(int)
 	 */
 	public int getTitleResourceForVersion(int version) {
 		int title;
@@ -27,15 +27,21 @@ public class AxelChangeLog extends ChangeLog {
 			title = R.string.release4;
 			break;
 		case 5:
-		default:
 			title = R.string.release5;
+			break;
+		case 6:
+			title = R.string.release6;
+			break;
+		case 7:
+		default:
+			title = R.string.release7;
 			break;
 		}
 		return title;
 	}
 
 	/**
-	 * @see fr.xgouchet.androidlib.common.ChangeLog#getChangeLogResourceForVersion(int)
+	 * @see fr.xgouchet.androidlib.common.AbstractChangeLog#getChangeLogResourceForVersion(int)
 	 */
 	public int getChangeLogResourceForVersion(int version) {
 		int log;
@@ -53,8 +59,14 @@ public class AxelChangeLog extends ChangeLog {
 			log = R.string.release4_log;
 			break;
 		case 5:
-		default:
 			log = R.string.release5_log;
+			break;
+		case 6:
+			log = R.string.release6_log;
+			break;
+		case 7:
+		default:
+			log = R.string.release7_log;
 			break;
 		}
 		return log;

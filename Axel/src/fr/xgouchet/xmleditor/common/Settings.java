@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 /**
  * The settings fields
  */
-public class Settings {
+public final class Settings {
 
 	/** */
 	public static int sMaxRecentFiles = 10;
@@ -14,7 +14,7 @@ public class Settings {
 	public static boolean sKeepTextExact = true;
 
 	/** */
-	public static boolean sDisplayAttributesInline = false;
+	public static boolean sShowAttrInline = false;
 
 	/** */
 	public static boolean sEditOnCreate = true;
@@ -25,7 +25,7 @@ public class Settings {
 	 * @param preferences
 	 *            the preference file to use
 	 */
-	public static void updateFromPreferences(SharedPreferences preferences) {
+	public static void updateFromPreferences(final SharedPreferences preferences) {
 		RecentFiles.loadRecentFiles(preferences.getString(
 				Constants.PREFERENCE_RECENTS, ""));
 
@@ -35,7 +35,7 @@ public class Settings {
 		sKeepTextExact = preferences.getBoolean(
 				Constants.PREFERENCE_KEEP_TEXT_EXACT, true);
 
-		sDisplayAttributesInline = preferences.getBoolean(
+		sShowAttrInline = preferences.getBoolean(
 				Constants.PREFERENCE_DISPLAY_ATTRIBUTES_INLINE, false);
 
 		sEditOnCreate = preferences.getBoolean(
@@ -53,12 +53,11 @@ public class Settings {
 	 *            the default value
 	 * @return the value as an int
 	 */
-	protected static int getStringPreferenceAsInteger(SharedPreferences prefs,
-			String key, String def) {
-		String strVal;
+	protected static int getStringPreferenceAsInteger(
+			final SharedPreferences prefs, final String key, final String def) {
+		String strVal = null;
 		int intVal;
 
-		strVal = null;
 		try {
 			strVal = prefs.getString(key, def);
 		} catch (Exception e) {

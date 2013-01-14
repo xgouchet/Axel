@@ -31,14 +31,12 @@ public class AttributeEditDialog implements OnShowListener {
 	 *            the attribute to edit
 	 * 
 	 */
-	public AttributeEditDialog(Context context, LayoutInflater inflater,
-			XmlAttribute attribute) {
+	public AttributeEditDialog(final Context context,
+			final LayoutInflater inflater, final XmlAttribute attribute) {
 		mContext = context;
 		mAttribute = attribute;
 
-		final AlertDialog.Builder builder;
-
-		builder = new AlertDialog.Builder(context);
+		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle("Edit");
 		builder.setCancelable(true);
 
@@ -56,7 +54,7 @@ public class AttributeEditDialog implements OnShowListener {
 	/**
 	 * @see android.content.DialogInterface.OnShowListener#onShow(android.content.DialogInterface)
 	 */
-	public void onShow(DialogInterface dialog) {
+	public void onShow(final DialogInterface dialog) {
 
 		mDialog.setOnDismissListener(mListener);
 
@@ -66,7 +64,7 @@ public class AttributeEditDialog implements OnShowListener {
 
 		mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
 				new OnClickListener() {
-					public void onClick(View v) {
+					public void onClick(final View view) {
 						if (validateValues()) {
 							applyValues();
 							mDialog.dismiss();
@@ -76,14 +74,14 @@ public class AttributeEditDialog implements OnShowListener {
 
 		mDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(
 				new OnClickListener() {
-					public void onClick(View v) {
+					public void onClick(final View view) {
 						resetValues();
 					}
 				});
 
 		mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(
 				new OnClickListener() {
-					public void onClick(View v) {
+					public void onClick(final View view) {
 						mDialog.dismiss();
 					}
 				});
@@ -95,7 +93,7 @@ public class AttributeEditDialog implements OnShowListener {
 	 * @param attr
 	 *            the attribute to edit
 	 */
-	public void setAttribute(XmlAttribute attr) {
+	public void setAttribute(final XmlAttribute attr) {
 		mAttribute = attr;
 	}
 
@@ -122,45 +120,21 @@ public class AttributeEditDialog implements OnShowListener {
 	protected boolean validateValues() {
 		boolean result = true;
 
-		String prefix = mEditPrefix.getText().toString();
-		if (!TextUtils.isEmpty(prefix)) {
-			if (!XmlValidator.isValidName(prefix)) {
-				mEditPrefix.setError(mContext
-						.getString(R.string.ui_invalid_syntax));
-				result = false;
-			} else if (!XmlValidator.isValidNamespace(prefix, mNode,
-					mSiblingsAttribute, true)) {
-				mEditPrefix.setError(mContext
-						.getString(R.string.ui_invalid_namespace));
-				result = false;
-			}
-		}
+		final String prefix = mEditPrefix.getText().toString();
+		result = validatePrefix(prefix);
 
-		String name = mEditName.getText().toString();
+		final String name = mEditName.getText().toString();
 		if (!XmlValidator.isValidName(name)) {
 			mEditName.setError(mContext.getString(R.string.ui_invalid_syntax));
 			result = false;
 		}
 
 		if (result) {
-			String fullName = "";
-			if (!TextUtils.isEmpty(prefix)) {
-				fullName = prefix + ":";
-			}
-			fullName += name;
-
-			for (XmlAttribute attr : mSiblingsAttribute) {
-				if ((attr != mAttribute)
-						&& (attr.getFullName().equals(fullName))) {
-					mEditName.setError(mContext
-							.getString(R.string.ui_invalid_duplicate));
-					result = false;
-					break;
-				}
-			}
+			final String fullName = getFullName(prefix, name);
+			result = validateFullNameUnicity(fullName);
 		}
 
-		String value = mEditValue.getText().toString();
+		final String value = mEditValue.getText().toString();
 		if (!XmlValidator.isValidAttributeValue(value)) {
 			mEditValue.setError(mContext.getString(R.string.ui_invalid_syntax));
 			result = false;
@@ -172,6 +146,64 @@ public class AttributeEditDialog implements OnShowListener {
 		}
 
 		return result;
+	}
+
+	/**
+	 * @param prefix
+	 *            the prefix
+	 * @return if the prefix is valid
+	 */
+	protected boolean validatePrefix(final String prefix) {
+		boolean result;
+		if (!TextUtils.isEmpty(prefix)) {
+			if (!XmlValidator.isValidName(prefix)) {
+				mEditPrefix.setError(mContext
+						.getString(R.string.ui_invalid_syntax));
+				result = false;
+			} else if (!XmlValidator.isValidNamespace(prefix, mNode,
+					mSiblingAttrs, true)) {
+				mEditPrefix.setError(mContext
+						.getString(R.string.ui_invalid_namespace));
+				result = false;
+			} else {
+				result = true;
+			}
+		} else {
+			result = true;
+		}
+		return result;
+	}
+
+	/**
+	 * @param fullName
+	 * @return if the fullname is unique in this element
+	 */
+	protected boolean validateFullNameUnicity(final String fullName) {
+		boolean result = true;
+		for (XmlAttribute attr : mSiblingAttrs) {
+			if ((attr != mAttribute) && (attr.getFullName().equals(fullName))) {
+				mEditName.setError(mContext
+						.getString(R.string.ui_invalid_duplicate));
+				result = false;
+				break;
+			}
+		}
+		return result;
+	}
+
+	/**
+	 * @param prefix
+	 * @param name
+	 * @return either prefix:name or just name if prefix is null or empty
+	 */
+	protected String getFullName(final String prefix, final String name) {
+		final StringBuilder builder = new StringBuilder();
+		if (!TextUtils.isEmpty(prefix)) {
+			builder.append(prefix);
+			builder.append(":");
+		}
+		builder.append(name);
+		return builder.toString();
 	}
 
 	/**
@@ -191,7 +223,7 @@ public class AttributeEditDialog implements OnShowListener {
 	 * @param listener
 	 *            the listener
 	 */
-	public void setOnDismissListener(OnDismissListener listener) {
+	public void setOnDismissListener(final OnDismissListener listener) {
 		mListener = listener;
 	}
 
@@ -199,7 +231,7 @@ public class AttributeEditDialog implements OnShowListener {
 	 * @param node
 	 *            the node containing this attribute
 	 */
-	public void setNode(XmlNode node) {
+	public void setNode(final XmlNode node) {
 		mNode = node;
 	}
 
@@ -207,8 +239,8 @@ public class AttributeEditDialog implements OnShowListener {
 	 * @param siblings
 	 *            the siblings attributes
 	 */
-	public void setSiblingsAttribute(List<XmlAttribute> siblings) {
-		mSiblingsAttribute = siblings;
+	public void setSiblingsAttribute(final List<XmlAttribute> siblings) {
+		mSiblingAttrs = siblings;
 	}
 
 	public XmlAttribute getAttribute() {
@@ -224,11 +256,11 @@ public class AttributeEditDialog implements OnShowListener {
 
 	private XmlNode mNode;
 	private XmlAttribute mAttribute;
-	private List<XmlAttribute> mSiblingsAttribute;
+	private List<XmlAttribute> mSiblingAttrs;
 
 	private EditText mEditPrefix, mEditName, mEditValue;
-	private AlertDialog mDialog;
+	private final AlertDialog mDialog;
 
 	private OnDismissListener mListener;
-	private Context mContext;
+	private final Context mContext;
 }

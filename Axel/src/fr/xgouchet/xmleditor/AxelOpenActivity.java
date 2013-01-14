@@ -9,13 +9,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import de.neofonie.mobile.app.android.widget.crouton.Crouton;
 import de.neofonie.mobile.app.android.widget.crouton.Style;
-import fr.xgouchet.androidlib.ui.activity.BrowsingActivity;
+import fr.xgouchet.androidlib.ui.activity.AbstractBrowsingActivity;
 import fr.xgouchet.xmleditor.common.Constants;
 
 /**
  * 
  */
-public class AxelOpenActivity extends BrowsingActivity implements
+public class AxelOpenActivity extends AbstractBrowsingActivity implements
 		OnClickListener {
 
 	/**

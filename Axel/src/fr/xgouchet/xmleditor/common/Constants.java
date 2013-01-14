@@ -3,7 +3,7 @@ package fr.xgouchet.xmleditor.common;
 /**
  * A list of constant values
  */
-public class Constants {
+public final class Constants {
 
 	private Constants() {
 	}

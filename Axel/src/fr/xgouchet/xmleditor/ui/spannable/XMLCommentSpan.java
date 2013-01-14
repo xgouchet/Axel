@@ -13,7 +13,7 @@ public class XMLCommentSpan extends TextAppearanceSpan {
 	 * @param context
 	 *            the current application context
 	 */
-	public XMLCommentSpan(Context context) {
+	public XMLCommentSpan(final Context context) {
 		super(context, R.style.Axel_Xml_Comment);
 	}
 

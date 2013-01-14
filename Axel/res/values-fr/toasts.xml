@@ -18,7 +18,6 @@
 
     <!--  -->
     <string name="toast_open_memory_error">"Impossible d'ouvrir le fichier, mémoire insuffisante"</string>
-    <string name="toast_open_parse_error">"Impossible d'ouvrir le fichier, problème de syntaxe"</string>
     <string name="toast_open_not_found_error">"Impossible d'ouvrir le fichier, le fichier source est introuvable"</string>
     <string name="toast_open_error">"Impossible d'ouvrir le fichier, le fichier est trop lourd ou corrompu"</string>
     <string name="toast_save_null">Impossible de sauver le fichier</string>
@@ -36,8 +35,6 @@
     <string name="toast_xml_no_parser_found">"Impossible de lire les document XML sur cet appareil"</string>
     <string name="toast_xml_unsupported_feature">"Impossible de lire les document XML sur cet appareil"</string>
     <string name="toast_xml_parse_error">"Erreur de syntaxe dans le document XML"</string>
-    <string name="toast_xml_parse_error_verbose">"Erreur de syntaxe dans le document XML après: 
-%1$s"</string>
     <string name="toast_xml_io_exception">Impossible de lire la source </string>
     <string name="toast_xml_uncomment">Impossible de décommenter le noeud selectionné</string>
 

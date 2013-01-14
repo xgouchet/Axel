@@ -13,6 +13,7 @@
     <string name="title_open_template">Axel - Ouvrir un modèle</string>
     <string name="title_settings">Axel - Paramètres </string>
     <string name="title_about">Axel - A propos &#8230; </string>
+    <string name="title_help">Axel - Aide</string>
 
     <!-- Options Menu -->
     <string name="menu_new">Nouveau</string>
@@ -53,10 +54,16 @@
     <!-- Misc UI strings -->
     <string name="ui_save_text">"Voulez vous sauver votre document? \nTout changement non sauvé sera perdu. "</string>
     <string name="ui_save">Sauver</string>
+    <string name="ui_purchase">Acheter</string>
     <string name="ui_no_save">"Ne pas sauver"</string>
     <string name="ui_cancel">Annuler</string>
+    <string name="ui_loading">Chargement</string>
+    <string name="ui_parsing">Lecture du fichier</string>
+    <string name="ui_generating">Generation des noeuds Xml</string>
+    <string name="ui_wait">Merci de patienter</string>
     <string name="ui_delete">Supprimer</string>
     <string name="ui_reset">Remise à zéro</string>
+    <string name="ui_help">Aide</string>
     <string name="ui_invalid_syntax">"Erreur de syntaxe"</string>
     <string name="ui_invalid_namespace_uri">"Espace de nom invalide"</string>
     <string name="ui_invalid_duplicate">"Un autre attribut utilise déjà ce nom"</string>
@@ -82,8 +89,8 @@ Erreur : %s "</string>
 Il semble que vous essayez de lire un fichier HTML, vous pouvez essayer de le convertir en document xHTML valide. "</string>
     <string name="ui_send_file">Envoyer le fichier</string>
     <string name="ui_convert_html">Lire comme HTML</string>
+
     <!--  -->
-    <string name="ui_additional_licences">Licences supplémentaires</string>
     <string name="ui_licence_dragsortlistview">"Axel utilise la bibliothèque <b>DragSortListView</b>, écrite par Carl Bauer (carl.a.bauer@gmail.com), sous licence Apache (version 2.0)."</string>
     <string name="ui_licence_crouton">"Axel utilise la bibliothèque <b>Crouton</b>, écrite par Benjamin Weiss (d\'après une idée de Cyril Mottier), sous licence Apache (version 2.0)."</string>
     <string name="ui_licence_htmlcleaner">"Axel utilise la bibliothèque <b>HTML Cleaner</b>, écrite par Vladimir Nikic (nikic_vladimir@yahoo.com), sous licence BSD."</string>

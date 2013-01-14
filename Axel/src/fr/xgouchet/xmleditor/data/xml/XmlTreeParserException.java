@@ -1,7 +1,6 @@
 package fr.xgouchet.xmleditor.data.xml;
 
 import android.content.Context;
-import android.text.TextUtils;
 import fr.xgouchet.xmleditor.R;
 
 /**
@@ -15,6 +14,8 @@ public final class XmlTreeParserException extends RuntimeException {
 	/**  */
 	public enum XmlError {
 		/** */
+		noError,
+		/** */
 		noParser,
 		/** */
 		featureUnavailable,
@@ -23,7 +24,14 @@ public final class XmlTreeParserException extends RuntimeException {
 		/** */
 		parseException,
 		/** */
-		outOfMemory
+		noInput,
+		/** */
+		fileNotFound,
+		/** */
+		outOfMemory,
+		/** */
+		unknown,
+
 	}
 
 	/**
@@ -70,12 +78,7 @@ public final class XmlTreeParserException extends RuntimeException {
 			message = context.getString(R.string.toast_xml_unsupported_feature);
 			break;
 		case parseException:
-			if (TextUtils.isEmpty(mXmlContext)) {
-				message = context.getString(R.string.toast_xml_parse_error);
-			} else {
-				message = context.getString(
-						R.string.toast_xml_parse_error_verbose, mXmlContext);
-			}
+			message = context.getString(R.string.toast_xml_parse_error);
 			break;
 		case ioException:
 		default:

@@ -19,11 +19,11 @@ public class TreeNode<T> {
 	 * @param content
 	 *            the node content
 	 */
-	public TreeNode(TreeNode<T> parent, final T content) {
+	public TreeNode(final TreeNode<T> parent, final T content) {
 		mChildren = new LinkedList<TreeNode<T>>();
 		mContent = content;
 		mParent = parent;
-		onParentChanged();
+		updateDepth();
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class TreeNode<T> {
 	 * @return if the child was added
 	 */
 	public boolean addChildNode(final TreeNode<T> child) {
-		boolean result = mChildren.add(child);
+		final boolean result = mChildren.add(child);
 
 		if (result) {
 			child.setParent(this);
@@ -52,7 +52,7 @@ public class TreeNode<T> {
 	 * @param position
 	 *            the position to insert the child
 	 */
-	public void addChildNode(final TreeNode<T> child, int position) {
+	public void addChildNode(final TreeNode<T> child, final int position) {
 		mChildren.add(position, child);
 		child.setParent(this);
 		onChildListChanged();
@@ -65,7 +65,7 @@ public class TreeNode<T> {
 	 *         wasn't a child of this node)
 	 */
 	public boolean removeChildNode(final TreeNode<T> child) {
-		boolean result = mChildren.remove(child);
+		final boolean result = mChildren.remove(child);
 
 		if (result) {
 			child.setParent(null);
@@ -89,7 +89,7 @@ public class TreeNode<T> {
 	 *            search recursively
 	 * @return if the given node is a child of this node
 	 */
-	public boolean hasChildNode(TreeNode<T> node, boolean recursive) {
+	public boolean hasChildNode(final TreeNode<T> node, final boolean recursive) {
 		boolean result = false;
 		if (node == null) {
 			result = false;
@@ -125,12 +125,13 @@ public class TreeNode<T> {
 	 * Called whenever the child list changed (child added / removed)
 	 */
 	public void onChildListChanged() {
+		// To be overriden by subclasses
 	}
 
 	/**
 	 * Updates the depth of this node
 	 */
-	public void updateDepth() {
+	public final void updateDepth() {
 		if (mParent == null) {
 			mDepth = 0;
 		} else {
@@ -146,7 +147,7 @@ public class TreeNode<T> {
 	 * @param parent
 	 *            the parent for this node
 	 */
-	public void setParent(TreeNode<T> parent) {
+	public void setParent(final TreeNode<T> parent) {
 		if (!hasChildNode(parent, true)) {
 			mParent = parent;
 			onParentChanged();
@@ -187,7 +188,7 @@ public class TreeNode<T> {
 	 * @return if this node is a leaf
 	 */
 	public boolean isLeaf() {
-		return (mChildren.size() == 0);
+		return mChildren.isEmpty();
 	}
 
 	/**
@@ -222,7 +223,7 @@ public class TreeNode<T> {
 	 * @param child
 	 * @return the index of the child
 	 */
-	public int getChildPosition(XmlNode child) {
+	public int getChildPosition(final XmlNode child) {
 		int index = -1;
 
 		if (mChildren.contains(child)) {
@@ -244,7 +245,7 @@ public class TreeNode<T> {
 	 *            the index of the child
 	 * @return the child at the given index
 	 */
-	public TreeNode<T> getChildAtPos(int index) {
+	public TreeNode<T> getChildAtPos(final int index) {
 		return mChildren.get(index);
 	}
 
@@ -253,7 +254,33 @@ public class TreeNode<T> {
 	 *         children, according to its expanded state
 	 */
 	public int getViewCount() {
+		// updateViewCount();
+		return mViewCount;
+	}
 
+	/**
+	 * @return
+	 */
+	public void updateViewCount(boolean recursive) {
+
+		int count = 1;
+
+		if (mExpanded) {
+			for (TreeNode<T> child : mChildren) {
+				if (recursive) {
+					child.updateViewCount(recursive);
+				}
+				count += child.getViewCount();
+			}
+		}
+
+		mViewCount = count;
+	}
+
+	/**
+	 * Called whenever the child view changed (expand / collapse)
+	 */
+	public void onChildExpandCollapse() {
 		int count = 1;
 
 		if (mExpanded) {
@@ -262,7 +289,11 @@ public class TreeNode<T> {
 			}
 		}
 
-		return count;
+		mViewCount = count;
+
+		if (mParent != null) {
+			mParent.onChildExpandCollapse();
+		}
 	}
 
 	/**
@@ -271,7 +302,7 @@ public class TreeNode<T> {
 	 * @return the node being displayed at the given position. Collapsed
 	 *         subtrees are ignored
 	 */
-	public TreeNode<T> getNode(int position) {
+	public TreeNode<T> getNode(final int position) {
 		TreeNode<T> result = null;
 
 		if (position == 0) {
@@ -301,15 +332,19 @@ public class TreeNode<T> {
 	 * Switch the expanded state of this node
 	 */
 	public void switchExpanded() {
-		mExpanded = !mExpanded;
+		setExpanded(mExpanded ^ true);
 	}
 
 	/**
 	 * @param expanded
 	 *            the expanded state of this node
 	 */
-	public void setExpanded(boolean expanded) {
+	public void setExpanded(final boolean expanded) {
 		mExpanded = expanded;
+		updateViewCount(false);
+		if (mParent != null) {
+			mParent.onChildExpandCollapse();
+		}
 	}
 
 	/**
@@ -318,8 +353,9 @@ public class TreeNode<T> {
 	 * @param recursive
 	 *            propagate the state to the children of this node
 	 */
-	public void setExpanded(boolean expanded, boolean recursive) {
-		mExpanded = expanded;
+	public void setExpanded(final boolean expanded, final boolean recursive) {
+		setExpanded(expanded);
+
 		if (recursive) {
 			for (TreeNode<T> child : mChildren) {
 				child.setExpanded(expanded, recursive);
@@ -331,7 +367,7 @@ public class TreeNode<T> {
 	 * Forces this node to be a leaf, meaning no child node can be added to this
 	 * node (or it will raise an exception)
 	 */
-	public void forceLeaf() {
+	public void setLeaf() {
 		mForceLeaf = true;
 		mChildren.clear();
 	}
@@ -348,7 +384,7 @@ public class TreeNode<T> {
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals(Object that) {
+	public boolean equals(final Object that) {
 		boolean equal;
 
 		if (this == that) {
@@ -356,7 +392,7 @@ public class TreeNode<T> {
 		} else if (!(that instanceof TreeNode<?>)) {
 			equal = false;
 		} else {
-			TreeNode<?> thatNode = (TreeNode<?>) that;
+			final TreeNode<?> thatNode = (TreeNode<?>) that;
 			if ((mContent == null) || (thatNode.mContent == null)) {
 				equal = (mContent == thatNode.mContent);
 			} else {
@@ -382,13 +418,12 @@ public class TreeNode<T> {
 
 	/** The content of this node */
 	protected T mContent;
-
 	/** the list of children for this node */
-	protected LinkedList<TreeNode<T>> mChildren;
+	protected List<TreeNode<T>> mChildren;
 	/** the parent of this node */
 	protected TreeNode<T> mParent;
 	/** this node's depth in the tree */
-	protected int mDepth;
+	protected int mDepth, mViewCount;
 	/** a flag to prevent adding children to this ndoe */
 	protected boolean mForceLeaf;
 	/** is this node expanded (used for display only) */

@@ -27,13 +27,13 @@ public class TreeAdapter<T> extends BaseAdapter {
 
 	public class TreeNodeHandle implements OnLongClickListener, OnClickListener {
 
-		public TreeNodeHandle(View v) {
-			view = v;
+		public TreeNodeHandle(final View view) {
+			nodeView = view;
 
-			textView = (TextView) v.findViewById(R.id.textNode);
+			textView = (TextView) nodeView.findViewById(R.id.textNode);
 			textView.setOnLongClickListener(this);
 
-			decorator = (ImageView) v.findViewById(R.id.imageDecorator);
+			decorator = (ImageView) nodeView.findViewById(R.id.imageDecorator);
 			decorator.setOnClickListener(this);
 
 			Rect bounds = new Rect();
@@ -42,24 +42,24 @@ public class TreeAdapter<T> extends BaseAdapter {
 			bounds.left -= mPaddingPixelUnit * 2;
 			bounds.top -= mPaddingPixelUnit * 2;
 			bounds.bottom += mPaddingPixelUnit * 2;
-			v.setTouchDelegate(new TouchDelegate(bounds, decorator));
+			nodeView.setTouchDelegate(new TouchDelegate(bounds, decorator));
 
 		}
 
-		public void onClick(View v) {
+		public void onClick(final View view) {
 			if (!node.isLeaf()) {
 				node.switchExpanded();
 				notifyDataSetChanged();
 			}
 		}
 
-		public boolean onLongClick(View v) {
-			view.getParent().showContextMenuForChild(view);
+		public boolean onLongClick(final View view) {
+			nodeView.getParent().showContextMenuForChild(nodeView);
 			return true;
 		}
 
 		public TreeNode<T> node;
-		public View view;
+		public View nodeView;
 		public TextView textView;
 		public ImageView decorator;
 
@@ -71,7 +71,8 @@ public class TreeAdapter<T> extends BaseAdapter {
 	 * @param treeRoot
 	 *            the root of the tree to display
 	 */
-	public TreeAdapter(Context context, TreeNode<T> treeRoot) {
+	public TreeAdapter(final Context context, final TreeNode<T> treeRoot) {
+		super();
 		mContext = context;
 		mInflater = (LayoutInflater) getContext().getSystemService(
 				Context.LAYOUT_INFLATER_SERVICE);
@@ -91,7 +92,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 	/**
 	 * @see android.widget.Adapter#getItem(int)
 	 */
-	public Object getItem(int position) {
+	public Object getItem(final int position) {
 		return getNode(position);
 	}
 
@@ -100,7 +101,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 	 *            the position in the ListView
 	 * @return the node at the given linear position
 	 */
-	public TreeNode<T> getNode(int position) {
+	public TreeNode<T> getNode(final int position) {
 		TreeNode<T> result = null;
 		if (mTreeRoot != null) {
 			result = mTreeRoot.getNode(position);
@@ -112,7 +113,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 	/**
 	 * @see android.widget.Adapter#getItemId(int)
 	 */
-	public long getItemId(int position) {
+	public long getItemId(final int position) {
 		return position;
 	}
 
@@ -121,27 +122,28 @@ public class TreeAdapter<T> extends BaseAdapter {
 	 *      android.view.ViewGroup)
 	 */
 	@SuppressWarnings("unchecked")
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, final View convertView,
+			final ViewGroup parent) {
 
-		View v = convertView;
+		View view = convertView;
 		TreeNodeHandle handle;
 
-		if (v == null) {
-			v = mInflater.inflate(R.layout.item_node, parent, false);
-			v.setLongClickable(true);
-			handle = new TreeNodeHandle(v);
-			v.setTag(handle);
+		if (view == null) {
+			view = mInflater.inflate(R.layout.item_node, parent, false);
+			view.setLongClickable(true);
+			handle = new TreeNodeHandle(view);
+			view.setTag(handle);
 		} else {
-			Object tag = v.getTag();
+			final Object tag = view.getTag();
 			if (tag instanceof TreeAdapter.TreeNodeHandle) {
 				handle = (TreeNodeHandle) tag;
 			} else {
-				handle = new TreeNodeHandle(v);
-				v.setTag(handle);
+				handle = new TreeNodeHandle(view);
+				view.setTag(handle);
 			}
 		}
 
-		TreeNode<T> node = getNode(position);
+		final TreeNode<T> node = getNode(position);
 		handle.node = node;
 
 		if (node != null) {
@@ -155,7 +157,8 @@ public class TreeAdapter<T> extends BaseAdapter {
 				handle.textView.setText(node.toString());
 			}
 
-			int indent = node.getDepth() * mPaddingPixelUnit;
+			int indent;
+			indent = node.getDepth() * mPaddingPixelUnit;
 
 			// Indentation
 			LinearLayout.LayoutParams params;
@@ -180,7 +183,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 			handle.textView.setVisibility(View.GONE);
 		}
 
-		return v;
+		return view;
 	}
 
 	/**
@@ -198,7 +201,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 	 * @param recursive
 	 *            propagate the state to the whole tree
 	 */
-	public void setExpanded(boolean expand, boolean recursive) {
+	public void setExpanded(final boolean expand, final boolean recursive) {
 		if (mTreeRoot != null) {
 			mTreeRoot.setExpanded(expand, recursive);
 		}
@@ -215,7 +218,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 	 * @param nodeStyler
 	 *            the styler used to display the {@link TreeNode}
 	 */
-	public void setNodeStyler(TreeNodeStyler<T> nodeStyler) {
+	public void setNodeStyler(final AbstractTreeNodeStyler<T> nodeStyler) {
 		mNodeStyler = nodeStyler;
 	}
 
@@ -225,17 +228,17 @@ public class TreeAdapter<T> extends BaseAdapter {
 	 * @param position
 	 *            a position in the list view
 	 */
-	public void expandCollapse(int position) {
+	public void expandCollapse(final int position) {
 		getNode(position).switchExpanded();
 		notifyDataSetChanged();
 	}
 
-	private Context mContext;
-	private TreeNode<T> mTreeRoot;
-	private TreeNodeStyler<T> mNodeStyler;
+	private final Context mContext;
+	private final TreeNode<T> mTreeRoot;
+	private AbstractTreeNodeStyler<T> mNodeStyler;
 
-	private LayoutInflater mInflater;
+	private final LayoutInflater mInflater;
 
-	private int mPaddingPixelUnit;
+	private final int mPaddingPixelUnit;
 
 }
