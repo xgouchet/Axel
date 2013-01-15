@@ -1,11 +1,12 @@
 package fr.xgouchet.xmleditor.data.plist;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.NotSerializableException;
 import java.util.Map.Entry;
 
-import android.nfc.FormatException;
 import android.util.Log;
 import fr.xgouchet.plist.PlistParser;
 import fr.xgouchet.plist.data.PArray;
@@ -29,10 +30,12 @@ public class XMLPlistParser extends XmlTreeParser {
 
 		try {
 			root = new PlistParser().parse(new FileInputStream(file));
+		} catch (NotSerializableException e) {
+			throw new XmlTreeParserException(XmlError.parseException, e);
+		} catch (EOFException e) {
+			throw new XmlTreeParserException(XmlError.parseException, e);
 		} catch (IOException e) {
 			throw new XmlTreeParserException(XmlError.ioException, e);
-		} catch (FormatException e) {
-			throw new XmlTreeParserException(XmlError.parseException, e);
 		}
 
 		parser.createRootDocument();

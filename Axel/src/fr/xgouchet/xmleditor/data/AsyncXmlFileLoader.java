@@ -9,6 +9,7 @@ import java.io.InputStream;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
+import fr.xgouchet.androidlib.data.FileUtils;
 import fr.xgouchet.androidlib.data.TextFileUtils;
 import fr.xgouchet.axml.CompressedXmlUtils;
 import fr.xgouchet.plist.PlistUtils;
@@ -24,9 +25,25 @@ import fr.xgouchet.xmleditor.data.xml.XmlTreePullParser;
 public class AsyncXmlFileLoader extends
 		AsyncTask<File, Void, XmlFileLoaderResult> {
 
-	public AsyncXmlFileLoader(final AxelActivity activity) {
+	public AsyncXmlFileLoader(final AxelActivity activity, final int flags) {
 		mActivity = activity;
 		mResult = new XmlFileLoaderResult();
+		mResult.setFlags(flags);
+	}
+
+	/**
+	 * @see android.os.AsyncTask#onPreExecute()
+	 */
+	protected void onPreExecute() {
+		super.onPreExecute();
+
+		if (mDialog == null) {
+			mDialog = new ProgressDialog(mActivity);
+			mDialog.setTitle(R.string.ui_loading);
+			mDialog.setMessage(mActivity.getString(R.string.ui_wait));
+		}
+		mDialog.show();
+		mDialog.setCancelable(false);
 	}
 
 	/**
@@ -47,18 +64,6 @@ public class AsyncXmlFileLoader extends
 		return mResult;
 	}
 
-	protected void onPreExecute() {
-		super.onPreExecute();
-
-		if (mDialog == null) {
-			mDialog = new ProgressDialog(mActivity);
-			mDialog.setTitle(R.string.ui_loading);
-			mDialog.setMessage(mActivity.getString(R.string.ui_wait));
-		}
-		mDialog.show();
-		mDialog.setCancelable(false);
-	}
-
 	/**
 	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 	 */
@@ -66,7 +71,6 @@ public class AsyncXmlFileLoader extends
 		super.onPostExecute(result);
 		mActivity.onFileOpened(mResult);
 		mDialog.hide();
-
 	}
 
 	/**
@@ -77,6 +81,8 @@ public class AsyncXmlFileLoader extends
 	private void doReadFile(final File file) {
 		mResult.setFile(file);
 		mResult.setEncoding(TextFileUtils.getFileEncoding(file));
+		setDialogTitle(R.string.ui_hashing);
+		mResult.setFileHash(FileUtils.getFileHash(file));
 
 		try {
 			if (CompressedXmlUtils.isCompressedXml(file)) {
@@ -153,6 +159,8 @@ public class AsyncXmlFileLoader extends
 
 			mResult.setDocument(document);
 			mResult.setError(XmlError.noError);
+			mResult.setFlags(mResult.getFlags()
+					| XmlFileLoaderResult.FLAG_FORCE_READ_ONLY);
 
 			if (input != null) {
 				input.close();
@@ -182,6 +190,8 @@ public class AsyncXmlFileLoader extends
 
 			mResult.setDocument(document);
 			mResult.setError(XmlError.noError);
+			mResult.setFlags(mResult.getFlags()
+					| XmlFileLoaderResult.FLAG_FORCE_READ_ONLY);
 
 			if (input != null) {
 				input.close();

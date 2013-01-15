@@ -1,9 +1,5 @@
 package fr.xgouchet.xmleditor;
 
-import static fr.xgouchet.androidlib.data.FileUtils.deleteItem;
-import static fr.xgouchet.androidlib.data.FileUtils.getCanonizePath;
-import static fr.xgouchet.androidlib.data.FileUtils.renameItem;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -51,7 +47,9 @@ import fr.xgouchet.xmleditor.common.RecentFiles;
 import fr.xgouchet.xmleditor.common.Settings;
 import fr.xgouchet.xmleditor.common.TemplateFiles;
 import fr.xgouchet.xmleditor.data.AsyncXmlFileLoader;
+import fr.xgouchet.xmleditor.data.AsyncXmlFileWriter;
 import fr.xgouchet.xmleditor.data.XmlFileLoaderResult;
+import fr.xgouchet.xmleditor.data.XmlFileWriterResult;
 import fr.xgouchet.xmleditor.data.html.HtmlCleanerParser;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
 import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
@@ -113,10 +111,18 @@ public class AxelActivity extends Activity {
 		super.onResume();
 
 		if (mDocument == null) {
-			mDocument = XmlNode.createDocument();
-			getAxelApplication().setCurrentDocument(mDocument, null, null);
-		} else {
-			// TODO check file Hash
+			doClearContents();
+		} else if (!TextUtils.isEmpty(mCurrentFilePath)) {
+			File file = new File(mCurrentFilePath);
+			if (file.exists()) {
+				String hash = FileUtils.getFileHash(file);
+				if (!hash.equals(mCurrentFileHash)) {
+					promptFileChanged();
+				}
+			} else {
+				promptFileDeleted();
+			}
+
 		}
 
 		onXmlContentChanged();
@@ -149,7 +155,7 @@ public class AxelActivity extends Activity {
 					break;
 				case Constants.REQUEST_OPEN:
 					File file = new File(extras.getString(Constants.EXTRA_PATH));
-					onOpenFile(file, extras.getBoolean(
+					doOpenFile(file, extras.getBoolean(
 							Constants.EXTRA_IGNORE_FILE, false));
 					break;
 				case Constants.REQUEST_EDIT_NODE:
@@ -371,29 +377,12 @@ public class AxelActivity extends Activity {
 	}
 
 	/**
-	 * Send the order to open a file into the app
-	 * 
-	 * @param file
-	 *            the source file
-	 * @param ignore
-	 *            ignore the file link
-	 */
-	private void onOpenFile(File file, boolean ignore) {
-		if (mLoader == null) {
-			mLoader = new AsyncXmlFileLoader(this);
-			mLoader.execute(file);
-		}
-	}
-
-	/**
 	 * Callback when the file has been read
 	 * 
 	 * @param result
 	 */
 	public void onFileOpened(final XmlFileLoaderResult result) {
 		File file = result.getFile();
-
-		Log.i("Axel", "onFileOpened Start");
 
 		if (result.getError() == XmlError.noError) {
 			mDocument = result.getDocument();
@@ -403,11 +392,11 @@ public class AxelActivity extends Activity {
 				mCurrentFileName = null;
 				mCurrentFilePath = null;
 				mReadOnly = false;
-
 			} else {
 				mCurrentEncoding = result.getEncoding();
 				mCurrentFileName = file.getName();
 				mCurrentFilePath = file.getPath();
+				mCurrentFileHash = result.getFileHash();
 				mReadOnly = result.hasForceReadOnly() || (!file.canWrite());
 
 				RecentFiles.updateRecentList(mCurrentFilePath);
@@ -459,8 +448,47 @@ public class AxelActivity extends Activity {
 			}
 		}
 
-		Log.i("Axel", "onFileOpened end");
 		mLoader = null;
+	}
+
+	/**
+	 * @param result
+	 */
+	public void onFileSaved(final XmlFileWriterResult result) {
+
+		if (result.getError() == XmlError.noError) {
+			File file = new File(result.getPath());
+			mCurrentFilePath = FileUtils.getCanonizePath(file);
+			mCurrentFileName = file.getName();
+			mCurrentFileHash = FileUtils.getFileHash(file);
+			RecentFiles.updateRecentList(result.getPath());
+			RecentFiles.saveRecentList(getSharedPreferences(
+					Constants.PREFERENCES_NAME, MODE_PRIVATE));
+			mReadOnly = false;
+			mDirty = false;
+			onXmlDocumentChanged();
+
+			Crouton.showText(this, R.string.toast_save_success, Style.CONFIRM);
+
+			runAfterSave();
+		} else {
+			switch (result.getError()) {
+			case delete:
+				Crouton.showText(this, R.string.toast_save_delete, Style.ALERT);
+				break;
+			case rename:
+				Crouton.showText(this, R.string.toast_save_rename, Style.ALERT);
+				break;
+			case write:
+				Crouton.showText(this, R.string.toast_save_temp, Style.ALERT);
+				break;
+			default:
+				Crouton.showText(this, R.string.toast_save_null, Style.ALERT);
+				break;
+			}
+		}
+
+		mWriter = null;
 	}
 
 	/**
@@ -521,7 +549,7 @@ public class AxelActivity extends Activity {
 				|| (action.equals(Intent.ACTION_EDIT))) {
 			try {
 				file = new File(new URI(intent.getData().toString()));
-				onOpenFile(file, false);
+				doOpenFile(file, false);
 			} catch (URISyntaxException e) {
 				Crouton.makeText(this, R.string.toast_intent_invalid_uri,
 						Style.ALERT).show();
@@ -706,13 +734,66 @@ public class AxelActivity extends Activity {
 	}
 
 	/**
+	 * Prompts the user that the source file has been deleted
+	 */
+	private void promptFileDeleted() {
+		final AlertDialog.Builder builder;
+
+		builder = new AlertDialog.Builder(this);
+		builder.setIcon(R.drawable.ic_dialog_alert);
+		builder.setTitle(R.string.ui_open_error);
+		builder.setCancelable(true);
+		builder.setMessage(R.string.ui_prompt_file_deleted);
+
+		builder.setPositiveButton(R.string.ui_save,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						saveContent();
+					}
+				});
+
+		builder.setNeutralButton(R.string.menu_save_as,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						saveContentAs();
+					}
+				});
+
+		builder.create().show();
+	}
+
+	/**
+	 * Prompts the user that the source file has changed on disk
+	 */
+	private void promptFileChanged() {
+		final AlertDialog.Builder builder;
+
+		builder = new AlertDialog.Builder(this);
+		builder.setIcon(R.drawable.ic_dialog_alert);
+		builder.setTitle(R.string.ui_open_error);
+		builder.setCancelable(true);
+		builder.setMessage(R.string.ui_prompt_file_changed);
+
+		builder.setPositiveButton(R.string.ui_yes,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						doReloadCurrentFile();
+					}
+				});
+		builder.setNegativeButton(R.string.ui_no,
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				});
+
+		builder.create().show();
+	}
+
+	/**
 	 * Prompts the user what to do when an error occurs parsing the file
 	 * 
 	 * @param file
 	 *            the file to open
-	 * @param forceReadOnly
-	 *            force the file as read only
-	 * @param e
 	 */
 	private void promptOpenError(final File file) {
 		final AlertDialog.Builder builder;
@@ -745,7 +826,6 @@ public class AxelActivity extends Activity {
 	 *            the file to open
 	 * @param forceReadOnly
 	 *            force the file as read only
-	 * @param e
 	 */
 	private void promptOpenHtmlError(final File file,
 			final boolean forceReadOnly) {
@@ -898,6 +978,26 @@ public class AxelActivity extends Activity {
 	}
 
 	/**
+	 * Send the order to open a file into the app
+	 * 
+	 * @param file
+	 *            the source file
+	 * @param ignore
+	 *            ignore the file link
+	 */
+	private void doOpenFile(File file, boolean ignore) {
+		if (mLoader == null) {
+			int flags = 0;
+			if (ignore) {
+				flags |= XmlFileLoaderResult.FLAG_IGNORE_FILE;
+			}
+
+			mLoader = new AsyncXmlFileLoader(this, flags);
+			mLoader.execute(file);
+		}
+	}
+
+	/**
 	 * Opens the given file as an HTML file (parsing the soup) and replace the
 	 * editors content with the file. Assumes that user was prompted and
 	 * previous data was saved
@@ -1000,6 +1100,14 @@ public class AxelActivity extends Activity {
 	}
 
 	/**
+	 * Reloads the current file
+	 */
+	private void doReloadCurrentFile() {
+		final File file = new File(mCurrentFilePath);
+		doOpenFile(file, false);
+	}
+
+	/**
 	 * Saves the text editor's content into a file at the given path. If an
 	 * after save {@link Runnable} exists, run it
 	 * 
@@ -1007,49 +1115,17 @@ public class AxelActivity extends Activity {
 	 *            the path to the file (must be a valid path and not null)
 	 */
 	private void doSaveFile(String path) {
-		StringBuilder builder;
-
 		if (path == null) {
 			Crouton.makeText(this, R.string.toast_save_null, Style.ALERT)
 					.show();
 			return;
 		}
 
-		builder = new StringBuilder();
-		mDocument.buildXmlString(builder);
-
-		if (!TextFileUtils.writeTextFile(path + ".tmp", builder.toString(),
-				mCurrentEncoding)) {
-			Crouton.makeText(this, R.string.toast_save_temp, Style.ALERT)
-					.show();
-			return;
+		if (mWriter == null) {
+			mWriter = new AsyncXmlFileWriter(this, mDocument, mCurrentEncoding);
+			mWriter.execute(path);
 		}
 
-		if (!deleteItem(path)) {
-			Crouton.makeText(this, R.string.toast_save_delete, Style.ALERT)
-					.show();
-			return;
-		}
-
-		if (!renameItem(path + ".tmp", path)) {
-			Crouton.makeText(this, R.string.toast_save_rename, Style.ALERT)
-					.show();
-			return;
-		}
-
-		mCurrentFilePath = getCanonizePath(new File(path));
-		mCurrentFileName = (new File(path)).getName();
-		RecentFiles.updateRecentList(path);
-		RecentFiles.saveRecentList(getSharedPreferences(
-				Constants.PREFERENCES_NAME, MODE_PRIVATE));
-		mReadOnly = false;
-		mDirty = false;
-		onXmlDocumentChanged();
-
-		Crouton.makeText(this, R.string.toast_save_success, Style.CONFIRM)
-				.show();
-
-		runAfterSave();
 	}
 
 	/**
@@ -1107,6 +1183,8 @@ public class AxelActivity extends Activity {
 				// todo reorder element chidlren based on validator
 			}
 
+			node.updateViewCount(false);
+			mCurrentSelection.updateViewCount(false);
 			mCurrentSelection.setExpanded(true, false);
 
 			mDirty = true;
@@ -1282,6 +1360,8 @@ public class AxelActivity extends Activity {
 
 	/** the loader for async load */
 	private AsyncXmlFileLoader mLoader;
+	/** the writer for async write */
+	private AsyncXmlFileWriter mWriter;
 
 	/** the runable to run after a save */
 	private Runnable mAfterSave; // Mennen ? Axe ?

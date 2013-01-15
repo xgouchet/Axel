@@ -30,6 +30,12 @@ public final class XmlTreeParserException extends RuntimeException {
 		/** */
 		outOfMemory,
 		/** */
+		write,
+		/** */
+		rename,
+		/** */
+		delete,
+		/** */
 		unknown,
 
 	}
@@ -43,16 +49,6 @@ public final class XmlTreeParserException extends RuntimeException {
 	public XmlTreeParserException(XmlError error, Throwable cause) {
 		super(cause);
 		mError = error;
-		mDocStarted = false;
-	}
-
-	/**
-	 * @param xmlContext
-	 *            some more info on the parse error
-	 */
-	public void setXmlContext(String xmlContext) {
-		mXmlContext = xmlContext;
-		mDocStarted = (xmlContext != null);
 	}
 
 	/**
@@ -95,16 +91,6 @@ public final class XmlTreeParserException extends RuntimeException {
 		return getCause().getMessage();
 	}
 
-	/**
-	 * @return if the document has started (parser found at least a starting tag
-	 *         or doc decl)
-	 */
-	public boolean hasDocStarted() {
-		return mDocStarted;
-	}
-
 	private final XmlError mError;
-	private String mXmlContext;
-	private boolean mDocStarted;
 
 }

@@ -321,9 +321,9 @@ public class TreeNode<T> {
 			}
 		}
 
-		if (result == null) {
-			throw new IndexOutOfBoundsException();
-		}
+//		if (result == null) {
+//			throw new IndexOutOfBoundsException();
+//		}
 
 		return result;
 	}

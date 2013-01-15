@@ -63,17 +63,14 @@ public class XmlTreePullParser extends XmlTreeParser {
 		} catch (XmlPullParserException e) {
 			XmlTreeParserException xtpe = new XmlTreeParserException(
 					XmlError.parseException, e);
-			xtpe.setXmlContext(sLastNode);
 			throw xtpe;
 		} catch (IllegalStateException e) {
 			XmlTreeParserException xtpe = new XmlTreeParserException(
 					XmlError.parseException, e);
-			xtpe.setXmlContext(sLastNode);
 			throw xtpe;
 		} catch (StringIndexOutOfBoundsException e) {
 			XmlTreeParserException xtpe = new XmlTreeParserException(
 					XmlError.parseException, e);
-			xtpe.setXmlContext(sLastNode);
 			throw xtpe;
 		} catch (IOException e) {
 			throw new XmlTreeParserException(XmlError.ioException, e);

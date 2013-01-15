@@ -5,7 +5,8 @@
     <string name="release7">Axel 2.1 (14 Jan. 2013)</string>
     <string name="release7_log">"- Better support of compressed XML files from APK archives
 - Support of binary PList files
-- Optimisation for faster use when browsing or openning a big file"</string>
+- Optimisation for faster use when browsing or openning a big file
+- Detect when a file is modified outside the app"</string>
 
     <!--  -->
     <string name="release6">Axel 2.0 (02 Jan. 2013)</string>

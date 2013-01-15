@@ -57,9 +57,12 @@
     <string name="ui_purchase">Acheter</string>
     <string name="ui_no_save">"Ne pas sauver"</string>
     <string name="ui_cancel">Annuler</string>
+    <string name="ui_saving">Sauvegarde</string>
     <string name="ui_loading">Chargement</string>
+    <string name="ui_hashing">Hashage du fichier</string>
     <string name="ui_parsing">Lecture du fichier</string>
     <string name="ui_generating">Generation des noeuds Xml</string>
+    <string name="ui_writing">Ecriture du fichier</string>
     <string name="ui_wait">Merci de patienter</string>
     <string name="ui_delete">Supprimer</string>
     <string name="ui_reset">Remise à zéro</string>
@@ -87,6 +90,12 @@ Erreur : %s "</string>
     <string name="ui_prompt_open_error_html">"Une erreur est survenue lors de la lecture de ce fichier. 
         
 Il semble que vous essayez de lire un fichier HTML, vous pouvez essayer de le convertir en document xHTML valide. "</string>
+    <string name="ui_prompt_file_changed">"Le document actuel a été modifié en dehors de l'application. Voulez vous recharger le document ? 
+         
+Toute modification non sauvée sera perdue."</string>
+    <string name="ui_prompt_file_deleted">"le document actuel n'existe plus sur le disque. Voulez vous le sauver ? 
+         
+Toute modification non sauvée sera perdue."</string>
     <string name="ui_send_file">Envoyer le fichier</string>
     <string name="ui_convert_html">Lire comme HTML</string>
 

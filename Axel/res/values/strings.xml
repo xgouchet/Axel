@@ -59,8 +59,11 @@
     <string name="ui_no_save">"Don't save"</string>
     <string name="ui_cancel">Cancel</string>
     <string name="ui_loading">Loading</string>
+    <string name="ui_saving">Saving</string>
+    <string name="ui_hashing">Hashing file</string>
     <string name="ui_parsing">Parsing file</string>
     <string name="ui_generating">Generating Xml tree</string>
+    <string name="ui_writing">Writing Xml to file</string>
     <string name="ui_wait">Please wait</string>
     <string name="ui_reset">Reset</string>
     <string name="ui_help">Help</string>
@@ -85,6 +88,12 @@ If your document is well formed, you can send it to me and I'll try fixing this 
     <string name="ui_prompt_open_error_html">"An error occurred while reading this file. 
          
 It seems you try to read an HTML document, you can try converting it to a well formed xHTML file. "</string>
+    <string name="ui_prompt_file_changed">"The current file has been modified outside of this app. Do you want to reload it ? 
+         
+Any unsaved change will be lost."</string>
+    <string name="ui_prompt_file_deleted">"The current file has been deleted from the disk. Do you want to save it ? 
+         
+Any unsaved change will be lost."</string>
     <string name="ui_send_file">Send file</string>
     <string name="ui_convert_html">Read as HTML</string>
 
