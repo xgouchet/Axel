@@ -2,6 +2,16 @@
 <resources>
 
     <!--  -->
+    <string name="release11">Axel 2.2 (7 Fev. 2013)</string>
+    <string name="release11_log">"- Added customizable quick action on tap, double tap and long press on nodes. Default is : 
+        - Single tap = Edit a node
+        - Double tap = add a child
+        - Long press = display the menu
+- Added option to automatically escape special characters (&amp; , &lt; and \") in text nodes and attribute values;
+- Added option to change the indentation size (for bigger document);
+- Fixed a few bugs (delete node led to a crash, open / save errors) "</string>
+
+    <!--  -->
     <string name="release7">Axel 2.1 (14 Jan. 2013)</string>
     <string name="release7_log">"- Better support of compressed XML files from APK archives
 - Support of binary PList files

@@ -72,6 +72,8 @@ public class TreeNode<T> {
 			onChildListChanged();
 		}
 
+		updateParentViewCount();
+
 		return result;
 	}
 
@@ -259,16 +261,25 @@ public class TreeNode<T> {
 	}
 
 	/**
-	 * @return
+	 * 
 	 */
-	public void updateViewCount(boolean recursive) {
+	public void updateParentViewCount() {
+		updateChildViewCount(false);
+		if (mParent != null) {
+			mParent.updateParentViewCount();
+		}
+	}
 
+	/**
+	 * 
+	 */
+	public void updateChildViewCount(final boolean recursive) {
 		int count = 1;
 
 		if (mExpanded) {
 			for (TreeNode<T> child : mChildren) {
 				if (recursive) {
-					child.updateViewCount(recursive);
+					child.updateChildViewCount(recursive);
 				}
 				count += child.getViewCount();
 			}
@@ -321,9 +332,9 @@ public class TreeNode<T> {
 			}
 		}
 
-//		if (result == null) {
-//			throw new IndexOutOfBoundsException();
-//		}
+		// if (result == null) {
+		// throw new IndexOutOfBoundsException();
+		// }
 
 		return result;
 	}
@@ -341,7 +352,7 @@ public class TreeNode<T> {
 	 */
 	public void setExpanded(final boolean expanded) {
 		mExpanded = expanded;
-		updateViewCount(false);
+		updateChildViewCount(false);
 		if (mParent != null) {
 			mParent.onChildExpandCollapse();
 		}
@@ -375,6 +386,7 @@ public class TreeNode<T> {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		return "Node[content="
 				+ ((mContent == null) ? "null" : mContent.toString()) + ";"
@@ -384,6 +396,7 @@ public class TreeNode<T> {
 	/**
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
+	@Override
 	public boolean equals(final Object that) {
 		boolean equal;
 
@@ -406,6 +419,7 @@ public class TreeNode<T> {
 	/**
 	 * @see java.lang.Object#hashCode()
 	 */
+	@Override
 	public int hashCode() {
 		int contentHash = 0;
 

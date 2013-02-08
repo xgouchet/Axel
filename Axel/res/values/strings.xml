@@ -104,6 +104,17 @@ Any unsaved change will be lost."</string>
     <string name="ui_licence_juniversalchardet">"Axel uses the <b>JUniversalCharDet</b> library, made by Takscape (takscape@gmail.com), under the Mozilla Public License (version 1.1)."</string>
 
     <!--  -->
+    <string name="config_cat_editor">Editor</string>
+    <string name="config_cat_display">Display</string>
+    <string name="config_title_indentation_size">Indentation size</string>
+    <string name="config_title_single_tap_quick_action">Action on tap</string>
+    <string name="config_title_double_tap_quick_action">Action on double tap</string>
+    <string name="config_title_long_press_quick_action">Action on long press</string>
+    <string name="config_title_escape_text_content">Escape Text content</string>
+    <string name="config_title_escape_attr_value">Escape Attribute value</string>
+    <string name="config_summary_on_escape">Special characters (&amp; , &lt; and \") will be escaped (&amp;amp;, &amp;lt; and &amp;quot;)</string>
+    <string name="config_summary_off_escape">Special characters will generated error if not escaped manually</string>
+    <string name="config_title_keep_text_exact">Keep text node exact content</string>
     <string name="config_title_max_recent">Maximum recent files</string>
     <string name="config_title_keep_text_exact">Keep text node exact content</string>
     <string name="config_summary_on_keep_text_exact">Text node content will be kept exactly as it appears in the source file</string>

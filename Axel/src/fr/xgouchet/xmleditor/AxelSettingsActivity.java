@@ -16,7 +16,8 @@ public class AxelSettingsActivity extends PreferenceActivity implements
 	 * @see android.preference.PreferenceActivity#onCreate(android.os.Bundle)
 	 */
 
-	protected void onCreate(Bundle icicle) {
+	@Override
+	protected void onCreate(final Bundle icicle) {
 		super.onCreate(icicle);
 
 		getPreferenceManager().setSharedPreferencesName(
@@ -34,9 +35,11 @@ public class AxelSettingsActivity extends PreferenceActivity implements
 	 * @see android.content.SharedPreferences.OnSharedPreferenceChangeListener#onSharedPreferenceChanged(android.content.SharedPreferences,
 	 *      java.lang.String)
 	 */
-	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
-			String key) {
+	@Override
+	public void onSharedPreferenceChanged(
+			final SharedPreferences sharedPreferences, final String key) {
 		Settings.updateFromPreferences(sharedPreferences);
+		updateSummaries();
 	}
 
 	/**
@@ -46,6 +49,15 @@ public class AxelSettingsActivity extends PreferenceActivity implements
 		ListPreference listPref;
 
 		listPref = (ListPreference) findPreference(Constants.PREFERENCE_MAX_RECENTS);
+		listPref.setSummary(listPref.getEntry());
+		listPref = (ListPreference) findPreference(Constants.PREFERENCE_SINGLE_TAP_QA);
+		listPref.setSummary(listPref.getEntry());
+		listPref = (ListPreference) findPreference(Constants.PREFERENCE_DOUBLE_TAP_QA);
+		listPref.setSummary(listPref.getEntry());
+		listPref = (ListPreference) findPreference(Constants.PREFERENCE_LONG_PRESS_QA);
+		listPref.setSummary(listPref.getEntry());
+
+		listPref = (ListPreference) findPreference(Constants.PREFERENCE_INDENTATION_SIZE);
 		listPref.setSummary(listPref.getEntry());
 	}
 

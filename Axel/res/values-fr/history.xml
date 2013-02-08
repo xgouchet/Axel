@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    
+    <!--  -->
+    <string name="release11">Axel 2.2 (7 Fev. 2013)</string>
+    <string name="release11_log">"- Possibilité de modifier les actions à effectuer en interaction avec un noeud. Par défaut : 
+        - Click simple = modifier le noeud
+        - Double click = ajouter un enfant
+        - Appuis long = afficher le menu
+- Option pour echapper automatiquement les caracteres spéciaux (&amp; , &lt; and \") dans les noeuds texte et les attributs;
+- Option pour changer la taille de l'indentation des noeuds (pour les gros fichiers);
+- Quelques corrections de bug (sauvegarde, suppression de noeuds)"</string>
+    
     <!--  -->
     <string name="release7">Axel 2.1 (14 jan. 2013)</string>
     <string name="release7_log">"- Amélioration du support des fichiers XML compressé provenant d'archives APK

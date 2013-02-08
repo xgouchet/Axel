@@ -2,19 +2,26 @@ package fr.xgouchet.xmleditor.ui.adapter;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnDoubleTapListener;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.TouchDelegate;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.BufferType;
 import fr.xgouchet.xmleditor.R;
+import fr.xgouchet.xmleditor.common.Constants;
+import fr.xgouchet.xmleditor.common.Settings;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
 
 /**
@@ -25,13 +32,40 @@ import fr.xgouchet.xmleditor.data.tree.TreeNode;
  */
 public class TreeAdapter<T> extends BaseAdapter {
 
-	public class TreeNodeHandle implements OnLongClickListener, OnClickListener {
+	public interface TreeNodeEventListener<T> {
+		/**
+		 * Called when a node receives a single tap
+		 * 
+		 * @param node
+		 *            the node
+		 */
+		public void onNodeTapped(TreeNode<T> node, View view);
+
+		/**
+		 * Called when a node receives a double tap
+		 * 
+		 * @param node
+		 *            the node
+		 */
+		public void onNodeDoubleTapped(TreeNode<T> node, View view);
+
+		/**
+		 * Called when a node receives a long press
+		 * 
+		 * @param node
+		 *            the node
+		 */
+		public void onNodeLongPressed(TreeNode<T> node, View view);
+	}
+
+	public class TreeNodeHandle implements OnClickListener, OnTouchListener,
+			OnGestureListener, OnDoubleTapListener {
 
 		public TreeNodeHandle(final View view) {
 			nodeView = view;
 
 			textView = (TextView) nodeView.findViewById(R.id.textNode);
-			textView.setOnLongClickListener(this);
+			textView.setOnTouchListener(this);
 
 			decorator = (ImageView) nodeView.findViewById(R.id.imageDecorator);
 			decorator.setOnClickListener(this);
@@ -44,8 +78,17 @@ public class TreeAdapter<T> extends BaseAdapter {
 			bounds.bottom += mPaddingPixelUnit * 2;
 			nodeView.setTouchDelegate(new TouchDelegate(bounds, decorator));
 
+			scrollview = (HorizontalScrollView) nodeView
+					.findViewById(R.id.textScrollView);
+
+			mDetector = new GestureDetector(getContext(), this);
+			mDetector.setOnDoubleTapListener(this);
 		}
 
+		/**
+		 * @see android.view.View.OnClickListener#onClick(android.view.View)
+		 */
+		@Override
 		public void onClick(final View view) {
 			if (!node.isLeaf()) {
 				node.switchExpanded();
@@ -53,15 +96,107 @@ public class TreeAdapter<T> extends BaseAdapter {
 			}
 		}
 
-		public boolean onLongClick(final View view) {
-			nodeView.getParent().showContextMenuForChild(nodeView);
+		/**
+		 * @see android.view.View.OnTouchListener#onTouch(android.view.View,
+		 *      android.view.MotionEvent)
+		 */
+		@Override
+		public boolean onTouch(final View v, final MotionEvent event) {
+			return mDetector.onTouchEvent(event);
+
+		}
+
+		/**
+		 * @see android.view.GestureDetector.OnGestureListener#onDown(android.view.MotionEvent)
+		 */
+		@Override
+		public boolean onDown(final MotionEvent e) {
 			return true;
 		}
+
+		/**
+		 * @see android.view.GestureDetector.OnGestureListener#onFling(android.view.MotionEvent,
+		 *      android.view.MotionEvent, float, float)
+		 */
+		@Override
+		public boolean onFling(final MotionEvent e1, final MotionEvent e2,
+				final float velocityX, final float velocityY) {
+			return false;
+		}
+
+		/**
+		 * @see android.view.GestureDetector.OnGestureListener#onLongPress(android.view.MotionEvent)
+		 */
+		@Override
+		public void onLongPress(final MotionEvent e) {
+			if (mListener != null) {
+				mListener.onNodeLongPressed(node, nodeView);
+			}
+		}
+
+		/**
+		 * @see android.view.GestureDetector.OnGestureListener#onScroll(android.view.MotionEvent,
+		 *      android.view.MotionEvent, float, float)
+		 */
+		@Override
+		public boolean onScroll(final MotionEvent e1, final MotionEvent e2,
+				final float distanceX, final float distanceY) {
+			return false;
+		}
+
+		/**
+		 * @see android.view.GestureDetector.OnGestureListener#onShowPress(android.view.MotionEvent)
+		 */
+		@Override
+		public void onShowPress(final MotionEvent e) {
+
+		}
+
+		/**
+		 * @see android.view.GestureDetector.OnGestureListener#onSingleTapUp(android.view.MotionEvent)
+		 */
+		@Override
+		public boolean onSingleTapUp(final MotionEvent e) {
+			return true;
+		}
+
+		/**
+		 * @see android.view.GestureDetector.OnDoubleTapListener#onDoubleTapEvent(android.view.MotionEvent)
+		 */
+		@Override
+		public boolean onDoubleTapEvent(final MotionEvent e) {
+			return true;
+		}
+
+		/**
+		 * @see android.view.GestureDetector.OnDoubleTapListener#onDoubleTap(android.view.MotionEvent)
+		 */
+		@Override
+		public boolean onDoubleTap(final MotionEvent e) {
+			if (mListener != null) {
+				mListener.onNodeDoubleTapped(node, nodeView);
+			}
+			return true;
+		}
+
+		/**
+		 * @see android.view.GestureDetector.OnDoubleTapListener#onSingleTapConfirmed(android.view.MotionEvent)
+		 */
+		@Override
+		public boolean onSingleTapConfirmed(final MotionEvent e) {
+			if (mListener != null) {
+				mListener.onNodeTapped(node, nodeView);
+			}
+			return true;
+		}
+
+		private final GestureDetector mDetector;
 
 		public TreeNode<T> node;
 		public View nodeView;
 		public TextView textView;
 		public ImageView decorator;
+		public HorizontalScrollView scrollview;
 
 	}
 
@@ -78,13 +213,28 @@ public class TreeAdapter<T> extends BaseAdapter {
 				Context.LAYOUT_INFLATER_SERVICE);
 		mTreeRoot = treeRoot;
 
-		mPaddingPixelUnit = context.getResources().getDimensionPixelSize(
-				R.dimen.padding_unit);
+		updatePadding();
+	}
+
+	public void updatePadding() {
+		int indent_unit;
+		if (Constants.INDENT_SMALL.equalsIgnoreCase(Settings.sIndentationSize)) {
+			indent_unit = R.dimen.padding_unit_small;
+		} else if (Constants.INDENT_LARGE
+				.equalsIgnoreCase(Settings.sIndentationSize)) {
+			indent_unit = R.dimen.padding_unit_large;
+		} else {
+			indent_unit = R.dimen.padding_unit;
+		}
+
+		mPaddingPixelUnit = mContext.getResources().getDimensionPixelSize(
+				indent_unit);
 	}
 
 	/**
 	 * @see android.widget.Adapter#getCount()
 	 */
+	@Override
 	public int getCount() {
 		return mTreeRoot.getViewCount();
 	}
@@ -92,6 +242,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 	/**
 	 * @see android.widget.Adapter#getItem(int)
 	 */
+	@Override
 	public Object getItem(final int position) {
 		return getNode(position);
 	}
@@ -113,6 +264,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 	/**
 	 * @see android.widget.Adapter#getItemId(int)
 	 */
+	@Override
 	public long getItemId(final int position) {
 		return position;
 	}
@@ -121,6 +273,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 	 * @see android.widget.Adapter#getView(int, android.view.View,
 	 *      android.view.ViewGroup)
 	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public View getView(final int position, final View convertView,
 			final ViewGroup parent) {
@@ -223,6 +376,14 @@ public class TreeAdapter<T> extends BaseAdapter {
 	}
 
 	/**
+	 * @param listener
+	 *            the listener for node events
+	 */
+	public void setListener(final TreeNodeEventListener<T> listener) {
+		mListener = listener;
+	}
+
+	/**
 	 * Expand / collapse the node at the given position
 	 * 
 	 * @param position
@@ -237,8 +398,10 @@ public class TreeAdapter<T> extends BaseAdapter {
 	private final TreeNode<T> mTreeRoot;
 	private AbstractTreeNodeStyler<T> mNodeStyler;
 
+	private TreeNodeEventListener<T> mListener;
+
 	private final LayoutInflater mInflater;
 
-	private final int mPaddingPixelUnit;
+	private int mPaddingPixelUnit;
 
 }

@@ -23,7 +23,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 * @param data
 	 *            any non-null {@link XmlData}
 	 */
-	private XmlNode(XmlData data) {
+	private XmlNode(final XmlData data) {
 		super(null, data);
 		if (data == null) {
 			throw new IllegalArgumentException("Data can't be null");
@@ -42,6 +42,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	/**
 	 * @see fr.xgouchet.xmleditor.data.tree.TreeNode#onParentChanged()
 	 */
+	@Override
 	public void onParentChanged() {
 		super.onParentChanged();
 		if (mParent != null) {
@@ -53,6 +54,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	/**
 	 * @see fr.xgouchet.xmleditor.data.tree.TreeNode#onChildListChanged()
 	 */
+	@Override
 	public void onChildListChanged() {
 		super.onChildListChanged();
 
@@ -125,13 +127,45 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 *            the text of the doctype
 	 * @return an XML Doctype declaration node
 	 */
-	public static XmlNode createDoctypeDeclaration(String text) {
+	public static XmlNode createDoctypeDeclaration(final String text) {
 		XmlNode node = new XmlNode(new XmlData(XmlData.XML_DOCTYPE));
 
-		node.mContent.setText(text);
+		node.mContent.setText(text.trim());
 
 		node.setLeaf();
 
+		return node;
+	}
+
+	/**
+	 * @param data
+	 *            the full PI node (eg : "<?target instruction?>")
+	 * @return an XML Document processing node
+	 */
+	public static XmlNode createProcessingInstruction(final String pi) {
+		XmlNode node;
+		String content;
+
+		content = pi.trim();
+		content = content.substring(2, content.length() - 2);
+		content = content.trim();
+		String[] data = content.split("\\s+");
+
+		switch (data.length) {
+		case 0:
+			node = null;
+			break;
+		case 1:
+			node = createProcessingInstruction(data[0], "");
+			break;
+		case 2:
+			node = createProcessingInstruction(data[0], data[1]);
+			break;
+		default:
+			String instruction = content.substring(data[0].length() + 1);
+			node = createProcessingInstruction(data[0], instruction);
+			break;
+		}
 		return node;
 	}
 
@@ -142,7 +176,8 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 *            the processing information
 	 * @return an XML Document processing node
 	 */
-	public static XmlNode createProcessingInstruction(String target, String text) {
+	public static XmlNode createProcessingInstruction(final String target,
+			final String text) {
 		XmlNode node = new XmlNode(new XmlData(
 				XmlData.XML_PROCESSING_INSTRUCTION));
 
@@ -160,7 +195,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 *            &lt;foo&gt;&lt;/foo&gt; element)
 	 * @return an xml element node
 	 */
-	public static XmlNode createElement(String name) {
+	public static XmlNode createElement(final String name) {
 		XmlNode node = new XmlNode(new XmlData(XmlData.XML_ELEMENT));
 
 		node.mContent.setName(name);
@@ -177,7 +212,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 *            &lt;foo&gt;&lt;/foo&gt; element)
 	 * @return an xml element node
 	 */
-	public static XmlNode createElement(String prefix, String name) {
+	public static XmlNode createElement(final String prefix, final String name) {
 		XmlNode node = new XmlNode(new XmlData(XmlData.XML_ELEMENT));
 
 		node.mContent.setPrefix(prefix);
@@ -192,7 +227,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 *            the comment text content
 	 * @return an xml comment node
 	 */
-	public static XmlNode createComment(String comment) {
+	public static XmlNode createComment(final String comment) {
 		XmlNode node = new XmlNode(new XmlData(XmlData.XML_COMMENT));
 
 		node.mContent.setText(comment);
@@ -206,7 +241,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 *            the text content
 	 * @return an xml Text node
 	 */
-	public static XmlNode createText(String text) {
+	public static XmlNode createText(final String text) {
 		XmlNode node = new XmlNode(new XmlData(XmlData.XML_TEXT));
 
 		if (Settings.sKeepTextExact) {
@@ -224,7 +259,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 *            the content of the CData section
 	 * @return an xml CData node
 	 */
-	public static XmlNode createCDataSection(String text) {
+	public static XmlNode createCDataSection(final String text) {
 		XmlNode node = new XmlNode(new XmlData(XmlData.XML_CDATA));
 
 		node.mContent.setText(text);
@@ -236,6 +271,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	/**
 	 * @see fr.xgouchet.xmleditor.data.tree.TreeNode#toString()
 	 */
+	@Override
 	public String toString() {
 		return mContent.toString();
 	}
@@ -244,7 +280,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 * @param builder
 	 *            the {@link StringBuilder} to use for constructing the XML code
 	 */
-	public void buildXmlString(StringBuilder builder) {
+	public void buildXmlString(final StringBuilder builder) {
 
 		if (!(mContent.isText() && Settings.sKeepTextExact)) {
 			buildXmlStringEndentation(builder);
@@ -297,7 +333,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 * @param builder
 	 *            the {@link StringBuilder} to use
 	 */
-	protected void buildXmlDeclarationString(StringBuilder builder) {
+	protected void buildXmlDeclarationString(final StringBuilder builder) {
 		builder.append("<?");
 		builder.append("xml");
 
@@ -321,7 +357,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 * @param builder
 	 *            the {@link StringBuilder} to use
 	 */
-	protected void buildXmlElementString(StringBuilder builder) {
+	protected void buildXmlElementString(final StringBuilder builder) {
 		builder.append("<");
 
 		String name = "";
@@ -368,8 +404,8 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 * @param builder
 	 *            the {@link StringBuilder} to use
 	 */
-	protected void buildXmlStringEndentation(StringBuilder builder) {
-		for (int i = 0; i < mDepth - 1; ++i) {
+	protected void buildXmlStringEndentation(final StringBuilder builder) {
+		for (int i = 0; i < (mDepth - 1); ++i) {
 			builder.append("  ");
 		}
 	}
@@ -378,7 +414,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 * @param builder
 	 *            the {@link StringBuilder} to use
 	 */
-	protected void buildChildrenXmlString(StringBuilder builder) {
+	protected void buildChildrenXmlString(final StringBuilder builder) {
 		for (TreeNode<XmlData> child : mChildren) {
 			((XmlNode) child).buildXmlString(builder);
 		}
@@ -421,6 +457,38 @@ public final class XmlNode extends TreeNode<XmlData> {
 		}
 
 		return result;
+	}
+
+	public boolean isDocument() {
+		return mContent.isDocument();
+	}
+
+	public boolean isDoctype() {
+		return mContent.isDoctype();
+	}
+
+	public boolean isDocumentDeclaration() {
+		return mContent.isDocumentDeclaration();
+	}
+
+	public boolean isElement() {
+		return mContent.isElement();
+	}
+
+	public boolean isProcessingInstruction() {
+		return mContent.isProcessingInstruction();
+	}
+
+	public boolean isText() {
+		return mContent.isText();
+	}
+
+	public boolean isCData() {
+		return mContent.isCData();
+	}
+
+	public boolean isComment() {
+		return mContent.isComment();
 	}
 
 	/**
@@ -564,7 +632,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 *            a node to add as child to this one
 	 * @return if this node can accept such a node
 	 */
-	public boolean canHasChild(XmlNode node) {
+	public boolean canHasChild(final XmlNode node) {
 		boolean result = false;
 		if (mContent.isElement()) {
 			result = !node.getContent().isDoctype();

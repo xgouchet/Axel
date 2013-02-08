@@ -1,5 +1,6 @@
 package fr.xgouchet.xmleditor.common;
 
+import android.content.Context;
 import fr.xgouchet.androidlib.common.AbstractChangeLog;
 import fr.xgouchet.xmleditor.R;
 
@@ -8,10 +9,25 @@ import fr.xgouchet.xmleditor.R;
  */
 public class AxelChangeLog extends AbstractChangeLog {
 
+	@Override
+	protected String getChangelogMessage(final Context context) {
+		StringBuilder builder = new StringBuilder();
+
+		builder.append(context.getString(R.string.quick_help));
+		builder.append("\n\n");
+
+		builder.append(context.getString(getTitleResource(context)));
+		builder.append("\n\n");
+		builder.append(context.getString(getChangeLogResource(context)));
+
+		return builder.toString();
+	}
+
 	/**
 	 * @see fr.xgouchet.androidlib.common.AbstractChangeLog#getTitleResourceForVersion(int)
 	 */
-	public int getTitleResourceForVersion(int version) {
+	@Override
+	public int getTitleResourceForVersion(final int version) {
 		int title;
 		switch (version) {
 		case 1:
@@ -33,8 +49,14 @@ public class AxelChangeLog extends AbstractChangeLog {
 			title = R.string.release6;
 			break;
 		case 7:
-		default:
+		case 8:
+		case 9:
+		case 10:
 			title = R.string.release7;
+			break;
+		case 11:
+		default:
+			title = R.string.release11;
 			break;
 		}
 		return title;
@@ -43,7 +65,8 @@ public class AxelChangeLog extends AbstractChangeLog {
 	/**
 	 * @see fr.xgouchet.androidlib.common.AbstractChangeLog#getChangeLogResourceForVersion(int)
 	 */
-	public int getChangeLogResourceForVersion(int version) {
+	@Override
+	public int getChangeLogResourceForVersion(final int version) {
 		int log;
 		switch (version) {
 		case 1:
@@ -65,8 +88,14 @@ public class AxelChangeLog extends AbstractChangeLog {
 			log = R.string.release6_log;
 			break;
 		case 7:
-		default:
+		case 8:
+		case 9:
+		case 10:
 			log = R.string.release7_log;
+			break;
+		case 11:
+		default:
+			log = R.string.release11_log;
 			break;
 		}
 		return log;

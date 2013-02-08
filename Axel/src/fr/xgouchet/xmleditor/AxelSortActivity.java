@@ -25,9 +25,10 @@ public class AxelSortActivity extends Activity implements DropListener {
 	/**
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
-	protected void onCreate(Bundle savedInstanceState) {
+	@Override
+	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		setResult(RESULT_CANCELED);
 
 		mNode = ((AxelApplication) getApplication()).getCurrentSelection();
 
@@ -50,15 +51,19 @@ public class AxelSortActivity extends Activity implements DropListener {
 		// setup buttons
 		findViewById(R.id.buttonCancel).setOnClickListener(
 				new OnClickListener() {
-					public void onClick(View v) {
+					@Override
+					public void onClick(final View v) {
+						setResult(RESULT_CANCELED);
 						finish();
 					}
 				});
 
 		findViewById(R.id.buttonOk).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
+			@Override
+			public void onClick(final View v) {
 				if (validateModifications()) {
 					applyModifications();
+					setResult(RESULT_OK);
 					finish();
 				}
 			}
@@ -68,7 +73,8 @@ public class AxelSortActivity extends Activity implements DropListener {
 	/**
 	 * @see com.mobeta.android.dslv.DragSortListView.DropListener#drop(int, int)
 	 */
-	public void drop(int from, int to) {
+	@Override
+	public void drop(final int from, final int to) {
 		TreeNode<XmlData> node = mChildren.remove(from);
 		mChildren.add(to, node);
 

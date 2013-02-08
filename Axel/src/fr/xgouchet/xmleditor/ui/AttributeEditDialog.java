@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import fr.xgouchet.xmleditor.R;
+import fr.xgouchet.xmleditor.common.Settings;
 import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.data.xml.XmlValidator;
@@ -54,6 +55,7 @@ public class AttributeEditDialog implements OnShowListener {
 	/**
 	 * @see android.content.DialogInterface.OnShowListener#onShow(android.content.DialogInterface)
 	 */
+	@Override
 	public void onShow(final DialogInterface dialog) {
 
 		mDialog.setOnDismissListener(mListener);
@@ -64,6 +66,7 @@ public class AttributeEditDialog implements OnShowListener {
 
 		mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
 				new OnClickListener() {
+					@Override
 					public void onClick(final View view) {
 						if (validateValues()) {
 							applyValues();
@@ -74,6 +77,7 @@ public class AttributeEditDialog implements OnShowListener {
 
 		mDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(
 				new OnClickListener() {
+					@Override
 					public void onClick(final View view) {
 						resetValues();
 					}
@@ -81,6 +85,7 @@ public class AttributeEditDialog implements OnShowListener {
 
 		mDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(
 				new OnClickListener() {
+					@Override
 					public void onClick(final View view) {
 						mDialog.dismiss();
 					}
@@ -134,15 +139,28 @@ public class AttributeEditDialog implements OnShowListener {
 			result = validateFullNameUnicity(fullName);
 		}
 
-		final String value = mEditValue.getText().toString();
-		if (!XmlValidator.isValidAttributeValue(value)) {
+		String value;
+
+		value = mEditValue.getText().toString();
+
+		if (Settings.sEscapeAttributeValues) {
+			value = XmlValidator.escapeAttributeValue(value);
+		}
+
+		if (XmlValidator.isValidAttributeValue(value)) {
+			if (prefix.equalsIgnoreCase(XmlValidator.XML_NS)
+					&& !XmlValidator.isValidNamespaceURI(value)) {
+				mEditValue.setError(mContext
+						.getString(R.string.ui_invalid_namespace_uri));
+				result = false;
+			}
+		} else {
 			mEditValue.setError(mContext.getString(R.string.ui_invalid_syntax));
 			result = false;
-		} else if (prefix.equalsIgnoreCase(XmlValidator.XML_NS)
-				&& !XmlValidator.isValidNamespaceURI(value)) {
-			mEditValue.setError(mContext
-					.getString(R.string.ui_invalid_namespace_uri));
-			result = false;
+		}
+
+		if (result) {
+			mEditValue.setText(value);
 		}
 
 		return result;

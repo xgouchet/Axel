@@ -39,7 +39,7 @@ public class XmlData {
 	 * @param dataType
 	 *            the typde of the xml data
 	 */
-	public XmlData(byte dataType) {
+	public XmlData(final byte dataType) {
 
 		if ((dataType < XML_DOCUMENT) || (dataType > XML_DOCUMENT_DECLARATION)) {
 			throw new IllegalArgumentException();
@@ -62,6 +62,7 @@ public class XmlData {
 	/**
 	 * @see java.lang.Object#toString()
 	 */
+	@Override
 	public String toString() {
 		String result;
 
@@ -114,7 +115,7 @@ public class XmlData {
 	 *            the max length of the return string
 	 * @return an ellipsized string which contains at most lengt characters
 	 */
-	protected String ellipsize(String text, int length) {
+	protected String ellipsize(final String text, final int length) {
 		String result;
 
 		if (TextUtils.isEmpty(text)) {
@@ -140,7 +141,7 @@ public class XmlData {
 	 * @param value
 	 *            the value of the attribute
 	 */
-	public void addAttribute(XmlAttribute attr) {
+	public void addAttribute(final XmlAttribute attr) {
 		if (mAttributes != null) {
 			mAttributes.add(attr);
 
@@ -161,7 +162,8 @@ public class XmlData {
 	 * @param value
 	 *            the value of the attribute
 	 */
-	public void addAttribute(String prefix, String name, String value) {
+	public void addAttribute(final String prefix, final String name,
+			final String value) {
 		if (mAttributes != null) {
 			XmlAttribute attr = new XmlAttribute(prefix, name, value);
 			mAttributes.add(attr);
@@ -176,7 +178,7 @@ public class XmlData {
 	 * @param parentData
 	 *            read the parent data
 	 */
-	public void readParentData(XmlData parentData) {
+	public void readParentData(final XmlData parentData) {
 
 		if (isElement()) {
 			if (parentData != null) {
@@ -200,7 +202,7 @@ public class XmlData {
 	 * @param value
 	 *            the value of the attribute
 	 */
-	public void setAttribute(String name, String value) {
+	public void setAttribute(final String name, final String value) {
 		setAttribute("", name, value);
 	}
 
@@ -215,7 +217,8 @@ public class XmlData {
 	 * @param value
 	 *            the value of the attribute
 	 */
-	public void setAttribute(String prefix, String name, String value) {
+	public void setAttribute(final String prefix, final String name,
+			final String value) {
 		String fullName = "";
 		if (!TextUtils.isEmpty(prefix)) {
 			fullName = prefix + ";";
@@ -234,7 +237,7 @@ public class XmlData {
 	 * @param name
 	 *            the name attached to this node
 	 */
-	public void setName(String name) {
+	public void setName(final String name) {
 		mName = name;
 	}
 
@@ -242,7 +245,7 @@ public class XmlData {
 	 * @param prefix
 	 *            the prefix (ie : namespace)
 	 */
-	public void setPrefix(String prefix) {
+	public void setPrefix(final String prefix) {
 		mPrefix = (prefix == null) ? "" : prefix;
 	}
 
@@ -254,7 +257,7 @@ public class XmlData {
 	 * @param text
 	 *            the text to set
 	 */
-	public void setText(String text) {
+	public void setText(final String text) {
 		mText = text;
 	}
 
@@ -262,7 +265,7 @@ public class XmlData {
 	 * @param flags
 	 *            the node flags
 	 */
-	public void setFlags(byte flags) {
+	public void setFlags(final byte flags) {
 		mFlags = flags;
 	}
 
@@ -272,7 +275,7 @@ public class XmlData {
 	 * @param remove
 	 *            the flags to remove
 	 */
-	public void modifyFlags(byte add, byte remove) {
+	public void modifyFlags(final byte add, final byte remove) {
 		mFlags |= add;
 		mFlags &= (0xFF ^ remove);
 	}
@@ -317,7 +320,7 @@ public class XmlData {
 	 *            the flag to test
 	 * @return if the flag is set
 	 */
-	public boolean hasFlag(byte flag) {
+	public boolean hasFlag(final byte flag) {
 		return ((mFlags & flag) == flag);
 	}
 
@@ -336,7 +339,7 @@ public class XmlData {
 	 *         attribute declared, or is neither {@link #XML_ELEMENT} nor
 	 *         {@link #XML_DOCUMENT_DECLARATION}
 	 */
-	public XmlAttribute getAttribute(String key) {
+	public XmlAttribute getAttribute(final String key) {
 		XmlAttribute res = null;
 
 		if (mAttributes != null) {
@@ -359,7 +362,7 @@ public class XmlData {
 	 *         attribute declared, or is neither {@link #XML_ELEMENT} nor
 	 *         {@link #XML_DOCUMENT_DECLARATION}
 	 */
-	public String getAttributeValue(String key) {
+	public String getAttributeValue(final String key) {
 		XmlAttribute attr;
 		String res = "";
 

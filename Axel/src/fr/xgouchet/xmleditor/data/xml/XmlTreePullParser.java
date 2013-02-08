@@ -30,8 +30,8 @@ public class XmlTreePullParser extends XmlTreeParser {
 	 * @throws XmlTreeParserException
 	 *             if an error occurs during the parsing
 	 */
-	public static XmlNode parseXmlTree(InputStream input,
-			boolean createDocDecl, String encoding)
+	public static XmlNode parseXmlTree(final InputStream input,
+			final boolean createDocDecl, final String encoding)
 			throws XmlTreeParserException {
 
 		XmlPullParserFactory factory;
@@ -86,8 +86,9 @@ public class XmlTreePullParser extends XmlTreeParser {
 	 * @throws XmlPullParserException
 	 * @throws StringIndexOutOfBoundsException
 	 */
-	protected void parse(XmlPullParser xpp) throws XmlPullParserException,
-			IOException, StringIndexOutOfBoundsException {
+	protected void parse(final XmlPullParser xpp)
+			throws XmlPullParserException, IOException,
+			StringIndexOutOfBoundsException {
 
 		int eventType = xpp.getEventType();
 
@@ -136,7 +137,7 @@ public class XmlTreePullParser extends XmlTreeParser {
 	 *            the parser
 	 * @throws XmlPullParserException
 	 */
-	protected void pullElementNode(XmlPullParser xpp)
+	protected void pullElementNode(final XmlPullParser xpp)
 			throws XmlPullParserException {
 		String name, prefix, uri;
 
@@ -175,7 +176,7 @@ public class XmlTreePullParser extends XmlTreeParser {
 	 *            the parser
 	 * @throws XmlPullParserException
 	 */
-	protected void pullTextNode(XmlPullParser xpp)
+	protected void pullTextNode(final XmlPullParser xpp)
 			throws XmlPullParserException {
 		if (!xpp.isWhitespace()) {
 			onCreateNode(XmlNode.createText(xpp.getText()));
@@ -187,7 +188,7 @@ public class XmlTreePullParser extends XmlTreeParser {
 	 *            the parser
 	 * @throws XmlPullParserException
 	 */
-	protected void pullCDataNode(XmlPullParser xpp)
+	protected void pullCDataNode(final XmlPullParser xpp)
 			throws XmlPullParserException {
 		onCreateNode(XmlNode.createCDataSection(xpp.getText()));
 	}
@@ -197,7 +198,7 @@ public class XmlTreePullParser extends XmlTreeParser {
 	 *            the parser
 	 * @throws XmlPullParserException
 	 */
-	protected void pullCommentNode(XmlPullParser xpp)
+	protected void pullCommentNode(final XmlPullParser xpp)
 			throws XmlPullParserException {
 		onCreateNode(XmlNode.createComment(xpp.getText()));
 	}
@@ -207,7 +208,7 @@ public class XmlTreePullParser extends XmlTreeParser {
 	 *            the parser
 	 * @throws XmlPullParserException
 	 */
-	protected void pullDoctypeNode(XmlPullParser xpp)
+	protected void pullDoctypeNode(final XmlPullParser xpp)
 			throws XmlPullParserException {
 		onCreateNode(XmlNode.createDoctypeDeclaration(xpp.getText()));
 	}
@@ -217,19 +218,12 @@ public class XmlTreePullParser extends XmlTreeParser {
 	 *            the parser
 	 * @throws XmlPullParserException
 	 */
-	protected void pullProcessingInstructionNode(XmlPullParser xpp)
+	protected void pullProcessingInstructionNode(final XmlPullParser xpp)
 			throws XmlPullParserException {
 
 		String text = xpp.getText().trim();
-		String[] data = text.split("\\s+", 2);
 
-		XmlNode pi;
-
-		if (data.length == 2) {
-			pi = XmlNode.createProcessingInstruction(data[0], data[1]);
-		} else {
-			pi = XmlNode.createProcessingInstruction(text, "");
-		}
+		XmlNode pi = XmlNode.createProcessingInstruction(text);
 
 		onCreateNode(pi);
 	}
@@ -238,7 +232,7 @@ public class XmlTreePullParser extends XmlTreeParser {
 	 * @param xpp
 	 *            the parser
 	 */
-	protected void pullDocumentDeclaration(XmlPullParser xpp) {
+	protected void pullDocumentDeclaration(final XmlPullParser xpp) {
 		String version, enc;
 		Boolean standalone;
 		XmlNode decl;

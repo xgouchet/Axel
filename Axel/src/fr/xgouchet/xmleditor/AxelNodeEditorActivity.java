@@ -44,7 +44,8 @@ public class AxelNodeEditorActivity extends Activity {
 	/**
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
-	protected void onCreate(Bundle savedInstanceState) {
+	@Override
+	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_node_editor);
 
@@ -54,13 +55,15 @@ public class AxelNodeEditorActivity extends Activity {
 
 		findViewById(R.id.buttonCancel).setOnClickListener(
 				new OnClickListener() {
-					public void onClick(View v) {
+					@Override
+					public void onClick(final View v) {
 						finish();
 					}
 				});
 
 		findViewById(R.id.buttonOk).setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
+			@Override
+			public void onClick(final View v) {
 				if (validateModifications()) {
 					applyModifications();
 					setEditResult();
@@ -75,6 +78,7 @@ public class AxelNodeEditorActivity extends Activity {
 	/**
 	 * @see android.app.Activity#onResume()
 	 */
+	@Override
 	protected void onResume() {
 		super.onResume();
 
@@ -102,7 +106,8 @@ public class AxelNodeEditorActivity extends Activity {
 	/**
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
-	public boolean onCreateOptionsMenu(Menu menu) {
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu) {
 
 		if (mData.isElement()) {
 			(new MenuInflater(this)).inflate(R.menu.editor_tag_menu, menu);
@@ -116,7 +121,8 @@ public class AxelNodeEditorActivity extends Activity {
 	/**
 	 * @see android.app.Activity#onPrepareOptionsMenu(android.view.Menu)
 	 */
-	public boolean onPrepareOptionsMenu(Menu menu) {
+	@Override
+	public boolean onPrepareOptionsMenu(final Menu menu) {
 		boolean result;
 
 		if (mData.isElement()) {
@@ -192,7 +198,8 @@ public class AxelNodeEditorActivity extends Activity {
 	/**
 	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
 	 */
-	public boolean onOptionsItemSelected(MenuItem item) {
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem item) {
 		boolean result;
 
 		result = true;
@@ -444,9 +451,19 @@ public class AxelNodeEditorActivity extends Activity {
 
 		result = true;
 
-		if (!XmlValidator.isValidText(mEditText.getText().toString())) {
+		String text = mEditText.getText().toString();
+		if (Settings.sEscapeTextContent) {
+			text = XmlValidator.escapeTextContent(text);
+
+		}
+
+		if (!XmlValidator.isValidText(text)) {
 			mEditText.setError(getString(R.string.ui_invalid_syntax));
 			result = false;
+		}
+
+		if (result) {
+			mEditText.setText(text);
 		}
 
 		return result;
@@ -524,7 +541,7 @@ public class AxelNodeEditorActivity extends Activity {
 	 * @param def
 	 *            make the namespace the default one ?
 	 */
-	protected void addNamespaceAttribute(boolean def) {
+	protected void addNamespaceAttribute(final boolean def) {
 		XmlAttribute attr;
 
 		if (def) {
@@ -548,7 +565,8 @@ public class AxelNodeEditorActivity extends Activity {
 	 *            the desired base name
 	 * @return the available name to use for a new attribute
 	 */
-	protected String getAvailableAttributeName(String prefix, String base) {
+	protected String getAvailableAttributeName(final String prefix,
+			final String base) {
 		String name, pr;
 		int count = 1;
 		boolean unique;
@@ -578,7 +596,7 @@ public class AxelNodeEditorActivity extends Activity {
 	 *            add the attribute for XSI namespace if needed
 	 * @return the prefix for the Xml Schema Instance namespace or null
 	 */
-	protected String getSchemaInstancePrefix(boolean add) {
+	protected String getSchemaInstancePrefix(final boolean add) {
 		String prefix = null;
 
 		for (XmlAttribute attr : mAttributes) {

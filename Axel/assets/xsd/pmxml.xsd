@@ -1,0 +1,1185 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema targetNamespace="http://www.pacificedge.com/PMXML"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pmxml="http://www.pacificedge.com/PMXML">
+	<!-- From http://www.pacificedge.com/xml/PMXML2%20030802.xsd 2002-06-03 -->
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en">
+			Project Management
+			Exchange schema for Pacific Edge Software, Inc.
+			Copyright 2001 Pacific
+			Edge Software, Inc. All rights reserved.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation xml:lang="en">Notes:
+			- "{object}ID"
+			elements are referential only within document instance.
+			-
+			"PersistentID" elements persist IDs that are relevant to an
+			application.
+			- Only InstanceData, Projects and PoolResources exist as
+			top level
+			elements.
+		</xsd:documentation>
+	</xsd:annotation>
+	<xsd:annotation>
+		<xsd:documentation>This schema will validate the following stand-alone
+			objects: ProjectManagementSchema, Projects, and PoolResources.
+		</xsd:documentation>
+	</xsd:annotation>
+	<!-- -->
+	<!-- ============================================================================ -->
+	<xsd:element name="ProjectManagementSchema">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">This is the root PMXML
+				document. All following objects are included in this construct.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="InstanceData" type="pmxml:typeInstanceData"
+					minOccurs="0" />
+				<xsd:element ref="pmxml:PoolResources" minOccurs="0" />
+				<xsd:element ref="pmxml:Projects" minOccurs="0" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+ <!---->
+	<!-- == Global Elements ========================================================= -->
+	<xsd:element name="Projects">
+		<xsd:annotation>
+			<xsd:documentation>A collection of Project objects.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence minOccurs="0">
+				<xsd:element name="Project" type="pmxml:typeProject"
+					maxOccurs="unbounded" />
+			</xsd:sequence>
+			<xsd:attribute name="count" type="xsd:integer" use="optional" />
+		</xsd:complexType>
+	</xsd:element>
+	<xsd:element name="Project" type="pmxml:typeProject">
+		<xsd:annotation>
+			<xsd:documentation>This is a global object to allow a single project
+				to be validated by this schema.
+			</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:element name="PoolResources">
+		<xsd:annotation>
+			<xsd:documentation>A collection of Resource objects.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:complexType>
+			<xsd:sequence minOccurs="0">
+				<xsd:element name="PoolResource" type="pmxml:typeResourceDef"
+					minOccurs="0" maxOccurs="unbounded" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+ <!---->
+	<!-- == Complex types =========================================================== -->
+	<xsd:complexType name="typeAllocation">
+		<xsd:sequence>
+			<xsd:element name="Start" type="xsd:string" />
+			<xsd:element name="Finish" type="xsd:string" />
+			<xsd:element name="Quantity" type="xsd:decimal" />
+			<xsd:element name="Rate" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="RateUnits" type="xsd:integer"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="typeAssignment">
+		<xsd:sequence>
+			<xsd:element name="PersistentID" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:long">
+							<xsd:attribute name="application" type="xsd:integer" />
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ResourcePersistentID" type="xsd:long" />
+			<xsd:element name="TaskPersistentID" type="xsd:long" />
+			<xsd:element name="Quantity" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="Notes" type="xsd:string" minOccurs="0" />
+			<xsd:element name="PlannedStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="PlannedFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="PlannedDuration" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="PlannedWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="PlannedOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="PlannedCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="PlannedOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="ActualStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="ActualFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="ActualDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="ActualWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="ActualOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="ActualCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="ActualOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="BaselineStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="BaselineFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="BaselineDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="BaselineWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="BaselineOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="BaselineCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="BaselineOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="RemainingDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="RemainingWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="RemainingOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="RemainingCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="RemainingOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="ACWP" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="BCWP" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="BCWS" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="StartVariance" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="FinishVariance" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="CostVariance" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="EarlyStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="EarlyFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="LateStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="LateFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="TotalSlack" type="xsd:long" minOccurs="0" />
+			<xsd:element name="FreeSlack" type="xsd:long" minOccurs="0" />
+			<xsd:element name="PercentWorkComplete" type="xsd:short"
+				minOccurs="0" />
+			<xsd:element name="CustomCosts" type="pmxml:typeCustomCosts"
+				minOccurs="0" />
+			<xsd:element name="CustomFinishDates" type="pmxml:typeCustomFinishDates"
+				minOccurs="0" />
+			<xsd:element name="CustomFlags" type="pmxml:typeCustomFlags"
+				minOccurs="0" />
+			<xsd:element name="CustomNumbers" type="pmxml:typeCustomNumbers"
+				minOccurs="0" />
+			<xsd:element name="CustomStartDates" type="pmxml:typeCustomStartDates"
+				minOccurs="0" />
+			<xsd:element name="CustomText" type="pmxml:typeCustomText"
+				minOccurs="0" />
+			<xsd:element name="CustomWork" type="pmxml:typeCustomWork"
+				minOccurs="0" />
+			<xsd:element name="RateSchedule" type="pmxml:typeRateSchedule"
+				minOccurs="0" />
+			<xsd:element name="Allocation" type="pmxml:typeAllocation"
+				minOccurs="0" />
+			<xsd:element name="ExtendedAttributes" type="pmxml:typeExtendedAttributes"
+				minOccurs="0" />
+			<!-- <xsd:group ref="groupScheduledObject" minOccurs="0"/> -->
+			<!-- <xsd:group ref="groupCustomFields" minOccurs="0"/> -->
+		</xsd:sequence>
+		<xsd:attribute name="AssignmentID" type="xsd:long" use="required" />
+		<xsd:attribute name="ResourceID" type="xsd:long" use="required" />
+		<xsd:attribute name="TaskID" type="xsd:long" use="required" />
+	</xsd:complexType>
+	<xsd:complexType name="typeAvailability">
+		<xsd:sequence>
+			<xsd:element name="Start" type="xsd:string" minOccurs="0" />
+			<xsd:element name="Finish" type="xsd:string" minOccurs="0" />
+			<xsd:element name="Quantity" type="xsd:decimal"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="typeCustomCosts">
+		<xsd:sequence minOccurs="0">
+			<xsd:element name="Cost01" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="Cost02" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="Cost03" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="Cost04" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="Cost05" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="Cost06" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="Cost07" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="Cost08" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="Cost09" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="Cost10" type="xsd:decimal" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="typeCustomFinishDates">
+		<xsd:sequence minOccurs="0">
+			<xsd:element name="FinishDate01" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="FinishDate02" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="FinishDate03" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="FinishDate04" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="FinishDate05" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="FinishDate06" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="FinishDate07" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="FinishDate08" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="FinishDate09" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="FinishDate10" type="xsd:string"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="typeCustomFlags">
+		<xsd:sequence minOccurs="0">
+			<xsd:element name="Flag01" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag02" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag03" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag04" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag05" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag06" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag07" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag08" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag09" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag10" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag11" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag12" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag13" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag14" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag15" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag16" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag17" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag18" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag19" type="xsd:byte" minOccurs="0" />
+			<xsd:element name="Flag20" type="xsd:byte" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="typeCustomNumbers">
+		<xsd:sequence minOccurs="0">
+			<xsd:element name="Number01" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number02" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number03" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number04" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number05" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number06" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number07" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number08" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number09" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number10" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number11" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number12" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number13" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number14" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number15" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number16" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number17" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number18" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number19" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Number20" type="xsd:float" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="typeCustomStartDates">
+		<xsd:sequence minOccurs="0">
+			<xsd:element name="StartDate01" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="StartDate02" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="StartDate03" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="StartDate04" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="StartDate05" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="StartDate06" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="StartDate07" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="StartDate08" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="StartDate09" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="StartDate10" type="xsd:string"
+				minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="typeCustomText">
+		<xsd:sequence minOccurs="0">
+			<xsd:element name="Text01" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text02" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text03" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text04" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text05" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text06" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text07" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text08" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text09" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text10" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text11" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text12" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text13" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text14" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text15" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text16" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text17" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text18" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text19" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text20" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text21" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text22" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text23" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text24" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text25" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text26" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text27" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text28" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text29" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Text30" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:string">
+						<xsd:maxLength value="255" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="typeCustomWork">
+		<xsd:sequence>
+			<xsd:element name="Work01" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Work02" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Work03" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Work04" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Work05" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Work06" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Work07" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Work08" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Work09" type="xsd:float" minOccurs="0" />
+			<xsd:element name="Work10" type="xsd:float" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="typeExtendedAttributeDef">
+		<xsd:sequence>
+			<xsd:element name="Object" type="xsd:string" />
+			<xsd:element name="FieldLength" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="DataType" type="xsd:string" minOccurs="0" />
+			<xsd:element name="FieldName" type="xsd:string"
+				minOccurs="0" />
+		</xsd:sequence>
+		<xsd:attribute name="ID" type="xsd:long" use="required" />
+	</xsd:complexType>
+	<xsd:complexType name="typeExtendedAttributes">
+		<xsd:sequence minOccurs="0">
+			<xsd:element name="ExtendedAttribute" minOccurs="0"
+				maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:string">
+							<xsd:attribute name="AttributeID" type="xsd:long"
+								use="required" />
+							<xsd:attribute name="count" type="xsd:integer" use="optional" />
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="typeInstanceData">
+		<xsd:annotation>
+			<xsd:documentation xml:lang="en">Data pertaining to this
+				instance of PMXML. Helps the processing application know how to deal
+				with the data.
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="UserID" type="xsd:long" />
+			<xsd:element name="UserName" type="xsd:string" minOccurs="0" />
+			<xsd:element name="AppName" type="xsd:integer">
+				<xsd:annotation>
+					<xsd:documentation>ID of the application this data was extracted
+						from: 1 = Project Office 3.2
+						8 = Microsoft Project 98
+						9 = Microsoft
+						Project 2000
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="AppVersion" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>Version number of the application this data was
+						extracted from.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="Generated" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>mandatory: date-time this xml was generated
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="SchemaVersion" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>mandatory, format XXXX.XXXX</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="MachineName" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="Projects">
+				<xsd:annotation>
+					<xsd:documentation>List of Project ID's from the Procects contained
+						in this document
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="ProjectName">
+							<xsd:complexType>
+								<xsd:simpleContent>
+									<xsd:extension base="xsd:string">
+										<xsd:attribute name="projectID" type="xsd:long"
+											use="required" />
+									</xsd:extension>
+								</xsd:simpleContent>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="typeProject">
+		<xsd:sequence>
+			<xsd:element name="PersistentID" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:long">
+							<xsd:attribute name="application" type="xsd:integer"
+								use="required" />
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ProjectName" type="xsd:string" />
+			<xsd:element name="LastModified" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="Description" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="Title" type="xsd:string" minOccurs="0" />
+			<xsd:element name="Author" type="xsd:string" minOccurs="0" />
+			<xsd:element name="Category" type="xsd:string" minOccurs="0" />
+			<xsd:element name="Company" type="xsd:string" minOccurs="0" />
+			<xsd:element name="StatusDate" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="Manager" type="xsd:string" minOccurs="0" />
+			<xsd:element name="Subject" type="xsd:string" minOccurs="0" />
+			<xsd:element name="CreatedDate" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="HoursPerDay" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:integer">
+						<xsd:minInclusive value="0" />
+						<xsd:maxInclusive value="24" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="DaysPerMonth" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:integer">
+						<xsd:minInclusive value="0" />
+						<xsd:maxInclusive value="32" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="WeekStartDay" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:integer">
+						<xsd:minInclusive value="0" />
+						<xsd:maxInclusive value="6" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="YearStartMonth" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:integer">
+						<xsd:minInclusive value="0" />
+						<xsd:maxInclusive value="12" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="HoursPerWeek" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:integer">
+						<xsd:minInclusive value="0" />
+						<xsd:maxInclusive value="168" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="PlannedStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="PlannedFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="PlannedDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="PlannedWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="PlannedOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="PlannedCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="PlannedOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="ActualStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="ActualFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="ActualDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="ActualWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="ActualOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="ActualCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="ActualOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="BaselineStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="BaselineFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="BaselineDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="BaselineWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="BaselineOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="BaselineCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="BaselineOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="RemainingDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="RemainingWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="RemainingOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="RemainingCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="RemainingOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="ACWP" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="BCWP" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="BCWS" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="StartVariance" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="FinishVariance" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="CostVariance" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="EarlyStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="EarlyFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="LateStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="LateFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="TotalSlack" type="xsd:long" minOccurs="0" />
+			<xsd:element name="FreeSlack" type="xsd:long" minOccurs="0" />
+			<xsd:element name="CustomCosts" type="pmxml:typeCustomCosts"
+				minOccurs="0" />
+			<xsd:element name="CustomFinishDates" type="pmxml:typeCustomFinishDates"
+				minOccurs="0" />
+			<xsd:element name="CustomFlags" type="pmxml:typeCustomFlags"
+				minOccurs="0" />
+			<xsd:element name="CustomNumbers" type="pmxml:typeCustomNumbers"
+				minOccurs="0" />
+			<xsd:element name="CustomStartDates" type="pmxml:typeCustomStartDates"
+				minOccurs="0" />
+			<xsd:element name="CustomText" type="pmxml:typeCustomText"
+				minOccurs="0" />
+			<xsd:element name="CustomWork" type="pmxml:typeCustomWork"
+				minOccurs="0" />
+			<xsd:element name="ExtendedAttributeDefs" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The extended attributes for each project are
+						defined in the
+						root of the project, and the extended attributes may
+						be used at the
+						Project
+						level or under Tasks, Assignments or
+						Resources.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence minOccurs="0">
+						<xsd:element name="ExtendedAttributeDef" type="pmxml:typeExtendedAttributeDef"
+							minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ExtendedAttributes" type="pmxml:typeExtendedAttributes"
+				minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>The extended attribute values that apply to the
+						project level for this project.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="LocalResources" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence minOccurs="0">
+						<xsd:element name="LocalResource" type="pmxml:typeResourceDef"
+							minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+					<xsd:attribute name="count" type="xsd:integer" use="optional" />
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Resources" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence minOccurs="0">
+						<xsd:element name="Resource" type="pmxml:typeResource"
+							minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Tasks" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence minOccurs="0">
+						<xsd:element name="Task" type="pmxml:typeTask"
+							minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="Assignments" minOccurs="0">
+				<xsd:complexType>
+					<xsd:sequence minOccurs="0">
+						<xsd:element name="Assignment" type="pmxml:typeAssignment"
+							minOccurs="0" maxOccurs="unbounded" />
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!-- <xsd:group ref="groupScheduledObject" minOccurs="0"/> -->
+		</xsd:sequence>
+		<xsd:attribute name="ProjectID" type="xsd:long" use="required" />
+	</xsd:complexType>
+	<xsd:complexType name="typeRateSchedule">
+		<xsd:sequence>
+			<xsd:element name="Start" type="xsd:string" minOccurs="0" />
+			<xsd:element name="Finish" type="xsd:string" minOccurs="0" />
+			<xsd:element name="Rate" type="xsd:decimal" />
+			<xsd:element name="RateUnits" type="pmxml:enumRateUnits">
+				<xsd:annotation>
+					<xsd:documentation>Monetary unit used: USD: US dollar, JPY:
+						Japanese Yen, etc.
+					</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="typeResource">
+		<xsd:attribute name="ResourceID" type="xsd:long" use="required" />
+	</xsd:complexType>
+	<xsd:complexType name="typeResourceDef">
+		<xsd:sequence minOccurs="0">
+			<xsd:element name="PersistentID" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:long">
+							<xsd:attribute name="application" type="xsd:integer"
+								use="optional" />
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="FormattedName" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="FirstName" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="LastName" type="xsd:string" minOccurs="0" />
+			<xsd:element name="MiddleName" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="Initials" type="xsd:string" minOccurs="0" />
+			<xsd:element name="EmailAddress" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="IsOverallocated" type="xsd:byte"
+				minOccurs="0" />
+			<xsd:element name="MaxQuantity" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="Notes" type="xsd:string" minOccurs="0" />
+			<xsd:element name="Type" type="pmxml:enumResourceType"
+				minOccurs="0" />
+			<xsd:element name="Cost" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="OvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="Rate" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="OvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="PlannedStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="PlannedFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="PlannedDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="PlannedWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="PlannedOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="PlannedCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="PlannedOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="ActualStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="ActualFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="ActualDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="ActualWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="ActualOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="ActualCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="ActualOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="BaselineStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="BaselineFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="BaselineDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="BaselineWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="BaselineOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="BaselineCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="BaselineOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="RemainingDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="RemainingWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="RemainingOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="RemainingCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="RemainingOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="ACWP" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="BCWP" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="BCWS" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="StartVariance" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="FinishVariance" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="CostVariance" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="EarlyStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="EarlyFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="LateStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="LateFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="TotalSlack" type="xsd:long" minOccurs="0" />
+			<xsd:element name="FreeSlack" type="xsd:long" minOccurs="0" />
+			<xsd:element name="MaterialLabel" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="CustomCosts" type="pmxml:typeCustomCosts"
+				minOccurs="0" />
+			<xsd:element name="CustomFinishDates" type="pmxml:typeCustomFinishDates"
+				minOccurs="0" />
+			<xsd:element name="CustomFlags" type="pmxml:typeCustomFlags"
+				minOccurs="0" />
+			<xsd:element name="CustomNumbers" type="pmxml:typeCustomNumbers"
+				minOccurs="0" />
+			<xsd:element name="CustomStartDates" type="pmxml:typeCustomStartDates"
+				minOccurs="0" />
+			<xsd:element name="CustomText" type="pmxml:typeCustomText"
+				minOccurs="0" />
+			<xsd:element name="CustomWork" type="pmxml:typeCustomWork"
+				minOccurs="0" />
+			<xsd:element name="RateSchedule" type="pmxml:typeRateSchedule"
+				minOccurs="0" />
+			<xsd:element name="AvailableFrom" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="AvailableTo" minOccurs="0" />
+			<xsd:element name="Availability" minOccurs="0" maxOccurs="unbounded">
+				<xsd:annotation>
+					<xsd:documentation>The 'resourceID' attribute is used as a way to
+						avoid looking up the parent of this group. Only used when
+						publishing.
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:complexContent>
+						<xsd:extension base="pmxml:typeAvailability">
+							<xsd:attribute name="resourceID" type="xsd:long"
+								use="optional" />
+						</xsd:extension>
+					</xsd:complexContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="ExtendedAttributes" type="pmxml:typeExtendedAttributes"
+				minOccurs="0" />
+			<!-- <xsd:group ref="groupCustomFields" minOccurs="0"/> -->
+		</xsd:sequence>
+		<xsd:attribute name="ResourceID" type="xsd:long" use="required" />
+	</xsd:complexType>
+	<xsd:complexType name="typeTask">
+		<xsd:sequence>
+			<xsd:element name="PersistentID" maxOccurs="unbounded">
+				<xsd:complexType>
+					<xsd:simpleContent>
+						<xsd:extension base="xsd:long">
+							<xsd:attribute name="application" type="xsd:integer"
+								use="optional" />
+						</xsd:extension>
+					</xsd:simpleContent>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="TaskName" type="xsd:string" />
+			<xsd:element name="IsSummary" type="xsd:boolean" />
+			<xsd:element name="OutlineLevel" type="xsd:integer" />
+			<xsd:element name="TaskOrderID" type="xsd:long" />
+			<xsd:element name="ParentTaskID" type="xsd:long" />
+			<xsd:element name="ParentPersistentID" type="xsd:long"
+				minOccurs="0" />
+			<xsd:element name="FixedCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="IsMilestone" type="xsd:boolean"
+				minOccurs="0" />
+			<xsd:element name="IsCritical" type="xsd:boolean"
+				minOccurs="0" />
+			<xsd:element name="TaskNotes" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="PercentComplete" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:short">
+						<xsd:maxInclusive value="100" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="PercentWorkComplete" minOccurs="0">
+				<xsd:simpleType>
+					<xsd:restriction base="xsd:short">
+						<xsd:maxInclusive value="100" />
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+			<xsd:element name="Priority" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="WBS" type="xsd:string" minOccurs="0" />
+			<xsd:element name="PlannedStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="PlannedFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="PlannedDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="PlannedWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="PlannedOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="PlannedCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="PlannedOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="ActualStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="ActualFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="ActualDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="ActualWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="ActualOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="ActualCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="ActualOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="BaselineStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="BaselineFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="BaselineDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="BaselineWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="BaselineOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="BaselineCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="BaselineOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="RemainingDuration" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="RemainingWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="RemainingOvertimeWork" type="xsd:float"
+				minOccurs="0" />
+			<xsd:element name="RemainingCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="RemainingOvertimeCost" type="xsd:decimal"
+				minOccurs="0" />
+			<xsd:element name="ACWP" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="BCWP" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="BCWS" type="xsd:decimal" minOccurs="0" />
+			<xsd:element name="StartVariance" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="FinishVariance" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="CostVariance" type="xsd:integer"
+				minOccurs="0" />
+			<xsd:element name="EarlyStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="EarlyFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="LateStart" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="LateFinish" type="xsd:string"
+				minOccurs="0" />
+			<xsd:element name="TotalSlack" type="xsd:long" minOccurs="0" />
+			<xsd:element name="FreeSlack" type="xsd:long" minOccurs="0" />
+			<xsd:element name="CustomCosts" type="pmxml:typeCustomCosts"
+				minOccurs="0" />
+			<xsd:element name="CustomFinishDates" type="pmxml:typeCustomFinishDates"
+				minOccurs="0" />
+			<xsd:element name="CustomFlags" type="pmxml:typeCustomFlags"
+				minOccurs="0" />
+			<xsd:element name="CustomNumbers" type="pmxml:typeCustomNumbers"
+				minOccurs="0" />
+			<xsd:element name="CustomStartDates" type="pmxml:typeCustomStartDates"
+				minOccurs="0" />
+			<xsd:element name="CustomText" type="pmxml:typeCustomText"
+				minOccurs="0" />
+			<xsd:element name="CustomWork" type="pmxml:typeCustomWork"
+				minOccurs="0" />
+			<xsd:element name="ExtendedAttributes" type="pmxml:typeExtendedAttributes"
+				minOccurs="0" />
+			<!-- <xsd:group ref="groupScheduledObject" minOccurs="0"/> -->
+			<!-- <xsd:group ref="groupCustomFields" minOccurs="0"/> -->
+		</xsd:sequence>
+		<xsd:attribute name="TaskID" type="xsd:long" use="required" />
+	</xsd:complexType>
+ <!---->
+	<!-- == Enumerations ============================================================ -->
+	<xsd:simpleType name="enumResourceType">
+		<xsd:annotation>
+			<xsd:documentation>Type of Resource: 0=Material, 1=Work
+			</xsd:documentation>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:integer">
+			<xsd:enumeration value="0" />
+			<xsd:enumeration value="1" />
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="enumRateUnits">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="USD" />
+			<xsd:enumeration value="DM" />
+			<xsd:enumeration value="JPY" />
+			<xsd:enumeration value="EURO" />
+			<xsd:enumeration value="GBP" />
+			<xsd:enumeration value="CHF" />
+		</xsd:restriction>
+	</xsd:simpleType>
+ <!---->
+</xsd:schema>

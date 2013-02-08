@@ -37,5 +37,6 @@
     <string name="toast_xml_parse_error">"Erreur de syntaxe dans le document XML"</string>
     <string name="toast_xml_io_exception">Impossible de lire la source </string>
     <string name="toast_xml_uncomment">Impossible de décommenter le noeud selectionné</string>
+    <string name="toast_html_soup">Ceci est une version nouvelle et valide de votre document. Verifiez qu\'aucune donnée ne manque avant de sauvegarder ce document.</string>
 
 </resources>

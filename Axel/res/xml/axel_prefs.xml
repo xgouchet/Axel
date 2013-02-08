@@ -3,28 +3,70 @@
     android:key="axel_settings"
     android:title="@string/title_settings" >
 
-    <ListPreference
-        android:defaultValue="10"
-        android:entries="@array/max_recent_files"
-        android:entryValues="@array/max_recent_files"
-        android:key="max_recent_files"
-        android:title="@string/config_title_max_recent" />
+    <PreferenceCategory android:title="@string/config_cat_editor" >
+        <ListPreference
+            android:defaultValue="edit"
+            android:entries="@array/node_quick_actions_entries"
+            android:entryValues="@array/node_quick_actions_values"
+            android:key="single_tap_quick_action"
+            android:title="@string/config_title_single_tap_quick_action" />
+        <ListPreference
+            android:defaultValue="add_child"
+            android:entries="@array/node_quick_actions_entries"
+            android:entryValues="@array/node_quick_actions_values"
+            android:key="double_tap_quick_action"
+            android:title="@string/config_title_double_tap_quick_action" />
+        <ListPreference
+            android:defaultValue="display_menu"
+            android:entries="@array/node_quick_actions_entries"
+            android:entryValues="@array/node_quick_actions_values"
+            android:key="long_press_quick_action"
+            android:title="@string/config_title_long_press_quick_action" />
 
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="keep_text_exact"
-        android:summaryOff="@string/config_summary_off_keep_text_exact"
-        android:summaryOn="@string/config_summary_on_keep_text_exact"
-        android:title="@string/config_title_keep_text_exact" />
-    <CheckBoxPreference
-        android:defaultValue="true"
-        android:key="edit_on_create"
-        android:title="@string/config_title_edit_on_create" />
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="display_attributes_inline"
-        android:summaryOff="@string/config_summary_off_attributes_inline"
-        android:summaryOn="@string/config_summary_on_attributes_inline"
-        android:title="@string/config_title_attributes_inline" />
+        <CheckBoxPreference
+            key="escape_text_content"
+            android:defaultValue="true"
+            android:summaryOff="@string/config_summary_off_escape"
+            android:summaryOn="@string/config_summary_on_escape"
+            android:title="@string/config_title_escape_text_content" />
+        <CheckBoxPreference
+            key="escape_attr_value"
+            android:defaultValue="true"
+            android:summaryOff="@string/config_summary_off_escape"
+            android:summaryOn="@string/config_summary_on_escape"
+            android:title="@string/config_title_escape_attr_value" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="keep_text_exact"
+            android:summaryOff="@string/config_summary_off_keep_text_exact"
+            android:summaryOn="@string/config_summary_on_keep_text_exact"
+            android:title="@string/config_title_keep_text_exact" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="edit_on_create"
+            android:title="@string/config_title_edit_on_create" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/config_cat_display" >
+        <ListPreference
+            android:defaultValue="10"
+            android:entries="@array/max_recent_files"
+            android:entryValues="@array/max_recent_files"
+            android:key="max_recent_files"
+            android:title="@string/config_title_max_recent" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="display_attributes_inline"
+            android:summaryOff="@string/config_summary_off_attributes_inline"
+            android:summaryOn="@string/config_summary_on_attributes_inline"
+            android:title="@string/config_title_attributes_inline" />
+
+        <ListPreference
+            android:defaultValue="medium"
+            android:entries="@array/indentation_entries"
+            android:entryValues="@array/indentation_values"
+            android:key="indentation_size"
+            android:title="@string/config_title_indentation_size" />
+    </PreferenceCategory>
 
 </PreferenceScreen>

@@ -9,6 +9,7 @@ public class XmlFileLoaderResult {
 
 	public static final int FLAG_IGNORE_FILE = 0x01;
 	public static final int FLAG_FORCE_READ_ONLY = 0x02;
+	public static final int FLAG_HTML_SOUP = 0x04;
 
 	/**
 	 * @return the document
@@ -62,6 +63,13 @@ public class XmlFileLoaderResult {
 	/**
 	 * @return if the force read only flag is set
 	 */
+	public boolean isHtmlSoup() {
+		return ((mFlags & FLAG_HTML_SOUP) == FLAG_HTML_SOUP);
+	}
+
+	/**
+	 * @return if the force read only flag is set
+	 */
 	public boolean hasForceReadOnly() {
 		return ((mFlags & FLAG_FORCE_READ_ONLY) == FLAG_FORCE_READ_ONLY);
 	}
@@ -77,7 +85,7 @@ public class XmlFileLoaderResult {
 	 * @param document
 	 *            the document to set
 	 */
-	public void setDocument(XmlNode document) {
+	public void setDocument(final XmlNode document) {
 		mDocument = document;
 	}
 
@@ -85,7 +93,7 @@ public class XmlFileLoaderResult {
 	 * @param error
 	 *            the error to set
 	 */
-	public void setError(XmlTreeParserException.XmlError error) {
+	public void setError(final XmlTreeParserException.XmlError error) {
 		mError = error;
 	}
 
@@ -93,7 +101,7 @@ public class XmlFileLoaderResult {
 	 * @param fileHash
 	 *            the fileHash to set
 	 */
-	public void setFileHash(String fileHash) {
+	public void setFileHash(final String fileHash) {
 		mFileHash = fileHash;
 	}
 
@@ -101,7 +109,7 @@ public class XmlFileLoaderResult {
 	 * @param errorInfo
 	 *            the errorInfo to set
 	 */
-	public void setErrorInfo(String errorInfo) {
+	public void setErrorInfo(final String errorInfo) {
 		mErrorInfo = errorInfo;
 	}
 
@@ -109,7 +117,7 @@ public class XmlFileLoaderResult {
 	 * @param encoding
 	 *            the encoding to set
 	 */
-	public void setEncoding(String encoding) {
+	public void setEncoding(final String encoding) {
 		mEncoding = encoding;
 	}
 
@@ -117,7 +125,7 @@ public class XmlFileLoaderResult {
 	 * @param file
 	 *            the file to set
 	 */
-	public void setFile(File file) {
+	public void setFile(final File file) {
 		mFile = file;
 	}
 
@@ -125,7 +133,7 @@ public class XmlFileLoaderResult {
 	 * @param flags
 	 *            the flags to set
 	 */
-	public void setFlags(int flags) {
+	public void setFlags(final int flags) {
 		mFlags = flags;
 	}
 

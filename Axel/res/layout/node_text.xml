@@ -13,6 +13,9 @@
         android:gravity="top"
         android:hint="@string/ui_hint_content"
         android:inputType="textMultiLine"
-        android:textAppearance="@android:style/TextAppearance.Medium" />
+        android:textAppearance="@android:style/TextAppearance.Medium" >
+
+        <requestFocus />
+    </fr.xgouchet.xmleditor.ui.widget.ClearableEditText>
 
 </LinearLayout>

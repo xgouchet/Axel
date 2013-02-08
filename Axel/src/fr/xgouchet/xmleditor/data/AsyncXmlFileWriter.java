@@ -22,8 +22,19 @@ public class AsyncXmlFileWriter extends
 	}
 
 	/**
+	 * @see android.os.AsyncTask#onCancelled(java.lang.Object)
+	 */
+	@Override
+	protected void onCancelled(final XmlFileWriterResult result) {
+		if (mDialog != null) {
+			mDialog.dismiss();
+		}
+	}
+
+	/**
 	 * @see android.os.AsyncTask#onPreExecute()
 	 */
+	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
 
@@ -40,7 +51,8 @@ public class AsyncXmlFileWriter extends
 	/**
 	 * @see android.os.AsyncTask#doInBackground(Params[])
 	 */
-	protected XmlFileWriterResult doInBackground(String... params) {
+	@Override
+	protected XmlFileWriterResult doInBackground(final String... params) {
 
 		if (params.length == 0) {
 			mResult.setError(XmlError.fileNotFound);
@@ -59,14 +71,15 @@ public class AsyncXmlFileWriter extends
 	/**
 	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 	 */
-	protected void onPostExecute(XmlFileWriterResult result) {
+	@Override
+	protected void onPostExecute(final XmlFileWriterResult result) {
 		super.onPostExecute(result);
 
 		mActivity.onFileSaved(mResult);
-		mDialog.hide();
+		mDialog.dismiss();
 	}
 
-	protected void doSaveFile(String path) {
+	protected void doSaveFile(final String path) {
 
 		mResult.setPath(path);
 
@@ -103,15 +116,16 @@ public class AsyncXmlFileWriter extends
 	 */
 	private void setDialogTitle(final int string) {
 		mActivity.runOnUiThread(new Runnable() {
+			@Override
 			public void run() {
 				mDialog.setTitle(string);
 			}
 		});
 	}
 
-	private XmlFileWriterResult mResult;
+	private final XmlFileWriterResult mResult;
 	private final AxelActivity mActivity;
 	private ProgressDialog mDialog;
-	private XmlNode mDocument;
-	private String mEncoding;
+	private final XmlNode mDocument;
+	private final String mEncoding;
 }

@@ -2,12 +2,7 @@ package fr.xgouchet.xmleditor;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -20,6 +15,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -28,6 +24,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,11 +43,11 @@ import fr.xgouchet.xmleditor.common.Constants;
 import fr.xgouchet.xmleditor.common.RecentFiles;
 import fr.xgouchet.xmleditor.common.Settings;
 import fr.xgouchet.xmleditor.common.TemplateFiles;
+import fr.xgouchet.xmleditor.data.AsyncHtmlFileLoader;
 import fr.xgouchet.xmleditor.data.AsyncXmlFileLoader;
 import fr.xgouchet.xmleditor.data.AsyncXmlFileWriter;
 import fr.xgouchet.xmleditor.data.XmlFileLoaderResult;
 import fr.xgouchet.xmleditor.data.XmlFileWriterResult;
-import fr.xgouchet.xmleditor.data.html.HtmlCleanerParser;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
 import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
@@ -61,16 +58,19 @@ import fr.xgouchet.xmleditor.data.xml.XmlTreeParserException.XmlError;
 import fr.xgouchet.xmleditor.data.xml.XmlTreePullParser;
 import fr.xgouchet.xmleditor.ui.AttributeEditDialog;
 import fr.xgouchet.xmleditor.ui.adapter.TreeAdapter;
+import fr.xgouchet.xmleditor.ui.adapter.TreeAdapter.TreeNodeEventListener;
 
 /**
  * 
  */
-public class AxelActivity extends Activity {
+public class AxelActivity extends Activity implements
+		TreeNodeEventListener<XmlData> {
 
 	/**
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
-	protected void onCreate(Bundle savedInstanceState) {
+	@Override
+	protected void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.layout_editor);
@@ -90,6 +90,7 @@ public class AxelActivity extends Activity {
 	/**
 	 * @see android.app.Activity#onStart()
 	 */
+	@Override
 	protected void onStart() {
 		super.onStart();
 		AxelChangeLog changeLog;
@@ -98,15 +99,18 @@ public class AxelActivity extends Activity {
 		changeLog = new AxelChangeLog();
 		prefs = getSharedPreferences(Constants.PREFERENCES_NAME,
 				Context.MODE_PRIVATE);
+		Settings.updateFromPreferences(prefs);
 
 		if (changeLog.displayChangeLog(this, prefs)) {
 			TemplateFiles.copyTemplatesFromAssets(this);
 		}
+
 	}
 
 	/**
 	 * @see android.app.Activity#onResume()
 	 */
+	@Override
 	protected void onResume() {
 		super.onResume();
 
@@ -125,14 +129,61 @@ public class AxelActivity extends Activity {
 
 		}
 
-		onXmlContentChanged();
 		Settings.updateFromPreferences(getSharedPreferences(
 				Constants.PREFERENCES_NAME, MODE_PRIVATE));
+
+		mAdapter.updatePadding();
+		mAdapter.notifyDataSetChanged();
+	}
+
+	/**
+	 * @see Activity#onKeyUp(int, KeyEvent)
+	 */
+	@Override
+	public boolean onKeyUp(final int keyCode, final KeyEvent event) {
+		if (event.getKeyCode() == KeyEvent.KEYCODE_SEARCH) {
+			onSearchRequested();
+			return true;
+		}
+		if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+			// prompt to save before quitting
+			mAfterSave = new Runnable() {
+				@Override
+				public void run() {
+					finish();
+				}
+			};
+
+			promptSaveDirty();
+			return true;
+		}
+		return super.onKeyUp(keyCode, event);
+	}
+
+	/**
+	 * @see android.app.Activity#onPause()
+	 */
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (mLoader != null) {
+			mLoader.cancel(true);
+		}
+	}
+
+	/**
+	 * @see android.app.Activity#onConfigurationChanged(android.content.res.Configuration)
+	 */
+	@Override
+	public void onConfigurationChanged(final Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		Log.i("Axel", "onConfigurationChanged");
 	}
 
 	/**
 	 * @see android.app.Activity#onStop()
 	 */
+	@Override
 	protected void onStop() {
 		super.onStop();
 		Crouton.clearCroutonsForActivity(this);
@@ -142,7 +193,9 @@ public class AxelActivity extends Activity {
 	 * @see android.app.Activity#onActivityResult(int, int,
 	 *      android.content.Intent)
 	 */
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	@Override
+	protected void onActivityResult(final int requestCode,
+			final int resultCode, final Intent data) {
 		Bundle extras;
 
 		if (resultCode == RESULT_OK) {
@@ -161,6 +214,10 @@ public class AxelActivity extends Activity {
 				case Constants.REQUEST_EDIT_NODE:
 					getAxelApplication().getCurrentSelection()
 							.onContentChanged();
+					onXmlContentChanged(true);
+					break;
+				case Constants.REQUEST_SORT_CHILDREN:
+					onXmlContentChanged(true);
 					break;
 				}
 			}
@@ -170,7 +227,8 @@ public class AxelActivity extends Activity {
 	/**
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
-	public boolean onCreateOptionsMenu(Menu menu) {
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
 		MenuInflater inflater = new MenuInflater(this);
@@ -182,22 +240,11 @@ public class AxelActivity extends Activity {
 	/**
 	 * @see android.app.Activity#onPrepareOptionsMenu(android.view.Menu)
 	 */
-	public boolean onPrepareOptionsMenu(Menu menu) {
+	@Override
+	public boolean onPrepareOptionsMenu(final Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 
 		menu.findItem(R.id.menu_save).setEnabled(!mReadOnly);
-
-		// boolean isRootExpanded = (mAdapter != null)
-		// && mAdapter.isRootExpanded();
-		// if (isRootExpanded) {
-		// menu.findItem(R.id.menu_expand_collapse_all)
-		// .setTitle(R.string.menu_collapse_all)
-		// .setIcon(R.drawable.ic_menu_collapse);
-		// } else {
-		// menu.findItem(R.id.menu_expand_collapse_all)
-		// .setTitle(R.string.menu_expand_all)
-		// .setIcon(R.drawable.ic_menu_expand);
-		// }
 
 		menu.findItem(R.id.menu_preview_in_browser).setEnabled(
 				getAxelApplication().canBePreviewed());
@@ -208,7 +255,8 @@ public class AxelActivity extends Activity {
 	/**
 	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
 	 */
-	public boolean onOptionsItemSelected(MenuItem item) {
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem item) {
 		boolean result;
 
 		result = true;
@@ -237,9 +285,6 @@ public class AxelActivity extends Activity {
 		case R.id.menu_save_as_template:
 			promptTemplateName();
 			break;
-		// case R.id.menu_expand_collapse_all:
-		// expandCollapseAll();
-		// break;
 		case R.id.menu_help:
 			startActivity(new Intent(getApplicationContext(),
 					AxelHelpActivity.class));
@@ -264,8 +309,9 @@ public class AxelActivity extends Activity {
 	 * @see android.app.Activity#onCreateContextMenu(android.view.ContextMenu,
 	 *      android.view.View, android.view.ContextMenu.ContextMenuInfo)
 	 */
-	public void onCreateContextMenu(ContextMenu menu, View view,
-			ContextMenuInfo menuInfo) {
+	@Override
+	public void onCreateContextMenu(final ContextMenu menu, final View view,
+			final ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, view, menuInfo);
 
 		if (view == mListView) {
@@ -284,22 +330,26 @@ public class AxelActivity extends Activity {
 	 *            should be shown. This information will vary depending on the
 	 *            class of view.
 	 */
-	protected void onCreateListItemContextMenu(ContextMenu menu, View view,
-			ContextMenuInfo menuInfo) {
+	protected void onCreateListItemContextMenu(final ContextMenu menu,
+			final View view, final ContextMenuInfo menuInfo) {
 		MenuInflater inflater = new MenuInflater(this);
 		AdapterContextMenuInfo info = (AdapterContextMenuInfo) menuInfo;
 		XmlNode node = (XmlNode) mAdapter.getNode(info.position);
+		if ((node == null) || (node.getContent() == null)) {
+			return;
+		}
+
 		mCurrentSelection = node;
 
 		if (!mReadOnly) {
-			if (node.getContent().isDocument()) {
+			if (node.isDocument()) {
 				inflater.inflate(R.menu.xml_doc_context, menu);
 				menu.findItem(R.id.action_add_element).setVisible(
 						!mDocument.hasRootChild());
 				menu.findItem(R.id.action_add_doctype).setVisible(
 						!mDocument.hasDoctype());
 			} else {
-				if (node.getContent().isElement()) {
+				if (node.isElement()) {
 					inflater.inflate(R.menu.xml_tag_context, menu);
 
 					menu.findItem(R.id.action_sort_children).setVisible(
@@ -308,10 +358,10 @@ public class AxelActivity extends Activity {
 
 				inflater.inflate(R.menu.xml_context, menu);
 
-				if (node.getContent().isComment()) {
+				if (node.isComment()) {
 					menu.findItem(R.id.action_comment_uncomment).setTitle(
 							R.string.action_uncomment);
-				} else if (node.getContent().isDocumentDeclaration()) {
+				} else if (node.isDocumentDeclaration()) {
 					menu.findItem(R.id.action_comment_uncomment).setVisible(
 							false);
 					menu.findItem(R.id.action_delete).setVisible(false);
@@ -328,7 +378,8 @@ public class AxelActivity extends Activity {
 	/**
 	 * @see android.app.Activity#onContextItemSelected(android.view.MenuItem)
 	 */
-	public boolean onContextItemSelected(MenuItem item) {
+	@Override
+	public boolean onContextItemSelected(final MenuItem item) {
 
 		boolean result = true;
 
@@ -349,7 +400,7 @@ public class AxelActivity extends Activity {
 			doAddChildToNode(XmlNode.createElement("element"), true);
 			break;
 		case R.id.menu_add_attribute:
-			promptElementAttribute();
+			promptElementAddAttribute();
 			break;
 		case R.id.action_add_doctype:
 			doAddChildToNode(
@@ -374,6 +425,36 @@ public class AxelActivity extends Activity {
 		}
 
 		return result;
+	}
+
+	/**
+	 * @see fr.xgouchet.xmleditor.ui.adapter.TreeAdapter.TreeNodeEventListener#onNodeLongPressed(fr.xgouchet.xmleditor.data.tree.TreeNode,
+	 *      android.view.View)
+	 */
+	@Override
+	public void onNodeLongPressed(final TreeNode<XmlData> node, final View view) {
+		String action = Settings.sLongPressQA;
+		performQuickAction(node, view, action);
+	}
+
+	/**
+	 * @see fr.xgouchet.xmleditor.ui.adapter.TreeAdapter.TreeNodeEventListener#onNodeTapped(fr.xgouchet.xmleditor.data.tree.TreeNode,
+	 *      android.view.View)
+	 */
+	@Override
+	public void onNodeTapped(final TreeNode<XmlData> node, final View view) {
+		String action = Settings.sSingleTapQA;
+		performQuickAction(node, view, action);
+	}
+
+	/**
+	 * @see fr.xgouchet.xmleditor.ui.adapter.TreeAdapter.TreeNodeEventListener#onNodeDoubleTapped(fr.xgouchet.xmleditor.data.tree.TreeNode,
+	 *      android.view.View)
+	 */
+	@Override
+	public void onNodeDoubleTapped(final TreeNode<XmlData> node, final View view) {
+		String action = Settings.sDoubleTapQA;
+		performQuickAction(node, view, action);
 	}
 
 	/**
@@ -402,6 +483,10 @@ public class AxelActivity extends Activity {
 				RecentFiles.updateRecentList(mCurrentFilePath);
 				RecentFiles.saveRecentList(getSharedPreferences(
 						Constants.PREFERENCES_NAME, MODE_PRIVATE));
+			}
+
+			if (result.isHtmlSoup()) {
+				Crouton.showText(this, R.string.toast_html_soup, Style.INFO);
 			}
 
 			onXmlDocumentChanged();
@@ -500,18 +585,58 @@ public class AxelActivity extends Activity {
 
 		mAdapter = new TreeAdapter<XmlData>(this, mDocument);
 		mAdapter.setNodeStyler(new XmlNodeStyler());
+		mAdapter.setListener(this);
 		mListView.setAdapter(mAdapter);
 
-		onXmlContentChanged();
+		onXmlContentChanged(false);
 	}
 
 	/**
 	 * Call when something in the xml tree changes
 	 */
-	private void onXmlContentChanged() {
+	private void onXmlContentChanged(final boolean dirty) {
 		updateTreeView();
+		if (dirty) {
+			mDirty = dirty;
+		}
 		updateTitle();
 		getAxelApplication().documentContentChanged();
+	}
+
+	/**
+	 * Performs a quick action on a node element
+	 */
+	private void performQuickAction(final TreeNode<XmlData> node,
+			final View view, final String action) {
+
+		if (Constants.QUICK_ACTION_NONE.equals(action)) {
+			// do nothing, yeah !!!
+		} else if (Constants.QUICK_ACTION_DISPLAY_MENU.equals(action)) {
+			mListView.showContextMenuForChild(view);
+		} else if (!mReadOnly) {
+			mCurrentSelection = (XmlNode) node;
+			if (Constants.QUICK_ACTION_ADD_CHILD.equals(action)) {
+				if (mCurrentSelection.isElement()
+						|| mCurrentSelection.isDocument()) {
+					// doAddChildToNode(XmlNode.createElement("element"), true);
+					promptNodeAddChild();
+				}
+			} else if (Constants.QUICK_ACTION_COMMENT_TOGGLE.equals(action)) {
+				if ((!mCurrentSelection.isDocument())
+						&& (!mCurrentSelection.isDocumentDeclaration())) {
+					doCommentUncommentNode();
+				}
+			} else if (Constants.QUICK_ACTION_DELETE.equals(action)) {
+				promptDeleteNode();
+			} else if (Constants.QUICK_ACTION_EDIT.equals(action)) {
+				doEditNode();
+			} else if (Constants.QUICK_ACTION_ORDER_CHILDREN.equals(action)) {
+				if (mCurrentSelection.hasChildren()) {
+					doSortChildren();
+				}
+			}
+		}
+
 	}
 
 	/**
@@ -584,6 +709,7 @@ public class AxelActivity extends Activity {
 	 */
 	private void newContent() {
 		mAfterSave = new Runnable() {
+			@Override
 			public void run() {
 				doClearContents();
 			}
@@ -598,6 +724,7 @@ public class AxelActivity extends Activity {
 	private void openFile() {
 
 		mAfterSave = new Runnable() {
+			@Override
 			public void run() {
 				Intent open;
 
@@ -621,6 +748,7 @@ public class AxelActivity extends Activity {
 					.show();
 		} else {
 			mAfterSave = new Runnable() {
+				@Override
 				public void run() {
 					Intent open;
 
@@ -646,6 +774,7 @@ public class AxelActivity extends Activity {
 					.show();
 		} else {
 			mAfterSave = new Runnable() {
+				@Override
 				public void run() {
 					Intent open;
 
@@ -665,6 +794,7 @@ public class AxelActivity extends Activity {
 	 */
 	private void previewFile() {
 		mAfterSave = new Runnable() {
+			@Override
 			public void run() {
 				doPreviewFile();
 			}
@@ -720,13 +850,17 @@ public class AxelActivity extends Activity {
 
 		builder.setPositiveButton(R.string.ui_delete,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 						doDeleteNode();
 					}
 				});
 		builder.setNegativeButton(R.string.ui_cancel,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 					}
 				});
 
@@ -747,14 +881,18 @@ public class AxelActivity extends Activity {
 
 		builder.setPositiveButton(R.string.ui_save,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 						saveContent();
 					}
 				});
 
 		builder.setNeutralButton(R.string.menu_save_as,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 						saveContentAs();
 					}
 				});
@@ -776,13 +914,17 @@ public class AxelActivity extends Activity {
 
 		builder.setPositiveButton(R.string.ui_yes,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 						doReloadCurrentFile();
 					}
 				});
 		builder.setNegativeButton(R.string.ui_no,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 					}
 				});
 
@@ -806,13 +948,17 @@ public class AxelActivity extends Activity {
 
 		builder.setPositiveButton(R.string.ui_send_file,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 						doSendFile(file);
 					}
 				});
 		builder.setNegativeButton(R.string.ui_cancel,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 					}
 				});
 
@@ -839,19 +985,25 @@ public class AxelActivity extends Activity {
 
 		builder.setPositiveButton(R.string.ui_send_file,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 						doSendFile(file);
 					}
 				});
 		builder.setNeutralButton(R.string.ui_convert_html,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 						doOpenFileAsHtml(file, forceReadOnly);
 					}
 				});
 		builder.setNegativeButton(R.string.ui_cancel,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 					}
 				});
 
@@ -875,19 +1027,25 @@ public class AxelActivity extends Activity {
 
 		builder.setPositiveButton(R.string.ui_save,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 						saveContent();
 					}
 				});
 		builder.setNegativeButton(R.string.ui_cancel,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 
 					}
 				});
 		builder.setNeutralButton(R.string.ui_no_save,
 				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
 						runAfterSave();
 					}
 				});
@@ -915,7 +1073,8 @@ public class AxelActivity extends Activity {
 
 		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
 				new View.OnClickListener() {
-					public void onClick(View v) {
+					@Override
+					public void onClick(final View v) {
 						String name = input.getText().toString().trim();
 
 						if (TextUtils.isEmpty(name)) {
@@ -931,7 +1090,7 @@ public class AxelActivity extends Activity {
 				});
 	}
 
-	private void promptElementAttribute() {
+	private void promptElementAddAttribute() {
 		final AttributeEditDialog dlg;
 
 		dlg = new AttributeEditDialog(this, LayoutInflater.from(this), null);
@@ -939,15 +1098,72 @@ public class AxelActivity extends Activity {
 		dlg.setSiblingsAttribute(mCurrentSelection.getContent().getAttributes());
 
 		dlg.setOnDismissListener(new OnDismissListener() {
-			public void onDismiss(DialogInterface dialog) {
+			@Override
+			public void onDismiss(final DialogInterface dialog) {
 				XmlAttribute attr = dlg.getAttribute();
 				if (attr != null) {
 					mCurrentSelection.getContent().addAttribute(attr);
-					onXmlContentChanged();
+					onXmlContentChanged(true);
 				}
 			}
 		});
 		dlg.show();
+	}
+
+	private void promptNodeAddChild() {
+		Builder builder = new Builder(this);
+
+		final String[] options;
+		if (mCurrentSelection.isElement()) {
+			options = new String[] { getString(R.string.action_add_element),
+					getString(R.string.action_add_text),
+					getString(R.string.action_add_cdata),
+					getString(R.string.action_add_pi),
+					getString(R.string.action_add_comment) };
+		} else if (mCurrentSelection.isDocument()) {
+			if (mCurrentSelection.hasDoctype()) {
+				if (mCurrentSelection.hasRootChild()) {
+					options = new String[] { getString(R.string.action_add_pi),
+							getString(R.string.action_add_comment) };
+				} else {
+					options = new String[] {
+							getString(R.string.action_add_element),
+							getString(R.string.action_add_pi),
+							getString(R.string.action_add_comment) };
+				}
+			} else {
+				if (mCurrentSelection.hasRootChild()) {
+					options = new String[] {
+							getString(R.string.action_add_doctype),
+							getString(R.string.action_add_pi),
+							getString(R.string.action_add_comment) };
+				} else {
+					options = new String[] {
+							getString(R.string.action_add_element),
+							getString(R.string.action_add_doctype),
+							getString(R.string.action_add_pi),
+							getString(R.string.action_add_comment) };
+				}
+			}
+		} else {
+			return;
+		}
+
+		builder.setTitle(R.string.action_add_child);
+		builder.setItems(options, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(final DialogInterface dialog, final int which) {
+				Log.i("Axel", "Lets add a " + options[which]);
+				XmlNode node = getXmlNode(options[which]);
+				if (node != null) {
+					doAddChildToNode(node, true);
+				}
+			}
+		});
+		builder.setNegativeButton(R.string.ui_cancel, null);
+
+		builder.create().show();
 	}
 
 	/**
@@ -972,7 +1188,7 @@ public class AxelActivity extends Activity {
 		mDocument.addChildNode(XmlNode.createDocumentDeclaration("1.0",
 				"UTF-8", null));
 		mDocument.setExpanded(true, true);
-		mDocument.updateViewCount(true);
+		mDocument.updateChildViewCount(true);
 
 		onXmlDocumentChanged();
 	}
@@ -985,7 +1201,7 @@ public class AxelActivity extends Activity {
 	 * @param ignore
 	 *            ignore the file link
 	 */
-	private void doOpenFile(File file, boolean ignore) {
+	private void doOpenFile(final File file, final boolean ignore) {
 		if (mLoader == null) {
 			int flags = 0;
 			if (ignore) {
@@ -1008,52 +1224,13 @@ public class AxelActivity extends Activity {
 	 *            force the file to be used as read only
 	 * @return if the file was loaded successfully
 	 */
-	private boolean doOpenFileAsHtml(File file, boolean forceReadOnly) {
-		boolean result = false;
+	private void doOpenFileAsHtml(final File file, final boolean forceReadOnly) {
+		if (mLoader == null) {
+			int flags = XmlFileLoaderResult.FLAG_HTML_SOUP;
 
-		Reader input = null;
-
-		if (file != null) {
-			try {
-				XmlNode document;
-				input = new InputStreamReader(new FileInputStream(file));
-				document = HtmlCleanerParser.parseHtmlTree(input);
-
-				if (document != null) {
-					result = true;
-					onFileParsed(file, document, null, forceReadOnly, false);
-					Crouton.makeText(
-							this,
-							"This is a retrieved, well formed version of your HTML document. Check if nothing was lost before saving it.",
-							Style.INFO).show();
-				}
-
-			} catch (XmlTreeParserException e) {
-				Crouton.makeText(this, e.getMessage(this), Style.ALERT).show();
-			} catch (FileNotFoundException e) {
-				Crouton.makeText(this, R.string.toast_open_not_found_error,
-						Style.ALERT).show();
-			} catch (OutOfMemoryError e) {
-				Crouton.makeText(this, R.string.toast_open_memory_error,
-						Style.ALERT).show();
-			} catch (StackOverflowError e) {
-				Crouton.makeText(this, R.string.toast_open_memory_error,
-						Style.ALERT).show();
-			} catch (Exception e) {
-				Crouton.makeText(this, R.string.toast_open_error, Style.ALERT)
-						.show();
-			} finally {
-				try {
-					if (input != null) {
-						input.close();
-					}
-				} catch (IOException e) {
-					Log.w("Axel", "Error while closing input reader");
-				}
-			}
+			mLoader = new AsyncHtmlFileLoader(this, flags);
+			mLoader.execute(file);
 		}
-
-		return result;
 	}
 
 	/**
@@ -1070,25 +1247,26 @@ public class AxelActivity extends Activity {
 	 * @param ignoreFile
 	 *            ignore the file
 	 */
-	private void onFileParsed(File file, XmlNode document, String encoding,
-			boolean forceReadOnly, boolean ignoreFile) {
-		mDocument = document;
-		mReadOnly = forceReadOnly;
-
-		if (!ignoreFile) {
-			mCurrentFileName = file.getName();
-			mCurrentFilePath = FileUtils.getCanonizePath(file);
-			mCurrentEncoding = encoding;
-
-			RecentFiles.updateRecentList(mCurrentFilePath);
-			RecentFiles.saveRecentList(getSharedPreferences(
-					Constants.PREFERENCES_NAME, MODE_PRIVATE));
-
-			mReadOnly |= !file.canWrite();
-		}
-
-		onXmlDocumentChanged();
-	}
+	// private void onFileParsed(final File file, final XmlNode document,
+	// final String encoding, final boolean forceReadOnly,
+	// final boolean ignoreFile) {
+	// mDocument = document;
+	// mReadOnly = forceReadOnly;
+	//
+	// if (!ignoreFile) {
+	// mCurrentFileName = file.getName();
+	// mCurrentFilePath = FileUtils.getCanonizePath(file);
+	// mCurrentEncoding = encoding;
+	//
+	// RecentFiles.updateRecentList(mCurrentFilePath);
+	// RecentFiles.saveRecentList(getSharedPreferences(
+	// Constants.PREFERENCES_NAME, MODE_PRIVATE));
+	//
+	// mReadOnly |= !file.canWrite();
+	// }
+	//
+	// onXmlDocumentChanged();
+	// }
 
 	/**
 	 * Opens a Web view to preview the current file
@@ -1114,7 +1292,7 @@ public class AxelActivity extends Activity {
 	 * @param path
 	 *            the path to the file (must be a valid path and not null)
 	 */
-	private void doSaveFile(String path) {
+	private void doSaveFile(final String path) {
 		if (path == null) {
 			Crouton.makeText(this, R.string.toast_save_null, Style.ALERT)
 					.show();
@@ -1132,7 +1310,7 @@ public class AxelActivity extends Activity {
 	 * @param fileName
 	 *            saves the template
 	 */
-	private void doSaveTemplate(String fileName) {
+	private void doSaveTemplate(final String fileName) {
 		StringBuilder builder;
 		String path = TemplateFiles.getOuputPath(this, fileName);
 
@@ -1153,7 +1331,7 @@ public class AxelActivity extends Activity {
 	 * @param file
 	 *            the file to send for report
 	 */
-	private void doSendFile(File file) {
+	private void doSendFile(final File file) {
 
 		Intent intent = new Intent(Intent.ACTION_SEND);
 		// intent.setData(Uri.fromFile(file));
@@ -1175,19 +1353,17 @@ public class AxelActivity extends Activity {
 	 * @param edit
 	 *            edit the added node ?
 	 */
-	private void doAddChildToNode(XmlNode node, boolean edit) {
+	private void doAddChildToNode(final XmlNode node, final boolean edit) {
 		if (mCurrentSelection.addChildNode(node)) {
-			if (mCurrentSelection.getContent().isDocument()) {
+			if (mCurrentSelection.isDocument()) {
 				mCurrentSelection.reorderDocumentChildren();
 			} else {
 				// todo reorder element chidlren based on validator
 			}
 
-			node.updateViewCount(false);
-			mCurrentSelection.updateViewCount(false);
+			node.updateChildViewCount(false);
+			mCurrentSelection.updateChildViewCount(false);
 			mCurrentSelection.setExpanded(true, false);
-
-			mDirty = true;
 
 			if (edit && Settings.sEditOnCreate) {
 				mCurrentSelection = node;
@@ -1196,7 +1372,7 @@ public class AxelActivity extends Activity {
 				mCurrentSelection = null;
 			}
 
-			onXmlContentChanged();
+			onXmlContentChanged(true);
 
 		}
 	}
@@ -1205,48 +1381,74 @@ public class AxelActivity extends Activity {
 	 * Comment or uncomment a node
 	 */
 	private void doCommentUncommentNode() {
-		if (mCurrentSelection.getContent().isComment()) {
+		if (mCurrentSelection.isComment()) {
 			doUncommentNode();
 		} else {
 			doCommentNode();
 		}
-
-		mDirty = true;
-		onXmlContentChanged();
 	}
 
 	/**
-	 * Uncomment a comment node
+	 * Uncomment a comment node TODO uncomment a CDATA BLOCK, uncomment a PI
 	 */
 	private void doUncommentNode() {
-		XmlNode doc = null, node, parent;
+		XmlNode node = null, parent;
 		int index;
-		InputStream input;
 
-		input = new ByteArrayInputStream(mCurrentSelection.getContent()
-				.getText().getBytes());
-		try {
-			doc = XmlTreePullParser.parseXmlTree(input, false, null);
-		} catch (XmlTreeParserException e) {
-			Crouton.makeText(this, e.getMessage(this), Style.ALERT).show();
-		}
+		node = getCommentContent();
 
-		if ((doc != null) && (doc.getChildrenCount() > 0)) {
-			node = (XmlNode) doc.getChildAtPos(0);
+		if (node != null) {
 			parent = (XmlNode) mCurrentSelection.getParent();
 			if (parent.canHasChild(node)) {
+				node.setExpanded(true);
+				node.updateChildViewCount(true);
+
 				index = parent.getChildPosition(mCurrentSelection);
 				parent.removeChildNode(mCurrentSelection);
 				parent.addChildNode(node, index);
-				node.setExpanded(true);
 
-				mDirty = true;
-				onXmlContentChanged();
+				parent.updateParentViewCount();
+
+				onXmlContentChanged(true);
 			} else {
 				Crouton.makeText(this, R.string.toast_xml_uncomment,
 						Style.ALERT).show();
 			}
 		}
+	}
+
+	/**
+	 * @return the content of the current selected node (comment) as an XML node
+	 */
+	private XmlNode getCommentContent() {
+		XmlNode node = null, doc = null;
+		InputStream input;
+
+		String content = mCurrentSelection.getContent().getText();
+		if (content.indexOf('<') < 0) {
+			node = XmlNode.createText(content);
+		} else if (content
+				.matches("^\\s*<\\?\\s*([a-zA-Z:_])([a-zA-Z0-9:_]*)\\s(.(?!>))*\\?>\\s*$")) {
+			node = XmlNode.createProcessingInstruction(content);
+		} else if (content.matches("^\\s*<!\\[CDATA\\[([\\w\\W\\s]*)]]>\\s*$")) {
+			int start = content.indexOf("<![CDATA[") + 9;
+			int end = content.indexOf("]]>");
+			node = XmlNode.createCDataSection(content.substring(start, end));
+		} else {
+			input = new ByteArrayInputStream(mCurrentSelection.getContent()
+					.getText().getBytes());
+			try {
+				doc = XmlTreePullParser.parseXmlTree(input, false, null);
+			} catch (XmlTreeParserException e) {
+				Crouton.makeText(this, e.getMessage(this), Style.ALERT).show();
+			}
+
+			if ((doc != null) && (doc.getChildrenCount() > 0)) {
+				node = (XmlNode) doc.getChildAtPos(0);
+			}
+		}
+
+		return node;
 	}
 
 	/**
@@ -1262,7 +1464,12 @@ public class AxelActivity extends Activity {
 		mCurrentSelection.buildXmlString(builder);
 		String content = builder.toString().trim();
 
-		parent.addChildNode(XmlNode.createComment(content), index);
+		XmlNode comment = XmlNode.createComment(content);
+		parent.addChildNode(comment, index);
+		comment.updateChildViewCount(true);
+		parent.updateParentViewCount();
+
+		onXmlContentChanged(true);
 	}
 
 	/**
@@ -1275,8 +1482,6 @@ public class AxelActivity extends Activity {
 				AxelNodeEditorActivity.class);
 
 		startActivityForResult(edit, Constants.REQUEST_EDIT_NODE);
-		mDirty = true;
-		updateTitle();
 	}
 
 	/**
@@ -1288,9 +1493,7 @@ public class AxelActivity extends Activity {
 		Intent edit = new Intent(getApplicationContext(),
 				AxelSortActivity.class);
 
-		startActivity(edit);
-		mDirty = true;
-		updateTitle();
+		startActivityForResult(edit, Constants.REQUEST_SORT_CHILDREN);
 	}
 
 	/**
@@ -1298,10 +1501,11 @@ public class AxelActivity extends Activity {
 	 */
 	private void doDeleteNode() {
 
-		if ((mCurrentSelection != null) && mCurrentSelection.removeFromParent()) {
-			mCurrentSelection = null;
-			mDirty = true;
-			onXmlContentChanged();
+		if (mCurrentSelection != null) {
+			if (mCurrentSelection.removeFromParent()) {
+				mCurrentSelection = null;
+				onXmlContentChanged(true);
+			}
 		}
 	}
 
@@ -1333,11 +1537,40 @@ public class AxelActivity extends Activity {
 		}
 	}
 
+	/**
+	 * @return the current Application
+	 */
 	private AxelApplication getAxelApplication() {
 		if (mAxelApplication == null) {
 			mAxelApplication = (AxelApplication) getApplication();
 		}
 		return mAxelApplication;
+	}
+
+	/**
+	 * @param name
+	 *            the displayed name to prompt for a child node
+	 * @return the children node
+	 */
+	private XmlNode getXmlNode(final String name) {
+		XmlNode node;
+		if (getString(R.string.action_add_element).equals(name)) {
+			node = XmlNode.createElement("element");
+		} else if (getString(R.string.action_add_doctype).equals(name)) {
+			node = XmlNode
+					.createDoctypeDeclaration("root SYSTEM \"DTD location\"");
+		} else if (getString(R.string.action_add_pi).equals(name)) {
+			node = XmlNode.createProcessingInstruction("target", "instruction");
+		} else if (getString(R.string.action_add_comment).equals(name)) {
+			node = XmlNode.createComment("Comment");
+		} else if (getString(R.string.action_add_text).equals(name)) {
+			node = XmlNode.createText("Text");
+		} else if (getString(R.string.action_add_cdata).equals(name)) {
+			node = XmlNode.createCDataSection("Unparsed data");
+		} else {
+			node = null;
+		}
+		return node;
 	}
 
 	/** */

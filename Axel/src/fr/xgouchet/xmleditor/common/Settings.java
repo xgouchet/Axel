@@ -9,15 +9,24 @@ public final class Settings {
 
 	/** */
 	public static int sMaxRecentFiles = 10;
-
 	/** */
 	public static boolean sKeepTextExact = true;
-
 	/** */
 	public static boolean sShowAttrInline = false;
-
 	/** */
 	public static boolean sEditOnCreate = true;
+	/** */
+	public static String sSingleTapQA = Constants.QUICK_ACTION_EDIT;
+	/** */
+	public static String sDoubleTapQA = Constants.QUICK_ACTION_ADD_CHILD;
+	/** */
+	public static String sLongPressQA = Constants.QUICK_ACTION_DISPLAY_MENU;
+	/** */
+	public static boolean sEscapeTextContent = true;
+	/** */
+	public static boolean sEscapeAttributeValues = true;
+	/** */
+	public static String sIndentationSize = Constants.INDENT_MEDIUM;
 
 	/**
 	 * Updates the settings from the preference
@@ -40,6 +49,25 @@ public final class Settings {
 
 		sEditOnCreate = preferences.getBoolean(
 				Constants.PREFERENCE_EDIT_ON_CREATE, true);
+
+		sSingleTapQA = preferences
+				.getString(Constants.PREFERENCE_SINGLE_TAP_QA,
+						Constants.QUICK_ACTION_EDIT);
+		sDoubleTapQA = preferences.getString(
+				Constants.PREFERENCE_DOUBLE_TAP_QA,
+				Constants.QUICK_ACTION_ADD_CHILD);
+
+		sLongPressQA = preferences.getString(
+				Constants.PREFERENCE_LONG_PRESS_QA,
+				Constants.QUICK_ACTION_DISPLAY_MENU);
+
+		sEscapeAttributeValues = preferences.getBoolean(
+				Constants.PREFERENCE_ESCAPE_ATTR_VALUE, true);
+		sEscapeTextContent = preferences.getBoolean(
+				Constants.PREFERENCE_ESCAPE_TEXT_CONTENT, true);
+
+		sIndentationSize = preferences.getString(
+				Constants.PREFERENCE_INDENTATION_SIZE, Constants.INDENT_MEDIUM);
 	}
 
 	/**

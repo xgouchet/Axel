@@ -106,6 +106,16 @@ Toute modification non sauvée sera perdue."</string>
     <string name="ui_licence_juniversalchardet">"Axel utilise la bibliothèque <b>JUniversalCharDet</b>, écrite par Takscape (takscape@gmail.com), sous licence Mozilla Publique (version 1.1)."</string>
 
     <!--  -->
+    <string name="config_cat_editor">Editeur</string>
+    <string name="config_cat_display">Affichage</string>
+    <string name="config_title_indentation_size">Taille de l\'indentation</string>
+    <string name="config_title_single_tap_quick_action">Action après un click</string>
+    <string name="config_title_double_tap_quick_action">Action après un double click</string>
+    <string name="config_title_long_press_quick_action">Action après un appuis long</string>
+    <string name="config_title_escape_text_content">Echapper les noeuds texte</string>
+    <string name="config_title_escape_attr_value">Echapper les attributs</string>
+    <string name="config_summary_on_escape">Les caracteres spéciaux (&amp; , &lt; and \") seront echappés (&amp;amp;, &amp;lt; and &amp;quot;)</string>
+    <string name="config_summary_off_escape">Les caractères spéciaux génèreront des erreus s\'ils ne sont pas echappés manuellement</string>
     <string name="config_title_max_recent">Fichiers récents</string>
     <string name="config_title_keep_text_exact">Garder les noeuds texte intactes</string>
     <string name="config_summary_on_keep_text_exact">"Le contenu des noeuds texte apparait tel qu'il est dans le document source"</string>

@@ -9,11 +9,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:alpha="0.75"
         android:ems="10"
         android:hint="@string/ui_hint_prefix"
         android:inputType="textNoSuggestions"
         android:singleLine="true"
-        android:textAppearance="@android:style/TextAppearance.Medium" />
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textSize="16sp" />
 
     <fr.xgouchet.xmleditor.ui.widget.ClearableEditText
         android:id="@+id/editTextName"
@@ -24,12 +26,17 @@
         android:hint="@string/ui_hint_name"
         android:inputType="textNoSuggestions"
         android:singleLine="true"
-        android:textAppearance="@android:style/TextAppearance.Medium" />
+        android:textAppearance="@android:style/TextAppearance.Medium"
+        android:textSize="20sp" >
+
+        <requestFocus />
+    </fr.xgouchet.xmleditor.ui.widget.ClearableEditText>
 
     <ListView
         android:id="@+id/listAttributes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp" />
+        android:layout_margin="5dp"
+        android:textSize="20sp" />
 
 </LinearLayout>

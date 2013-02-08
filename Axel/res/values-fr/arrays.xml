@@ -23,13 +23,13 @@
 
     <!-- Quick actions -->
     <string-array name="node_quick_actions_entries">
-        <item>Edit the node</item>
-        <item>Add a child node</item>
-        <item>Change the children order</item>
-        <item>Display the context menu</item>
-        <item>Comment / uncomment the node</item>
-        <item>Delete the node</item>
-        <item>Do nothing</item>
+        <item>Editer le noeud</item>
+        <item>Ajouter un noeud</item>
+        <item>Arranger les noeuds enfants</item>
+        <item>Afficher le menu contextuel</item>
+        <item>Commenter / décommenter le noeud</item>
+        <item>Supprimer le noeud</item>
+        <item>Ne rien faire</item>
     </string-array>
     <string-array name="node_quick_actions_values">
         <item>edit</item>
@@ -43,9 +43,9 @@
 
     <!-- Indentation -->
     <string-array name="indentation_entries">
-        <item>Small</item>
-        <item>Medium</item>
-        <item>Large</item>
+        <item>Petite</item>
+        <item>Moyenne</item>
+        <item>Grande</item>
     </string-array>
     <string-array name="indentation_values">
         <item>small</item>

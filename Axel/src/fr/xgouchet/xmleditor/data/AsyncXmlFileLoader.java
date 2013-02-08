@@ -32,8 +32,19 @@ public class AsyncXmlFileLoader extends
 	}
 
 	/**
+	 * @see android.os.AsyncTask#onCancelled(java.lang.Object)
+	 */
+	@Override
+	protected void onCancelled(final XmlFileLoaderResult result) {
+		if (mDialog != null) {
+			mDialog.dismiss();
+		}
+	}
+
+	/**
 	 * @see android.os.AsyncTask#onPreExecute()
 	 */
+	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
 
@@ -49,6 +60,7 @@ public class AsyncXmlFileLoader extends
 	/**
 	 * @see android.os.AsyncTask#doInBackground(Params[])
 	 */
+	@Override
 	protected XmlFileLoaderResult doInBackground(final File... params) {
 
 		if (params.length == 0) {
@@ -67,10 +79,12 @@ public class AsyncXmlFileLoader extends
 	/**
 	 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
 	 */
-	protected void onPostExecute(XmlFileLoaderResult result) {
+	@Override
+	protected void onPostExecute(final XmlFileLoaderResult result) {
 		super.onPostExecute(result);
 		mActivity.onFileOpened(mResult);
-		mDialog.hide();
+		mDialog.dismiss();
+		mDialog = null;
 	}
 
 	/**
@@ -78,7 +92,7 @@ public class AsyncXmlFileLoader extends
 	 * 
 	 * @param file
 	 */
-	private void doReadFile(final File file) {
+	protected void doReadFile(final File file) {
 		mResult.setFile(file);
 		mResult.setEncoding(TextFileUtils.getFileEncoding(file));
 		setDialogTitle(R.string.ui_hashing);
@@ -110,7 +124,7 @@ public class AsyncXmlFileLoader extends
 	 * @param file
 	 *            the file to load
 	 */
-	private void dOpenFileAsXml(File file) throws FileNotFoundException,
+	private void dOpenFileAsXml(final File file) throws FileNotFoundException,
 			IOException, XmlTreeParserException {
 		InputStream input = null;
 
@@ -125,7 +139,7 @@ public class AsyncXmlFileLoader extends
 
 			setDialogTitle(R.string.ui_generating);
 			document.setExpanded(true, true);
-			document.updateViewCount(true);
+			document.updateChildViewCount(true);
 
 			mResult.setDocument(document);
 			mResult.setError(XmlError.noError);
@@ -143,7 +157,7 @@ public class AsyncXmlFileLoader extends
 	 * @param file
 	 *            the file to load
 	 */
-	private void doOpenFileAsCompressedXml(File file)
+	private void doOpenFileAsCompressedXml(final File file)
 			throws FileNotFoundException, IOException, XmlTreeParserException {
 		InputStream input = null;
 
@@ -155,7 +169,7 @@ public class AsyncXmlFileLoader extends
 
 			setDialogTitle(R.string.ui_generating);
 			document.setExpanded(true, true);
-			document.updateViewCount(true);
+			document.updateChildViewCount(true);
 
 			mResult.setDocument(document);
 			mResult.setError(XmlError.noError);
@@ -174,7 +188,7 @@ public class AsyncXmlFileLoader extends
 	 * @param file
 	 *            the file to load
 	 */
-	private void doOpenFileAsBinaryPlist(File file)
+	private void doOpenFileAsBinaryPlist(final File file)
 			throws FileNotFoundException, IOException, XmlTreeParserException {
 		InputStream input = null;
 
@@ -186,7 +200,7 @@ public class AsyncXmlFileLoader extends
 
 			setDialogTitle(R.string.ui_generating);
 			document.setExpanded(true, true);
-			document.updateViewCount(true);
+			document.updateChildViewCount(true);
 
 			mResult.setDocument(document);
 			mResult.setError(XmlError.noError);
@@ -202,15 +216,16 @@ public class AsyncXmlFileLoader extends
 	/**
 	 * @param string
 	 */
-	private void setDialogTitle(final int string) {
+	protected void setDialogTitle(final int string) {
 		mActivity.runOnUiThread(new Runnable() {
+			@Override
 			public void run() {
 				mDialog.setTitle(string);
 			}
 		});
 	}
 
-	private final AxelActivity mActivity;
-	private final XmlFileLoaderResult mResult;
+	protected final AxelActivity mActivity;
+	protected final XmlFileLoaderResult mResult;
 	private ProgressDialog mDialog;
 }

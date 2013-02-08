@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="quick_help">By default, single tap on a node to edit it, double tap to add a children, do a long press to display the menu. Each action can be customized in the settings. </string>
     <string name="help_edit_title">Edit</string>
     <string name="help_edit_content">"A long press on any node will display a menu which will let you edit the selected node. \n\n
 Note that if the file you are viewing is set as read-only by the file system, you'll see it's name displayed between [square brackets] in the title bar and you won't be able to edit this document. \n\n

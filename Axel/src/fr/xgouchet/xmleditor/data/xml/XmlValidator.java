@@ -3,6 +3,7 @@ package fr.xgouchet.xmleditor.data.xml;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.text.TextUtils;
@@ -28,19 +29,71 @@ public class XmlValidator {
 	public static final Pattern ENCODING_PATTERN = Pattern.compile(ENCODING);
 
 	/** Regexp to find unescaped ampersand */
-	public static final String UNESCAPED = ".*&[\\w]*[\\W&&[^;#]].*";
+	public static final String AMPERSAND = "(&([\\w]*)[\\W&&[^;#]])|(&#(\\d+)[\\W&&[^;]])";
 	/** Regexp Pattern */
-	public static final Pattern UNESCAPED_PATTERN = Pattern.compile(UNESCAPED);
+	public static final Pattern AMPERSAND_PATTERN = Pattern.compile(AMPERSAND);
 
 	/** XML namespace */
 	public static final String XML_NS = "xmlns";
+
+	public static String escapeAttributeValue(final String input) {
+		String output;
+
+		output = escapeAmpersand(input);
+		output = output.replaceAll("<", "&lt;");
+		output = output.replaceAll("\"", "&quot;");
+
+		return output;
+	}
+
+	/**
+	 * Escapes any illegal character in the input
+	 * 
+	 * @param input
+	 *            the input string
+	 * @return the valid escaped output
+	 */
+	public static String escapeTextContent(final String input) {
+		String output;
+
+		output = escapeAmpersand(input);
+		output = output.replaceAll("<", "&lt;");
+		// output.replaceAll(">", "&gt;"); not mandatory
+
+		return output;
+	}
+
+	public static String escapeAmpersand(final String input) {
+		final Matcher matcher = AMPERSAND_PATTERN.matcher(input);
+		final StringBuilder builder = new StringBuilder(input.length());
+
+		boolean escape;
+		int index, next;
+		index = 0;
+		do {
+
+			escape = matcher.find(index);
+			if (escape) {
+				next = matcher.start();
+				builder.append(input.substring(index, next));
+				builder.append("&amp;");
+
+				index = next + 1;
+			} else if (index < input.length()) {
+				builder.append(input.substring(index));
+			}
+
+		} while (escape && (index < input.length()));
+
+		return builder.toString();
+	}
 
 	/**
 	 * @param version
 	 *            the version num in the xml document declaration
 	 * @return if the version is valid
 	 */
-	public static boolean isValidVersionNum(String version) {
+	public static boolean isValidVersionNum(final String version) {
 		return VERSION_PATTERN.matcher(version).matches();
 	}
 
@@ -49,7 +102,7 @@ public class XmlValidator {
 	 *            the encoding in the xml document declaration
 	 * @return if the encoding is valid
 	 */
-	public static boolean isValidEncoding(String enconding) {
+	public static boolean isValidEncoding(final String enconding) {
 		return ENCODING_PATTERN.matcher(enconding).matches();
 	}
 
@@ -58,7 +111,7 @@ public class XmlValidator {
 	 *            the name to test
 	 * @return if the name is valid
 	 */
-	public static boolean isValidName(String name) {
+	public static boolean isValidName(final String name) {
 		return NAME_PATTERN.matcher(name).matches();
 	}
 
@@ -67,7 +120,7 @@ public class XmlValidator {
 	 *            the uri
 	 * @return if the given uri is valid
 	 */
-	public static boolean isValidNamespaceURI(String uri) {
+	public static boolean isValidNamespaceURI(final String uri) {
 		boolean result = true;
 		try {
 			new URI(uri);
@@ -83,13 +136,13 @@ public class XmlValidator {
 	 *            the attribute value to test
 	 * @return if the attribute is valid
 	 */
-	public static boolean isValidAttributeValue(String value) {
+	public static boolean isValidAttributeValue(final String value) {
 
 		boolean result;
 
 		result = !value.contains("\"");
 		result &= !value.contains("<");
-		result &= !UNESCAPED_PATTERN.matcher(value).matches();
+		result &= !AMPERSAND_PATTERN.matcher(value).find();
 
 		return result;
 	}
@@ -99,7 +152,7 @@ public class XmlValidator {
 	 *            the name to test
 	 * @return if the name is valid
 	 */
-	public static boolean isValidPITargetName(String name) {
+	public static boolean isValidPITargetName(final String name) {
 		boolean result;
 
 		result = !name.equalsIgnoreCase("xml");
@@ -113,7 +166,7 @@ public class XmlValidator {
 	 *            the content to test
 	 * @return if the content is valid
 	 */
-	public static boolean isValidPIContent(String content) {
+	public static boolean isValidPIContent(final String content) {
 		boolean result;
 
 		result = !content.contains("?>");
@@ -126,7 +179,7 @@ public class XmlValidator {
 	 *            the content to test
 	 * @return if the content is valid
 	 */
-	public static boolean isValidCDataContent(String content) {
+	public static boolean isValidCDataContent(final String content) {
 		boolean result;
 
 		result = !content.contains("]]>");
@@ -139,7 +192,7 @@ public class XmlValidator {
 	 *            the comment to test
 	 * @return if the comment is valid
 	 */
-	public static boolean isValidComment(String comment) {
+	public static boolean isValidComment(final String comment) {
 
 		boolean result;
 		result = !comment.endsWith("-");
@@ -153,12 +206,12 @@ public class XmlValidator {
 	 *            the text to test
 	 * @return if the text is valid
 	 */
-	public static boolean isValidText(String text) {
+	public static boolean isValidText(final String text) {
 
 		boolean result;
 
 		result = !text.contains("<");
-		result &= !UNESCAPED_PATTERN.matcher(text).matches();
+		result &= !AMPERSAND_PATTERN.matcher(text).find();
 
 		return result;
 	}
@@ -174,8 +227,9 @@ public class XmlValidator {
 	 *            is the namespace for an attribute item
 	 * @return if the namespace is valid according to the node context
 	 */
-	public static boolean isValidNamespace(String prefix, XmlNode node,
-			List<XmlAttribute> attrs, boolean attribute) {
+	public static boolean isValidNamespace(final String prefix,
+			final XmlNode node, final List<XmlAttribute> attrs,
+			final boolean attribute) {
 		boolean result = false;
 
 		if (!TextUtils.isEmpty(prefix)) {
@@ -198,7 +252,8 @@ public class XmlValidator {
 	 *            an xml node
 	 * @return if the namespace is valid according to the node hierarchy
 	 */
-	protected static boolean isParentNamespace(String prefix, XmlNode node) {
+	protected static boolean isParentNamespace(final String prefix,
+			final XmlNode node) {
 		boolean result = false;
 
 		if ((node != null) && (node.getContent().isElement())) {
@@ -221,8 +276,8 @@ public class XmlValidator {
 	 *            the local attributes
 	 * @return if the local attributes define the given namespace
 	 */
-	protected static boolean isLocalNamespace(String prefix,
-			List<XmlAttribute> attrs) {
+	protected static boolean isLocalNamespace(final String prefix,
+			final List<XmlAttribute> attrs) {
 		boolean result = false;
 
 		for (XmlAttribute attr : attrs) {
