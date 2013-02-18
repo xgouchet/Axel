@@ -10,3 +10,6 @@
 [submodule "PList"]
 	path = PList
 	url = git://github.com/xgouchet/PList
+[submodule "NewQuickAction"]
+	path = NewQuickAction
+	url = git://github.com/xgouchet/NewQuickAction.git
