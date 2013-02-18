@@ -112,6 +112,5 @@ public final class TemplateFiles {
 	}
 
 	private TemplateFiles() {
-		// TODO Auto-generated constructor stub
 	}
 }

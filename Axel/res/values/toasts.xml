@@ -37,6 +37,7 @@
     <string name="toast_xml_parse_error">Parse error while reading the XML input, the document may be malformed</string>
     <string name="toast_xml_io_exception">Unable to read from input</string>
     <string name="toast_xml_uncomment">Unable to uncomment this node at this location</string>
+    <string name="toast_open_read_only">This file is opened in read only mode. \nTo modify this document, you must first use the Save as menu option.</string>
     <string name="toast_html_soup">This is a new, well formed version of your document. Please check that nothing was lost before saving.</string>
 
 </resources>

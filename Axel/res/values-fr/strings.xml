@@ -40,6 +40,9 @@
     <!-- Context menu -->
     <string name="action_add_child">Ajouter un noeud</string>
     <string name="action_edit">Modifier</string>
+    <string name="action_cut">Couper</string>
+    <string name="action_copy">Copier</string>
+    <string name="action_paste">Coller (enfant)</string>
     <string name="action_delete">Supprimer</string>
     <string name="action_comment">Commenter</string>
     <string name="action_uncomment">Décommenter</string>
@@ -49,7 +52,7 @@
     <string name="action_add_pi">Processing instruction</string>
     <string name="action_add_text">Block de texte</string>
     <string name="action_add_cdata">Block CData</string>
-    <string name="action_order_children">Arranger les noeuds enfants</string>
+    <string name="action_sort_children">Arranger les noeuds enfants</string>
 
     <!-- Misc UI strings -->
     <string name="ui_save_text">"Voulez vous sauver votre document? \nTout changement non sauvé sera perdu. "</string>
@@ -57,6 +60,7 @@
     <string name="ui_purchase">Acheter</string>
     <string name="ui_no_save">"Ne pas sauver"</string>
     <string name="ui_cancel">Annuler</string>
+    <string name="ui_discard">Annuler</string>
     <string name="ui_saving">Sauvegarde</string>
     <string name="ui_loading">Chargement</string>
     <string name="ui_hashing">Hashage du fichier</string>
@@ -82,6 +86,7 @@
     <string name="ui_hint_encoding">Encodage</string>
     <string name="ui_prompt_delete_node">"Voulez vous réellement supprimer ce noeud?"</string>
     <string name="ui_open_error">Erreur de lecture</string>
+    <string name="ui_copy_clipboard">Le contenu du noeud (%1$s) a été copié dans le presse-papier</string>
     <string name="ui_prompt_open_error">"Une erreur est survenue lors de la lecture de ce fichier. 
         
 Si votre document est valide, envoyez le moi afin que je corrige ce problème.  

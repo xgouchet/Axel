@@ -18,7 +18,7 @@ import fr.xgouchet.xmleditor.R;
 import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.data.xml.XmlNodeStyler;
-import fr.xgouchet.xmleditor.ui.AttributeEditDialog;
+import fr.xgouchet.xmleditor.ui.dialog.AttributeEditDialog;
 
 /**
  * 

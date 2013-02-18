@@ -8,7 +8,7 @@
     tools:ignore="UseCompoundDrawables" >
 
     <ImageView
-        android:id="@+id/imageDecorator"
+        android:id="@id/imageDecorator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|left"
@@ -16,7 +16,7 @@
         android:src="@drawable/expander_ignore" />
 
     <TextView
-        android:id="@+id/textNode"
+        android:id="@id/textNode"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/list_item_pading"
@@ -28,7 +28,7 @@
         android:typeface="monospace" />
 
     <ImageView
-        android:id="@+id/drag"
+        android:id="@id/drag"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="top|left"

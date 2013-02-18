@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Actions -->
+    <item name="action_add_child" type="id"/>
+    <item name="action_add_attr" type="id"/>
+    <item name="action_comment" type="id"/>
+    <item name="action_delete" type="id"/>
+    <item name="action_edit" type="id"/>
+    <item name="action_sort_children" type="id"/>
+    <item name="action_cut" type="id"/>
+    <item name="action_copy" type="id"/>
+    <item name="action_paste" type="id"/>
+
+    <!-- Menus -->
+    <item name="menu_new" type="id"/>
+    <item name="menu_new_empty" type="id"/>
+    <item name="menu_new_template" type="id"/>
+    <item name="menu_open_file" type="id"/>
+    <item name="menu_open_recent" type="id"/>
+    <item name="menu_save" type="id"/>
+    <item name="menu_save_as" type="id"/>
+    <item name="menu_save_as_template" type="id"/>
+    <item name="menu_preview_in_browser" type="id"/>
+    <item name="menu_help" type="id"/>
+    <item name="menu_settings" type="id"/>
+    <item name="menu_about" type="id"/>
+    <item name="menu_add_attribute" type="id"/>
+    <item name="menu_attr_custom" type="id"/>
+    <item name="menu_attr_namespace" type="id"/>
+    <item name="menu_attr_default_namespace" type="id"/>
+    <item name="menu_attr_xml_schema_public" type="id"/>
+    <item name="menu_attr_xml_schema_local" type="id"/>
+    <item name="menu_doctype_xhtml_strict" type="id"/>
+    <item name="menu_doctype_xhtml_transitional" type="id"/>
+    <item name="menu_doctype_xhtml_frameset" type="id"/>
+    <item name="menu_doctype_xhtml_1_1" type="id"/>
+
+    <!-- UIs -->
+    <item name="buttonDone" type="id"/>
+    <item name="buttonDiscard" type="id"/>
+    <item name="buttonCancel" type="id"/>
+    <item name="buttonEdit" type="id"/>
+    <item name="buttonDelete" type="id"/>
+    <item name="checkStandalone" type="id"/>
+    <item name="editFileName" type="id"/>
+    <item name="editTextName" type="id"/>
+    <item name="editTextVersion" type="id"/>
+    <item name="editTextPrefix" type="id"/>
+    <item name="editTextValue" type="id"/>
+    <item name="editTextEncoding" type="id"/>
+    <item name="frameEditor" type="id"/>
+    <item name="includeButtons" type="id"/>
+    <item name="imageDecorator" type="id"/>
+    <item name="textAttribute" type="id"/>
+    <item name="textNode" type="id"/>
+    <item name="textScrollView" type="id"/>
+    <item name="listAttributes" type="id"/>
+    <item name="spinnerPrefix" type="id"/>
+
+</resources>

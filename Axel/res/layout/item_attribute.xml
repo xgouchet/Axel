@@ -5,13 +5,13 @@
     android:orientation="horizontal" >
 
     <HorizontalScrollView
-        android:id="@+id/textScrollView"
+        android:id="@id/textScrollView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1" >
 
         <TextView
-            android:id="@+id/textAttribute"
+            android:id="@id/textAttribute"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -21,13 +21,13 @@
     </HorizontalScrollView>
 
     <ImageButton
-        android:id="@+id/buttonEdit"
+        android:id="@id/buttonEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_edit" />
 
     <ImageButton
-        android:id="@+id/buttonDelete"
+        android:id="@id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_delete" />

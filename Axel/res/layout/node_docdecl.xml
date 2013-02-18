@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <fr.xgouchet.xmleditor.ui.widget.ClearableEditText
-        android:id="@+id/editTextVersion"
+        android:id="@id/editTextVersion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -17,7 +17,7 @@
         android:textSize="16sp" />
 
     <fr.xgouchet.xmleditor.ui.widget.ClearableEditText
-        android:id="@+id/editTextEncoding"
+        android:id="@id/editTextEncoding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -32,7 +32,7 @@
     </fr.xgouchet.xmleditor.ui.widget.ClearableEditText>
 
     <CheckBox
-        android:id="@+id/checkStandalone"
+        android:id="@id/checkStandalone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"

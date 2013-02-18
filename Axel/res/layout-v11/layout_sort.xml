@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dslv="http://schemas.android.com/apk/lib/com.mobeta.android.demodslv"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingRegistered" >
+
+    <com.mobeta.android.dslv.DragSortListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/xml_divider"
+        android:dividerHeight="1dp"
+        dslv:collapsed_height="8dp"
+        dslv:drag_scroll_start="0.33"
+        dslv:float_alpha="0.6"
+        dslv:float_background_color="#000000"
+        dslv:max_drag_scroll_speed="0.5"
+        dslv:remove_mode="slideLeft"
+        dslv:slide_shuffle_speed="0.3"
+        dslv:track_drag_sort="false" />
+
+</RelativeLayout>

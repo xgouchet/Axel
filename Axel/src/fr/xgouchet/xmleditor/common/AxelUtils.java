@@ -1,14 +1,110 @@
 package fr.xgouchet.xmleditor.common;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.view.View;
+import android.view.View.OnFocusChangeListener;
+import android.widget.EditText;
 import fr.xgouchet.androidlib.data.FileUtils;
+import fr.xgouchet.xmleditor.data.xml.XmlNode;
 
 @SuppressWarnings("serial")
 public class AxelUtils {
+
+	private static final boolean PROMPT_PREFIX = true;
+
+	/**
+	 * 
+	 * @param prefix
+	 */
+	public static void setupPrefixEditText(final EditText prefix,
+			final XmlNode node, final boolean allowXmlns) {
+		if (PROMPT_PREFIX) {
+			prefix.setInputType(InputType.TYPE_NULL);
+			prefix.setOnFocusChangeListener(new OnFocusChangeListener() {
+				@Override
+				public void onFocusChange(final View v, final boolean hasFocus) {
+					if (hasFocus) {
+						displayPrefixDialog(prefix, node, hasFocus);
+					}
+				}
+			});
+
+			prefix.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					displayPrefixDialog(prefix, node, allowXmlns);
+				}
+			});
+
+		}
+	}
+
+	private static void displayPrefixDialog(final EditText editText,
+			final XmlNode node, final boolean allowXmlns) {
+		AlertDialog.Builder builder = new Builder(editText.getContext());
+
+		final List<String> prefixes = node.getContent().getNamespacePrefixes();
+
+		// add some options
+		Collections.sort(prefixes);
+		if (prefixes.contains("xmlns")) {
+			prefixes.remove("xmlns");
+		}
+		if (allowXmlns) {
+			prefixes.add(0, "xmlns");
+		}
+		prefixes.add(0, "");
+
+		builder.setTitle("Prefix");
+		builder.setItems(prefixes.toArray(new String[prefixes.size()]),
+				new OnClickListener() {
+
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
+						String prefix = prefixes.get(which);
+						editText.setText(prefix);
+					}
+				});
+
+		builder.show();
+
+	}
+
+	/**
+	 * Ellipsizes a text
+	 * 
+	 * @param text
+	 *            the text to ellipsize
+	 * @param length
+	 *            the max length of the return string
+	 * @return an ellipsized string which contains at most lengt characters
+	 */
+	public static String ellipsize(final String text, final int length) {
+		String result;
+
+		if (TextUtils.isEmpty(text)) {
+			result = "";
+		} else {
+			result = text;
+			if (result.length() > length) {
+				result = result.substring(0, length - 6) + " [...]";
+			}
+		}
+
+		return result;
+	}
 
 	public static final List<String> HTML_EXT = new LinkedList<String>() {
 		{

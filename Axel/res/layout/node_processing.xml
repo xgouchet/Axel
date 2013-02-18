@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <fr.xgouchet.xmleditor.ui.widget.ClearableEditText
-        android:id="@+id/editTextName"
+        android:id="@id/editTextName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -20,7 +20,7 @@
     </fr.xgouchet.xmleditor.ui.widget.ClearableEditText>
 
     <fr.xgouchet.xmleditor.ui.widget.ClearableEditText
-        android:id="@+id/editText"
+        android:id="@id/editTextValue"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"

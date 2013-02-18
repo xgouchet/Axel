@@ -46,7 +46,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	public void onParentChanged() {
 		super.onParentChanged();
 		if (mParent != null) {
-			mContent.readParentData(mParent.getContent());
+			mContent.setParent(mParent.getContent());
 			onContentChanged();
 		}
 	}
@@ -138,8 +138,9 @@ public final class XmlNode extends TreeNode<XmlData> {
 	}
 
 	/**
-	 * @param data
-	 *            the full PI node (eg : "<?target instruction?>")
+	 * @param pi
+	 *            the PI node content without markup characters
+	 * 
 	 * @return an XML Document processing node
 	 */
 	public static XmlNode createProcessingInstruction(final String pi) {
@@ -147,8 +148,6 @@ public final class XmlNode extends TreeNode<XmlData> {
 		String content;
 
 		content = pi.trim();
-		content = content.substring(2, content.length() - 2);
-		content = content.trim();
 		String[] data = content.split("\\s+");
 
 		switch (data.length) {
@@ -198,7 +197,14 @@ public final class XmlNode extends TreeNode<XmlData> {
 	public static XmlNode createElement(final String name) {
 		XmlNode node = new XmlNode(new XmlData(XmlData.XML_ELEMENT));
 
-		node.mContent.setName(name);
+		String[] split = name.split(":");
+
+		if (split.length == 1) {
+			node.mContent.setName(name);
+		} else if (split.length == 2) {
+			node.mContent.setPrefix(split[0]);
+			node.mContent.setName(split[1]);
+		}
 		node.mContent.setFlags(XmlData.FLAG_EMPTY);
 
 		return node;
@@ -213,11 +219,16 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 * @return an xml element node
 	 */
 	public static XmlNode createElement(final String prefix, final String name) {
-		XmlNode node = new XmlNode(new XmlData(XmlData.XML_ELEMENT));
+		XmlNode node;
 
-		node.mContent.setPrefix(prefix);
-		node.mContent.setName(name);
-		node.mContent.setFlags(XmlData.FLAG_EMPTY);
+		if ((name.indexOf(':') >= 0) && (TextUtils.isEmpty(prefix))) {
+			node = createElement(name);
+		} else {
+			node = new XmlNode(new XmlData(XmlData.XML_ELEMENT));
+			node.mContent.setPrefix(prefix);
+			node.mContent.setName(name);
+			node.mContent.setFlags(XmlData.FLAG_EMPTY);
+		}
 
 		return node;
 	}

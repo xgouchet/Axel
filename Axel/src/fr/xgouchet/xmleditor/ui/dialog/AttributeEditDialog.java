@@ -1,4 +1,4 @@
-package fr.xgouchet.xmleditor.ui;
+package fr.xgouchet.xmleditor.ui.dialog;
 
 import java.util.List;
 
@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import fr.xgouchet.xmleditor.R;
+import fr.xgouchet.xmleditor.common.AxelUtils;
 import fr.xgouchet.xmleditor.common.Settings;
 import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
@@ -38,7 +39,6 @@ public class AttributeEditDialog implements OnShowListener {
 		mAttribute = attribute;
 
 		final AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setTitle("Edit");
 		builder.setCancelable(true);
 
 		builder.setView(inflater
@@ -63,6 +63,8 @@ public class AttributeEditDialog implements OnShowListener {
 		mEditPrefix = (EditText) mDialog.findViewById(R.id.editTextPrefix);
 		mEditName = (EditText) mDialog.findViewById(R.id.editTextName);
 		mEditValue = (EditText) mDialog.findViewById(R.id.editTextValue);
+
+		AxelUtils.setupPrefixEditText(mEditPrefix, mNode, true);
 
 		mDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
 				new OnClickListener() {
@@ -235,6 +237,8 @@ public class AttributeEditDialog implements OnShowListener {
 		mAttribute.setPrefix(mEditPrefix.getText().toString());
 		mAttribute.setName(mEditName.getText().toString());
 		mAttribute.setValue(mEditValue.getText().toString());
+
+		mNode.getContent().attributeChanged(mAttribute);
 	}
 
 	/**

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.xgouchet.xmleditor"
-    android:versionCode="10"
-    android:versionName="2.1.1" >
+    android:versionCode="12"
+    android:versionName="2.3" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".AxelApplication"
+        android:name="fr.xgouchet.xmleditor.AxelApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name_full"
@@ -19,7 +19,7 @@
 
         <!-- Axel main activity -->
         <activity
-            android:name=".AxelActivity"
+            android:name="fr.xgouchet.xmleditor.AxelActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize" >
@@ -51,184 +51,159 @@
 
                 <!-- Standard XML extension -->
                 <data
-                    android:host="*"
+                    android:mimeType="application/xml"
+                    android:scheme="file" />
+                <data
+                    android:mimeType="text/xml"
+                    android:scheme="file" />
+                <data
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.xml"
                     android:scheme="file" />
 
                 <!-- HTML extensions -->
                 <data
-                    android:host="*"
+                    android:mimeType="text/html"
+                    android:scheme="file" />
+                <data
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.htm"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.html"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.xhtml"
                     android:scheme="file" />
 
                 <!-- XML APIs -->
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.xsd"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.xslt"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.rng"
                     android:scheme="file" />
 
                 <!-- RSS feeds -->
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.atom"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.rss"
                     android:scheme="file" />
 
                 <!-- Specific Markup Language -->
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.aiml"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.cml"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.ficml"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.gml"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.kml"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.opml"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.sbml"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.scxml"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.wml"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.xaml"
                     android:scheme="file" />
 
                 <!-- Graphic  Formats -->
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.dae"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.svg"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.x3d"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.xmp"
                     android:scheme="file" />
 
                 <!-- Other formats -->
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.dbk"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.ofx"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.plist"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.rnd"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.smil"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.wsdl"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.xbrl"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.xpl"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.xrc"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.xspf"
                     android:scheme="file" />
                 <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.xul"
                     android:scheme="file" />
@@ -237,7 +212,7 @@
 
         <!-- Axel Edit Node activity -->
         <activity
-            android:name=".AxelNodeEditorActivity"
+            android:name="fr.xgouchet.xmleditor.AxelNodeEditorActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
             android:label="@string/title_editor"
             android:windowSoftInputMode="adjustResize" >
@@ -245,7 +220,7 @@
 
         <!-- Axel Sort Node Children activity -->
         <activity
-            android:name=".AxelSortActivity"
+            android:name="fr.xgouchet.xmleditor.AxelSortActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
             android:label="@string/title_editor"
             android:windowSoftInputMode="stateHidden" >
@@ -253,7 +228,7 @@
 
         <!-- Axel preview activity -->
         <activity
-            android:name=".AxelPreviewActivity"
+            android:name="fr.xgouchet.xmleditor.AxelPreviewActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
             android:label="@string/title_preview"
             android:windowSoftInputMode="adjustResize" >
@@ -261,7 +236,7 @@
 
         <!-- Axel save as activity -->
         <activity
-            android:name=".AxelSaveAsActivity"
+            android:name="fr.xgouchet.xmleditor.AxelSaveAsActivity"
             android:label="@string/title_save_as"
             android:theme="@style/Axel.Dark"
             android:windowSoftInputMode="adjustResize" >
@@ -269,7 +244,7 @@
 
         <!-- Axel open activity -->
         <activity
-            android:name=".AxelOpenActivity"
+            android:name="fr.xgouchet.xmleditor.AxelOpenActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
             android:theme="@style/Axel.Dark"
             android:windowSoftInputMode="stateHidden" >
@@ -277,7 +252,7 @@
 
         <!-- Axel open recent activity -->
         <activity
-            android:name=".AxelOpenRecentActivity"
+            android:name="fr.xgouchet.xmleditor.AxelOpenRecentActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
             android:label="@string/title_open_recent"
             android:theme="@style/Axel.Dark"
@@ -286,7 +261,7 @@
 
         <!-- Axel open template activity -->
         <activity
-            android:name=".AxelOpenTemplateActivity"
+            android:name="fr.xgouchet.xmleditor.AxelOpenTemplateActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
             android:label="@string/title_open_template"
             android:theme="@style/Axel.Dark"
@@ -295,26 +270,23 @@
 
         <!-- Axel settings activity -->
         <activity
-            android:name=".AxelHelpActivity"
+            android:name="fr.xgouchet.xmleditor.AxelHelpActivity"
             android:label="@string/title_help"
-            android:theme="@style/Axel"
             android:windowSoftInputMode="stateHidden" >
         </activity>
 
         <!-- Axel settings activity -->
         <activity
-            android:name=".AxelSettingsActivity"
+            android:name="fr.xgouchet.xmleditor.AxelSettingsActivity"
             android:label="@string/title_settings"
-            android:theme="@style/Axel.Dark"
             android:windowSoftInputMode="stateHidden" >
         </activity>
 
         <!-- Axel about activity -->
         <activity
-            android:name=".AxelAboutActivity"
+            android:name="fr.xgouchet.xmleditor.AxelAboutActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
             android:label="@string/title_about"
-            android:theme="@style/Axel.Dark"
             android:windowSoftInputMode="stateHidden" >
         </activity>
     </application>

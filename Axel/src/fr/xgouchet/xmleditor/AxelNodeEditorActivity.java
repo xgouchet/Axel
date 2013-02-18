@@ -3,8 +3,13 @@ package fr.xgouchet.xmleditor;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
+import fr.xgouchet.xmleditor.common.AxelUtils;
 import fr.xgouchet.xmleditor.common.Settings;
 import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
@@ -53,24 +59,11 @@ public class AxelNodeEditorActivity extends Activity {
 		mData = mNode.getContent();
 		setTitle(getString(R.string.title_editor, mData.getTypeName()));
 
-		findViewById(R.id.buttonCancel).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(final View v) {
-						finish();
-					}
-				});
-
-		findViewById(R.id.buttonOk).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				if (validateModifications()) {
-					applyModifications();
-					setEditResult();
-					finish();
-				}
-			}
-		});
+		if (VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
+			setupDoneDiscardActionBar();
+		} else {
+			setupDoneDiscardButtons();
+		}
 
 		setResult(RESULT_CANCELED);
 	}
@@ -126,13 +119,13 @@ public class AxelNodeEditorActivity extends Activity {
 		boolean result;
 
 		if (mData.isElement()) {
-			menu.findItem(R.id.menu_add_default_namespace).setEnabled(
+			menu.findItem(R.id.menu_attr_default_namespace).setEnabled(
 					!hasDefaultNamespace());
 
-			menu.findItem(R.id.menu_add_xml_schema_local).setEnabled(
+			menu.findItem(R.id.menu_attr_xml_schema_local).setEnabled(
 					!hasLocalSchema());
 
-			menu.findItem(R.id.menu_add_xml_schema_public).setEnabled(
+			menu.findItem(R.id.menu_attr_xml_schema_public).setEnabled(
 					!hasPublicSchema());
 
 			result = true;
@@ -140,6 +133,74 @@ public class AxelNodeEditorActivity extends Activity {
 			result = super.onPrepareOptionsMenu(menu);
 		}
 		return result;
+	}
+
+	private void onApply() {
+		if (validateModifications()) {
+			applyModifications();
+			setResult(RESULT_OK, new Intent());
+			finish();
+		}
+	}
+
+	private void onDiscard() {
+		finish();
+	}
+
+	private void setupDoneDiscardButtons() {
+		findViewById(R.id.buttonCancel).setOnClickListener(
+				new OnClickListener() {
+					@Override
+					public void onClick(final View v) {
+						onDiscard();
+					}
+				});
+
+		findViewById(R.id.buttonOk).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				onApply();
+			}
+		});
+	}
+
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	private void setupDoneDiscardActionBar() {
+		LayoutInflater inflater;
+
+		if (VERSION.SDK_INT >= VERSION_CODES.ICE_CREAM_SANDWICH) {
+			inflater = (LayoutInflater) getActionBar().getThemedContext()
+					.getSystemService(LAYOUT_INFLATER_SERVICE);
+		} else {
+			inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+		}
+
+		final View custom = inflater.inflate(R.layout.ab_done_discard, null);
+
+		custom.findViewById(R.id.buttonDiscard).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(final View v) {
+						onDiscard();
+					}
+				});
+		custom.findViewById(R.id.buttonDone).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(final View v) {
+						onApply();
+					}
+				});
+
+		// Show the custom action bar view and hide the normal Home icon and
+		// title.
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
+				ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME
+						| ActionBar.DISPLAY_SHOW_TITLE);
+		actionBar.setCustomView(custom, new ActionBar.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.MATCH_PARENT));
 	}
 
 	private boolean hasDefaultNamespace() {
@@ -204,32 +265,32 @@ public class AxelNodeEditorActivity extends Activity {
 
 		result = true;
 		switch (item.getItemId()) {
-		case R.id.menu_add_attribute:
+		case R.id.menu_attr_custom:
 			addAttribute();
 			break;
-		case R.id.menu_add_namespace:
+		case R.id.menu_attr_namespace:
 			addNamespaceAttribute(false);
 			break;
-		case R.id.menu_add_default_namespace:
+		case R.id.menu_attr_default_namespace:
 			addNamespaceAttribute(true);
 			break;
-		case R.id.menu_add_xml_schema_public:
+		case R.id.menu_attr_xml_schema_public:
 			addPublicSchema();
 			break;
-		case R.id.menu_add_xml_schema_local:
+		case R.id.menu_attr_xml_schema_local:
 			addLocalSchema();
 			break;
 
-		case R.id.menu_set_xhtml_strict:
+		case R.id.menu_doctype_xhtml_strict:
 			mEditText.setText(DTD_XHTML_STRICT_1_0);
 			break;
-		case R.id.menu_set_xhtml_transitional:
+		case R.id.menu_doctype_xhtml_transitional:
 			mEditText.setText(DTD_XHTML_TRANSITIONAL_1_0);
 			break;
-		case R.id.menu_set_xhtml_frameset:
+		case R.id.menu_doctype_xhtml_frameset:
 			mEditText.setText(DTD_XHTML_FRAMESET_1_0);
 			break;
-		case R.id.menu_set_xhtml_1_1:
+		case R.id.menu_doctype_xhtml_1_1:
 			mEditText.setText(DTD_XHTML_1_1);
 			break;
 		default:
@@ -240,22 +301,10 @@ public class AxelNodeEditorActivity extends Activity {
 	}
 
 	/**
-	 * Set the result of this activity
-	 * 
-	 */
-	protected void setEditResult() {
-		Intent result;
-
-		result = new Intent();
-
-		setResult(RESULT_OK, result);
-	}
-
-	/**
 	 * Adds a document declaration layout
 	 */
 	protected void setDocumentDeclarationLayout() {
-		ViewGroup parent = (ViewGroup) findViewById(R.id.frame_editor);
+		ViewGroup parent = (ViewGroup) findViewById(R.id.frameEditor);
 		parent.removeAllViews();
 		LayoutInflater.from(this).inflate(R.layout.node_docdecl, parent);
 
@@ -274,12 +323,13 @@ public class AxelNodeEditorActivity extends Activity {
 	 * Adds a tag layout
 	 */
 	protected void setTagLayout() {
-		ViewGroup parent = (ViewGroup) findViewById(R.id.frame_editor);
+		ViewGroup parent = (ViewGroup) findViewById(R.id.frameEditor);
 		parent.removeAllViews();
 		LayoutInflater.from(this).inflate(R.layout.node_tag, parent);
 
 		mEditPrefix = (EditText) findViewById(R.id.editTextPrefix);
 		mEditPrefix.setText(mData.getPrefix());
+		AxelUtils.setupPrefixEditText(mEditPrefix, mNode, false);
 
 		mEditName = (EditText) findViewById(R.id.editTextName);
 		mEditName.setText(mData.getName());
@@ -298,14 +348,14 @@ public class AxelNodeEditorActivity extends Activity {
 	 * Adds a PI layout
 	 */
 	protected void setProcessingLayout() {
-		ViewGroup parent = (ViewGroup) findViewById(R.id.frame_editor);
+		ViewGroup parent = (ViewGroup) findViewById(R.id.frameEditor);
 		parent.removeAllViews();
 		LayoutInflater.from(this).inflate(R.layout.node_processing, parent);
 
 		mEditName = (EditText) findViewById(R.id.editTextName);
 		mEditName.setText(mData.getName());
 
-		mEditText = (EditText) findViewById(R.id.editText);
+		mEditText = (EditText) findViewById(R.id.editTextValue);
 		mEditText.setText(mData.getText());
 	}
 
@@ -313,11 +363,11 @@ public class AxelNodeEditorActivity extends Activity {
 	 * Adds a text layout
 	 */
 	protected void setTextLayout() {
-		ViewGroup parent = (ViewGroup) findViewById(R.id.frame_editor);
+		ViewGroup parent = (ViewGroup) findViewById(R.id.frameEditor);
 		parent.removeAllViews();
 		LayoutInflater.from(this).inflate(R.layout.node_text, parent);
 
-		mEditText = (EditText) findViewById(R.id.editText);
+		mEditText = (EditText) findViewById(R.id.editTextValue);
 		mEditText.setText(mData.getText());
 	}
 

@@ -7,6 +7,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import android.text.TextUtils;
 import fr.xgouchet.xmleditor.data.xml.XmlTreeParserException.XmlError;
 
 /**
@@ -47,8 +48,9 @@ public class XmlTreePullParser extends XmlTreeParser {
 		}
 
 		try {
-			factory.setNamespaceAware(true);
-			factory.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, true);
+			// factory.setNamespaceAware(true);
+			// factory.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES,
+			// true);
 			xpp = factory.newPullParser();
 		} catch (XmlPullParserException e) {
 			throw new XmlTreeParserException(XmlError.featureUnavailable, e);
@@ -163,6 +165,14 @@ public class XmlTreePullParser extends XmlTreeParser {
 
 			if ((attUri != null) && (attPrefix != null)) {
 				declareNamespace(attPrefix, attUri);
+			}
+
+			if (TextUtils.isEmpty(attPrefix) && (attName.indexOf(':') >= 0)) {
+				String[] data = attName.split(":");
+				if (data.length == 2) {
+					attPrefix = data[0];
+					attName = data[1];
+				}
 			}
 
 			tag.getContent().addAttribute(attPrefix, attName, attValue);

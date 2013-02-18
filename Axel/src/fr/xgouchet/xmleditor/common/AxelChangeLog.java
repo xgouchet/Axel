@@ -55,8 +55,11 @@ public class AxelChangeLog extends AbstractChangeLog {
 			title = R.string.release7;
 			break;
 		case 11:
-		default:
 			title = R.string.release11;
+			break;
+		case 12:
+		default:
+			title = R.string.release12;
 			break;
 		}
 		return title;
@@ -94,8 +97,11 @@ public class AxelChangeLog extends AbstractChangeLog {
 			log = R.string.release7_log;
 			break;
 		case 11:
-		default:
 			log = R.string.release11_log;
+			break;
+		case 12:
+		default:
+			log = R.string.release12_log;
 			break;
 		}
 		return log;

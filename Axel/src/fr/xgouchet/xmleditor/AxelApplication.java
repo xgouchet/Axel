@@ -64,7 +64,7 @@ public class AxelApplication extends Application {
 			}
 		}
 
-		// TODO test on root namespace / dopctype
+		// TODO test on root namespace / doctype
 
 		return res;
 	}

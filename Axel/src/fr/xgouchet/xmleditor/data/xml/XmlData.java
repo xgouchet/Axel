@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.text.TextUtils;
+import fr.xgouchet.xmleditor.common.AxelUtils;
 
 /**
  * The xml data model
@@ -51,11 +52,9 @@ public class XmlData {
 				|| (mDataType == XML_DOCUMENT_DECLARATION)) {
 			mAttributes = new LinkedList<XmlAttribute>();
 			mLocalNamespaces = new LinkedList<XmlAttribute>();
-			mParentNamespaces = new LinkedList<XmlAttribute>();
 		} else {
 			mAttributes = null;
 			mLocalNamespaces = null;
-			mParentNamespaces = null;
 		}
 	}
 
@@ -68,32 +67,32 @@ public class XmlData {
 
 		switch (mDataType) {
 		case XML_DOCUMENT:
-			result = "DOCUMENT";
+			result = "XML DOCUMENT";
 			break;
 		case XML_TEXT:
-			result = ellipsize(mText, 32);
+			result = AxelUtils.ellipsize(mText, 32);
 			break;
 		case XML_COMMENT:
-			result = "<!-- " + ellipsize(mText, 23) + " -->";
+			result = "<!-- " + AxelUtils.ellipsize(mText, 23) + " -->";
 			break;
 		case XML_ELEMENT:
 			String open = ((TextUtils.isEmpty(mPrefix)) ? "" : (mPrefix + ":"))
 					+ mName;
 
 			if (hasFlag(FLAG_EMPTY)) {
-				result = "<" + ellipsize(open, 29) + "/>";
+				result = "<" + AxelUtils.ellipsize(open, 29) + "/>";
 			} else {
-				result = "<" + ellipsize(open, 30) + ">";
+				result = "<" + AxelUtils.ellipsize(open, 30) + ">";
 			}
 			break;
 		case XML_CDATA:
-			result = "<![CDATA[" + ellipsize(mText, 20) + "]]>";
+			result = "<![CDATA[" + AxelUtils.ellipsize(mText, 20) + "]]>";
 			break;
 		case XML_DOCTYPE:
-			result = "<!DOCTYPE " + ellipsize(mText, 21) + ">";
+			result = "<!DOCTYPE " + AxelUtils.ellipsize(mText, 21) + ">";
 			break;
 		case XML_PROCESSING_INSTRUCTION:
-			result = "<?" + ellipsize(mText, 28) + "?>";
+			result = "<?" + AxelUtils.ellipsize(mText, 28) + "?>";
 			break;
 		case XML_DOCUMENT_DECLARATION:
 			result = "<?xml?>";
@@ -101,30 +100,6 @@ public class XmlData {
 		default:
 			result = "***";
 			break;
-		}
-
-		return result;
-	}
-
-	/**
-	 * Ellipsizes a text
-	 * 
-	 * @param text
-	 *            the text to ellipsize
-	 * @param length
-	 *            the max length of the return string
-	 * @return an ellipsized string which contains at most lengt characters
-	 */
-	protected String ellipsize(final String text, final int length) {
-		String result;
-
-		if (TextUtils.isEmpty(text)) {
-			result = "";
-		} else {
-			result = text;
-			if (result.length() > length) {
-				result = result.substring(0, length - 6) + " [...]";
-			}
 		}
 
 		return result;
@@ -174,21 +149,10 @@ public class XmlData {
 		}
 	}
 
-	/**
-	 * @param parentData
-	 *            read the parent data
-	 */
-	public void readParentData(final XmlData parentData) {
-
-		if (isElement()) {
-			if (parentData != null) {
-				if (mParentNamespaces != null) {
-					mParentNamespaces.clear();
-					mParentNamespaces.addAll(parentData
-							.getNamespaceAttributes());
-
-					mParentDefaultNamespace = parentData.getDefaultNamespace();
-				}
+	public void attributeChanged(XmlAttribute attr) {
+		if (mAttributes != null) {
+			if ("xmlns".equals(attr.getPrefix())) {
+				mLocalNamespaces.add(attr);
 			}
 		}
 	}
@@ -259,6 +223,14 @@ public class XmlData {
 	 */
 	public void setText(final String text) {
 		mText = text;
+	}
+
+	/**
+	 * @param parent
+	 *            the data of the parent node
+	 */
+	public void setParent(XmlData parent) {
+		mParent = parent;
 	}
 
 	/**
@@ -384,8 +356,8 @@ public class XmlData {
 			res.addAll(mLocalNamespaces);
 		}
 
-		if (mParentNamespaces != null) {
-			res.addAll(mParentNamespaces);
+		if (mParent != null) {
+			res.addAll(mParent.getNamespaceAttributes());
 		}
 
 		if (getDefaultNamespace() != null) {
@@ -399,8 +371,13 @@ public class XmlData {
 	 * @return the default namespace on this node
 	 */
 	public XmlAttribute getDefaultNamespace() {
-		return (mDefaultNamespace == null) ? mParentDefaultNamespace
-				: mDefaultNamespace;
+		XmlAttribute res = mDefaultNamespace;
+
+		if ((mDefaultNamespace == null) && (mParent != null)) {
+			res = mParent.getDefaultNamespace();
+		}
+
+		return res;
 	}
 
 	/**
@@ -413,6 +390,22 @@ public class XmlData {
 		for (int i = 0; i < res.length; ++i) {
 			res[i] = ns.get(i).mValue;
 		}
+		return res;
+	}
+
+	public List<String> getNamespacePrefixes() {
+		String prefix;
+		List<XmlAttribute> ns = getNamespaceAttributes();
+		List<String> res = new LinkedList<String>();
+
+		int count = ns.size();
+		for (int i = 0; i < count; ++i) {
+			prefix = ns.get(i).mName;
+			if (!res.contains(prefix)) {
+				res.add(prefix);
+			}
+		}
+
 		return res;
 	}
 
@@ -494,6 +487,11 @@ public class XmlData {
 	protected String mText;
 
 	/**
+	 * for {@link #XML_ELEMENT} to find parent namespaces
+	 */
+	protected XmlData mParent;
+
+	/**
 	 * for {@link #XML_ELEMENT}, {@link #XML_DOCUMENT_DECLARATION}
 	 */
 	protected final List<XmlAttribute> mAttributes;
@@ -501,10 +499,6 @@ public class XmlData {
 	/** for {@link #XML_ELEMENT} */
 	protected XmlAttribute mDefaultNamespace;
 	/** for {@link #XML_ELEMENT} */
-	protected XmlAttribute mParentDefaultNamespace;
-	/** for {@link #XML_ELEMENT} */
 	protected final List<XmlAttribute> mLocalNamespaces;
-	/** for {@link #XML_ELEMENT} */
-	protected final List<XmlAttribute> mParentNamespaces;
 
 }

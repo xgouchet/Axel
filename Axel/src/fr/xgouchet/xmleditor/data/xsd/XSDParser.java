@@ -28,7 +28,6 @@ public class XSDParser {
 			try {
 				stream.flush();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

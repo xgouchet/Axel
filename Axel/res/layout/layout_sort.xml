@@ -8,7 +8,7 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/include_buttons"
+        android:layout_above="@id/includeButtons"
         android:divider="@color/xml_divider"
         android:dividerHeight="1dp"
         dslv:collapsed_height="8dp"
@@ -21,7 +21,7 @@
         dslv:track_drag_sort="false" />
 
     <include
-        android:id="@+id/include_buttons"
+        android:id="@id/includeButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

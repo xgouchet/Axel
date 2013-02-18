@@ -4,16 +4,16 @@
     android:layout_height="match_parent" >
 
     <FrameLayout
-        android:id="@+id/frame_editor"
+        android:id="@id/frameEditor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/include_buttons"
+        android:layout_above="@id/includeButtons"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" />
 
     <include
-        android:id="@+id/include_buttons"
+        android:id="@id/includeButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

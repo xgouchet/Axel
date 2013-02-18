@@ -3,10 +3,18 @@ package fr.xgouchet.xmleditor;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 
 import com.mobeta.android.dslv.DragSortListView;
 import com.mobeta.android.dslv.DragSortListView.DropListener;
@@ -48,26 +56,82 @@ public class AxelSortActivity extends Activity implements DropListener {
 		mListView.setDropListener(this);
 		mListView.setAdapter(mNodeAdapter);
 
+		if (VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
+			setupDoneDiscardActionBar();
+		} else {
+			setupDoneDiscardButtons();
+		}
+
+	}
+
+	private void onDiscard() {
+		setResult(RESULT_CANCELED);
+		finish();
+	}
+
+	private void onApply() {
+		if (validateModifications()) {
+			applyModifications();
+			setResult(RESULT_OK, new Intent());
+			finish();
+		}
+	}
+
+	private void setupDoneDiscardButtons() {
 		// setup buttons
 		findViewById(R.id.buttonCancel).setOnClickListener(
 				new OnClickListener() {
 					@Override
 					public void onClick(final View v) {
-						setResult(RESULT_CANCELED);
-						finish();
+						onDiscard();
 					}
 				});
 
 		findViewById(R.id.buttonOk).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(final View v) {
-				if (validateModifications()) {
-					applyModifications();
-					setResult(RESULT_OK);
-					finish();
-				}
+				onApply();
 			}
 		});
+	}
+
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+	private void setupDoneDiscardActionBar() {
+		LayoutInflater inflater;
+
+		if (VERSION.SDK_INT >= VERSION_CODES.ICE_CREAM_SANDWICH) {
+			inflater = (LayoutInflater) getActionBar().getThemedContext()
+					.getSystemService(LAYOUT_INFLATER_SERVICE);
+		} else {
+			inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+		}
+
+		final View custom = inflater.inflate(R.layout.ab_done_discard, null);
+
+		custom.findViewById(R.id.buttonDiscard).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(final View v) {
+						onDiscard();
+					}
+				});
+		custom.findViewById(R.id.buttonDone).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(final View v) {
+						onApply();
+					}
+				});
+
+		// Show the custom action bar view and hide the normal Home icon and
+		// title.
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
+				ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME
+						| ActionBar.DISPLAY_SHOW_TITLE);
+		actionBar.setCustomView(custom, new ActionBar.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT,
+				ViewGroup.LayoutParams.MATCH_PARENT));
 	}
 
 	/**

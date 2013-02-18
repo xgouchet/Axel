@@ -2,58 +2,52 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/submenu_new"
+        android:id="@id/menu_new"
         android:icon="@drawable/ic_menu_file_new"
         android:showAsAction="never"
         android:title="@string/menu_new">
         <menu>
             <item
-                android:id="@+id/menu_new"
+                android:id="@id/menu_new_empty"
                 android:title="@string/menu_new_empty"/>
             <item
-                android:id="@+id/menu_open_template"
+                android:id="@id/menu_new_template"
                 android:title="@string/menu_new_template"/>
         </menu>
     </item>
     <item
-        android:id="@+id/menu_open"
+        android:id="@id/menu_open_file"
         android:icon="@drawable/ic_menu_file_open"
         android:showAsAction="never"
         android:title="@string/menu_open"/>
     <item
-        android:id="@+id/menu_open_recent"
+        android:id="@id/menu_open_recent"
         android:icon="@drawable/ic_menu_recent"
         android:showAsAction="never"
         android:title="@string/menu_open_recent"/>
     <item
-        android:id="@+id/menu_save"
+        android:id="@id/menu_save"
         android:icon="@drawable/ic_menu_save"
         android:showAsAction="never"
         android:title="@string/menu_save"/>
-    <!--
     <item
-        android:id="@+id/menu_expand_collapse_all"
-        android:showAsAction="ifRoom"
-        android:title="@string/menu_expand_all"/>
-    -->
-    <item
-        android:id="@+id/menu_preview_in_browser"
+        android:id="@id/menu_preview_in_browser"
         android:showAsAction="never"
         android:title="@string/menu_preview"/>
     <item
-        android:id="@+id/menu_save_as"
+        android:id="@id/menu_save_as"
         android:title="@string/menu_save_as"/>
     <item
-        android:id="@+id/menu_save_as_template"
+        android:id="@id/menu_save_as_template"
         android:title="@string/menu_save_as_template"/>
     <item
-        android:id="@+id/menu_help"
+        android:id="@id/menu_help"
         android:title="@string/ui_help"/>
     <item
-        android:id="@+id/menu_settings"
+        android:id="@id/menu_settings"
         android:title="@string/menu_settings"/>
     <item
-        android:id="@+id/menu_about"
+        android:id="@id/menu_about"
         android:title="@string/menu_about"/>
 
 </menu>
