@@ -42,6 +42,7 @@
     <item name="buttonCancel" type="id"/>
     <item name="buttonEdit" type="id"/>
     <item name="buttonDelete" type="id"/>
+    <item name="drag" type="id"/>
     <item name="checkStandalone" type="id"/>
     <item name="editFileName" type="id"/>
     <item name="editTextName" type="id"/>
