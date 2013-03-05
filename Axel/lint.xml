@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lint>
-    <issue id="ContentDescription" severity="ignore" />
-    <issue id="DefaultLocale">
-        <ignore path="src\fr\xgouchet\xmleditor\data\validation\HTMLValidator.java" />
-    </issue>
-</lint>

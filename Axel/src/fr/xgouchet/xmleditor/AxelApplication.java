@@ -8,19 +8,18 @@ import fr.xgouchet.xmleditor.data.xml.XmlNode;
 /**
  * 
  */
-
 public class AxelApplication extends Application {
 
 	public void documentContentChanged() {
 	}
 
-	public void setCurrentDocument(XmlNode doc, String name, String path) {
+	public void setCurrentDocument(final XmlNode doc, final String name, final String path) {
 		mCurrentDocument = doc;
 		mCurrentDocumentName = name;
 		mCurrentDocumentPath = path;
 	}
 
-	public void setCurrentSelection(XmlNode currentSelection) {
+	public void setCurrentSelection(final XmlNode currentSelection) {
 		mCurrentSelection = currentSelection;
 	}
 

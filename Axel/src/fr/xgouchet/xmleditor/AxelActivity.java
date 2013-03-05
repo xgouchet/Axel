@@ -32,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 import de.neofonie.mobile.app.android.widget.crouton.Crouton;
 import de.neofonie.mobile.app.android.widget.crouton.Style;
 import fr.xgouchet.androidlib.data.ClipboardUtils;
@@ -236,6 +237,18 @@ public class AxelActivity extends Activity implements
 		MenuInflater inflater = new MenuInflater(this);
 		inflater.inflate(R.menu.main, menu);
 
+		// generate search view for the search menu
+		SearchView search;
+		if (VERSION.SDK_INT >= VERSION_CODES.ICE_CREAM_SANDWICH) {
+			search = new SearchView(getActionBar().getThemedContext());
+		} else {
+			search = new SearchView(this);
+		}
+		search.setQueryHint(getString(android.R.string.search_go));
+		// search.setOnQueryTextListener(listener)
+
+		menu.findItem(R.id.menu_search).setActionView(search);
+
 		return true;
 	}
 
@@ -298,6 +311,9 @@ public class AxelActivity extends Activity implements
 		case R.id.menu_about:
 			startActivity(new Intent(getApplicationContext(),
 					AxelAboutActivity.class));
+			break;
+		case R.id.menu_search:
+			onSearchRequested();
 			break;
 		default:
 			result = super.onOptionsItemSelected(item);
@@ -1047,7 +1063,7 @@ public class AxelActivity extends Activity implements
 		final AlertDialog dialog = builder.create();
 		dialog.show();
 
-		dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(
+		dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(final View v) {
