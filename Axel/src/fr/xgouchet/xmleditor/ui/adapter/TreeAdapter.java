@@ -39,7 +39,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 		 * @param node
 		 *            the node
 		 */
-		public void onNodeTapped(TreeNode<T> node, View view);
+		public void onNodeTapped(TreeNode<T> node, View view, int position);
 
 		/**
 		 * Called when a node receives a double tap
@@ -47,7 +47,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 		 * @param node
 		 *            the node
 		 */
-		public void onNodeDoubleTapped(TreeNode<T> node, View view);
+		public void onNodeDoubleTapped(TreeNode<T> node, View view, int position);
 
 		/**
 		 * Called when a node receives a long press
@@ -55,7 +55,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 		 * @param node
 		 *            the node
 		 */
-		public void onNodeLongPressed(TreeNode<T> node, View view);
+		public void onNodeLongPressed(TreeNode<T> node, View view, int position);
 	}
 
 	public class TreeNodeHandle implements OnClickListener, OnTouchListener,
@@ -130,7 +130,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 		@Override
 		public void onLongPress(final MotionEvent e) {
 			if (mListener != null) {
-				mListener.onNodeLongPressed(node, nodeView);
+				mListener.onNodeLongPressed(node, nodeView, position);
 			}
 		}
 
@@ -174,7 +174,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 		@Override
 		public boolean onDoubleTap(final MotionEvent e) {
 			if (mListener != null) {
-				mListener.onNodeDoubleTapped(node, nodeView);
+				mListener.onNodeDoubleTapped(node, nodeView, position);
 			}
 			return true;
 		}
@@ -185,13 +185,14 @@ public class TreeAdapter<T> extends BaseAdapter {
 		@Override
 		public boolean onSingleTapConfirmed(final MotionEvent e) {
 			if (mListener != null) {
-				mListener.onNodeTapped(node, nodeView);
+				mListener.onNodeTapped(node, nodeView, position);
 			}
 			return true;
 		}
 
 		private final GestureDetector mDetector;
 
+		public int position;
 		public TreeNode<T> node;
 		public View nodeView;
 		public TextView textView;
@@ -298,6 +299,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 
 		final TreeNode<T> node = getNode(position);
 		handle.node = node;
+		handle.position = position;
 
 		if (node != null) {
 			handle.textView.setVisibility(View.VISIBLE);
@@ -334,6 +336,12 @@ public class TreeAdapter<T> extends BaseAdapter {
 			}
 		} else {
 			handle.textView.setVisibility(View.GONE);
+		}
+
+		if ((mHighlighter != null) && mHighlighter.shouldHighlight(node)) {
+			handle.nodeView.setBackgroundResource(R.drawable.item_selected);
+		} else {
+			handle.nodeView.setBackground(null);
 		}
 
 		return view;
@@ -384,6 +392,14 @@ public class TreeAdapter<T> extends BaseAdapter {
 	}
 
 	/**
+	 * @param highlighter
+	 *            the highlighter for node search
+	 */
+	public void setHighlighter(final Highlighter<T> highlighter) {
+		mHighlighter = highlighter;
+	}
+
+	/**
 	 * Expand / collapse the node at the given position
 	 * 
 	 * @param position
@@ -399,6 +415,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 	private AbstractTreeNodeStyler<T> mNodeStyler;
 
 	private TreeNodeEventListener<T> mListener;
+	private Highlighter<T> mHighlighter;
 
 	private final LayoutInflater mInflater;
 

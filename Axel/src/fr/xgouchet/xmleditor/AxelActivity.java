@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.List;
 
 import net.londatiga.android.QuickAction;
 import net.londatiga.android.QuickAction.OnActionItemClickListener;
@@ -33,6 +35,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import de.neofonie.mobile.app.android.widget.crouton.Crouton;
 import de.neofonie.mobile.app.android.widget.crouton.Style;
 import fr.xgouchet.androidlib.data.ClipboardUtils;
@@ -53,6 +56,7 @@ import fr.xgouchet.xmleditor.data.XmlFileWriterResult;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
 import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
+import fr.xgouchet.xmleditor.data.xml.XmlHighlighter;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.data.xml.XmlNodeStyler;
 import fr.xgouchet.xmleditor.data.xml.XmlTreeParserException;
@@ -66,7 +70,12 @@ import fr.xgouchet.xmleditor.ui.dialog.AttributeEditDialog;
  * 
  */
 public class AxelActivity extends Activity implements
-		TreeNodeEventListener<XmlData>, OnActionItemClickListener {
+		TreeNodeEventListener<XmlData>, OnActionItemClickListener,
+		OnQueryTextListener {
+
+	public AxelActivity() {
+		mCurrentSelectedViews = new LinkedList<View>();
+	}
 
 	/**
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -245,7 +254,7 @@ public class AxelActivity extends Activity implements
 			search = new SearchView(this);
 		}
 		search.setQueryHint(getString(android.R.string.search_go));
-		// search.setOnQueryTextListener(listener)
+		search.setOnQueryTextListener(this);
 
 		menu.findItem(R.id.menu_search).setActionView(search);
 
@@ -312,9 +321,6 @@ public class AxelActivity extends Activity implements
 			startActivity(new Intent(getApplicationContext(),
 					AxelAboutActivity.class));
 			break;
-		case R.id.menu_search:
-			onSearchRequested();
-			break;
 		default:
 			result = super.onOptionsItemSelected(item);
 			break;
@@ -359,30 +365,36 @@ public class AxelActivity extends Activity implements
 
 	/**
 	 * @see fr.xgouchet.xmleditor.ui.adapter.TreeAdapter.TreeNodeEventListener#onNodeLongPressed(fr.xgouchet.xmleditor.data.tree.TreeNode,
-	 *      android.view.View)
+	 *      android.view.View, int)
 	 */
 	@Override
-	public void onNodeLongPressed(final TreeNode<XmlData> node, final View view) {
+	public void onNodeLongPressed(final TreeNode<XmlData> node,
+			final View view, final int position) {
+		selectView(view);
 		String action = Settings.sLongPressQA;
 		performQuickAction(node, view, action);
 	}
 
 	/**
 	 * @see fr.xgouchet.xmleditor.ui.adapter.TreeAdapter.TreeNodeEventListener#onNodeTapped(fr.xgouchet.xmleditor.data.tree.TreeNode,
-	 *      android.view.View)
+	 *      android.view.View, int)
 	 */
 	@Override
-	public void onNodeTapped(final TreeNode<XmlData> node, final View view) {
+	public void onNodeTapped(final TreeNode<XmlData> node, final View view,
+			final int position) {
+		selectView(view);
 		String action = Settings.sSingleTapQA;
 		performQuickAction(node, view, action);
 	}
 
 	/**
 	 * @see fr.xgouchet.xmleditor.ui.adapter.TreeAdapter.TreeNodeEventListener#onNodeDoubleTapped(fr.xgouchet.xmleditor.data.tree.TreeNode,
-	 *      android.view.View)
+	 *      android.view.View, int)
 	 */
 	@Override
-	public void onNodeDoubleTapped(final TreeNode<XmlData> node, final View view) {
+	public void onNodeDoubleTapped(final TreeNode<XmlData> node,
+			final View view, final int position) {
+		selectView(view);
 		String action = Settings.sDoubleTapQA;
 		performQuickAction(node, view, action);
 	}
@@ -512,6 +524,30 @@ public class AxelActivity extends Activity implements
 	}
 
 	/**
+	 * @see android.widget.SearchView.OnQueryTextListener#onQueryTextChange(java.lang.String)
+	 */
+	@Override
+	public boolean onQueryTextChange(final String newText) {
+		if (TextUtils.isEmpty(newText)) {
+			mAdapter.setHighlighter(null);
+			mAdapter.notifyDataSetChanged();
+		} else {
+			mAdapter.setHighlighter(new XmlHighlighter(newText));
+			mAdapter.notifyDataSetChanged();
+		}
+		return true;
+	}
+
+	/**
+	 * @see android.widget.SearchView.OnQueryTextListener#onQueryTextSubmit(java.lang.String)
+	 */
+	@Override
+	public boolean onQueryTextSubmit(final String query) {
+
+		return true;
+	}
+
+	/**
 	 * Call this when the document changes
 	 */
 	private void onXmlDocumentChanged() {
@@ -522,6 +558,7 @@ public class AxelActivity extends Activity implements
 		mAdapter.setNodeStyler(new XmlNodeStyler());
 		mAdapter.setListener(this);
 		mListView.setAdapter(mAdapter);
+		mAdapter.setHighlighter(null);
 
 		onXmlContentChanged(false);
 	}
@@ -536,6 +573,8 @@ public class AxelActivity extends Activity implements
 		}
 		updateTitle();
 		getAxelApplication().documentContentChanged();
+
+		clearSelectedViews(true);
 	}
 
 	/**
@@ -1636,8 +1675,32 @@ public class AxelActivity extends Activity implements
 		return node;
 	}
 
+	/**
+	 * Clear all selected views
+	 */
+	private void clearSelectedViews(final boolean editBackground) {
+		if (editBackground) {
+			for (View view : mCurrentSelectedViews) {
+				view.setBackground(null);
+			}
+		}
+		mCurrentSelectedViews.clear();
+	}
+
+	/**
+	 * Selects the given view (add a background)
+	 * 
+	 * @param view
+	 */
+	private void selectView(final View view) {
+		view.setBackgroundResource(R.drawable.item_selected);
+		mCurrentSelectedViews.add(view);
+	}
+
 	/** */
 	private XmlNode mCurrentSelection;
+	private final List<View> mCurrentSelectedViews;
+
 	/** */
 	private XmlNode mDocument;
 	/** */
