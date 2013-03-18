@@ -55,7 +55,7 @@ public class AxelNodeEditorActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_node_editor);
 
-		mNode = ((AxelApplication) getApplication()).getCurrentSelection();
+		mNode = ((AxelApplication) getApplication()).getCurrentSelection();		
 		mData = mNode.getContent();
 		setTitle(getString(R.string.title_editor, mData.getTypeName()));
 

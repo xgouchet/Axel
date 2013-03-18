@@ -23,6 +23,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -239,6 +240,7 @@ public class AxelActivity extends Activity implements
 	/**
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
+	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		super.onCreateOptionsMenu(menu);
@@ -370,7 +372,6 @@ public class AxelActivity extends Activity implements
 	@Override
 	public void onNodeLongPressed(final TreeNode<XmlData> node,
 			final View view, final int position) {
-		selectView(view);
 		String action = Settings.sLongPressQA;
 		performQuickAction(node, view, action);
 	}
@@ -382,7 +383,6 @@ public class AxelActivity extends Activity implements
 	@Override
 	public void onNodeTapped(final TreeNode<XmlData> node, final View view,
 			final int position) {
-		selectView(view);
 		String action = Settings.sSingleTapQA;
 		performQuickAction(node, view, action);
 	}
@@ -394,7 +394,6 @@ public class AxelActivity extends Activity implements
 	@Override
 	public void onNodeDoubleTapped(final TreeNode<XmlData> node,
 			final View view, final int position) {
-		selectView(view);
 		String action = Settings.sDoubleTapQA;
 		performQuickAction(node, view, action);
 	}
@@ -513,6 +512,9 @@ public class AxelActivity extends Activity implements
 				break;
 			case write:
 				Crouton.showText(this, R.string.toast_save_temp, Style.ALERT);
+				break;
+			case outOfMemory:
+				Crouton.showText(this, R.string.toast_open_memory_error, Style.ALERT);
 				break;
 			default:
 				Crouton.showText(this, R.string.toast_save_null, Style.ALERT);
@@ -1582,7 +1584,7 @@ public class AxelActivity extends Activity implements
 
 		Intent edit = new Intent(getApplicationContext(),
 				AxelNodeEditorActivity.class);
-
+		edit.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY); 
 		startActivityForResult(edit, Constants.REQUEST_EDIT_NODE);
 	}
 
@@ -1678,24 +1680,16 @@ public class AxelActivity extends Activity implements
 	/**
 	 * Clear all selected views
 	 */
+	@SuppressWarnings("deprecation")
 	private void clearSelectedViews(final boolean editBackground) {
 		if (editBackground) {
 			for (View view : mCurrentSelectedViews) {
-				view.setBackground(null);
+				view.setBackgroundDrawable(null);
 			}
 		}
 		mCurrentSelectedViews.clear();
 	}
 
-	/**
-	 * Selects the given view (add a background)
-	 * 
-	 * @param view
-	 */
-	private void selectView(final View view) {
-		view.setBackgroundResource(R.drawable.item_selected);
-		mCurrentSelectedViews.add(view);
-	}
 
 	/** */
 	private XmlNode mCurrentSelection;

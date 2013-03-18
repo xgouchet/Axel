@@ -59,6 +59,9 @@ public class AsyncXmlFileWriter extends
 		} else {
 			try {
 				doSaveFile(params[0]);
+			} catch (OutOfMemoryError e) {
+				Log.e("Axel", "Error while saving", e);
+				mResult.setError(XmlError.outOfMemory);
 			} catch (Exception e) {
 				Log.e("Axel", "Error while saving", e);
 				mResult.setError(XmlError.unknown);

@@ -11,14 +11,34 @@ public class XmlHighlighter implements Highlighter<XmlData> {
 
 	@Override
 	public boolean shouldHighlight(final TreeNode<XmlData> node) {
-
+		boolean shouldHighlitght = false;
 		XmlData content = node.getContent();
+
 		if (content.isElement()) {
-			return content.getName().contains(mQuery);
+			shouldHighlitght = content.getName().contains(mQuery);
+			if (!shouldHighlitght) {
+				for (XmlAttribute attr : content.getAttributes()) {
+					if (attr.getFullName() != null) {
+						shouldHighlitght |= (attr.getFullName()
+								.contains(mQuery));
+					}
+
+					if (attr.getValue() != null) {
+						shouldHighlitght |= attr.getValue().contains(mQuery);
+					}
+
+					if (shouldHighlitght) {
+						break;
+					}
+				}
+			}
 		} else if (content.isText()) {
-			return content.getText().contains(mQuery);
+			shouldHighlitght = content.getText().contains(mQuery);
+		} else if (content.isCData()) {
+			shouldHighlitght = content.getText().contains(mQuery);
 		}
-		return false;
+
+		return shouldHighlitght;
 	}
 
 	private String mQuery;

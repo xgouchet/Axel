@@ -14,7 +14,7 @@ import android.text.TextUtils;
 public class XmlValidator {
 
 	/** Regexp to match a valid Name entity {@value} */
-	public static final String NAME = "^[a-zA-Z_][a-zA-Z_0-9\\-]*$";
+	public static final String NAME = "^[a-zA-Z_][a-zA-Z_0-9\\-\\.]*$";
 	/** Regexp Pattern */
 	public static final Pattern NAME_PATTERN = Pattern.compile(NAME);
 
