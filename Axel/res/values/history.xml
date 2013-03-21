@@ -2,6 +2,12 @@
 <resources>
 
     <!--  -->
+    <string name="release13">Axel 2.4 (? Mar. 2013)</string>
+    <string name="release13_log">"- Minor bug fixes;
+- Search feature (search will highlights nodes corresponding to the search query);
+- Fixed the element name validation to allo fullstop;"</string>
+
+    <!--  -->
     <string name="release12">Axel 2.3 (15 Fev. 2013)</string>
     <string name="release12_log">"- Better UI (Quick actions, Holo)
 - Added possibility to cut, copy and paste XML from/to the system clipboard;

@@ -514,7 +514,8 @@ public class AxelActivity extends Activity implements
 				Crouton.showText(this, R.string.toast_save_temp, Style.ALERT);
 				break;
 			case outOfMemory:
-				Crouton.showText(this, R.string.toast_open_memory_error, Style.ALERT);
+				Crouton.showText(this, R.string.toast_open_memory_error,
+						Style.ALERT);
 				break;
 			default:
 				Crouton.showText(this, R.string.toast_save_null, Style.ALERT);
@@ -604,7 +605,10 @@ public class AxelActivity extends Activity implements
 					doCommentUncommentNode();
 				}
 			} else if (Constants.QUICK_ACTION_DELETE.equals(action)) {
-				promptDeleteNode();
+				if ((!mCurrentSelection.isDocument())
+						&& (!mCurrentSelection.isDocumentDeclaration())) {
+					promptDeleteNode();
+				}
 			} else if (Constants.QUICK_ACTION_EDIT.equals(action)) {
 				if (!mCurrentSelection.isDocument()) {
 					doEditNode();
@@ -628,10 +632,6 @@ public class AxelActivity extends Activity implements
 		}
 
 		if (mReadOnly) {
-			return;
-		}
-
-		if (node.isDocumentDeclaration()) {
 			return;
 		}
 
@@ -663,20 +663,24 @@ public class AxelActivity extends Activity implements
 						R.string.action_uncomment,
 
 						R.drawable.ic_action_comment);
-			} else {
+			} else if (!node.isDocumentDeclaration()) {
 				quickAction.addActionItem(R.id.action_comment,
 						R.string.action_comment, R.drawable.ic_action_comment);
 			}
-			quickAction.addActionItem(R.id.action_delete,
-					R.string.action_delete, R.drawable.ic_action_delete);
+			if (!node.isDocumentDeclaration()) {
+				quickAction.addActionItem(R.id.action_delete,
+						R.string.action_delete, R.drawable.ic_action_delete);
+			}
 		}
 
 		if (!(node.isDocument() || node.isDocumentDeclaration())) {
 			quickAction.addActionItem(R.id.action_cut, R.string.action_cut,
 					R.drawable.ic_action_cut);
 		}
-		quickAction.addActionItem(R.id.action_copy, R.string.action_copy,
-				R.drawable.ic_action_copy);
+		if (!node.isDocumentDeclaration()) {
+			quickAction.addActionItem(R.id.action_copy, R.string.action_copy,
+					R.drawable.ic_action_copy);
+		}
 
 		if (node.isDocument() || node.isElement()) {
 			if (mClipboard.hasTextContent()) {
@@ -1584,7 +1588,7 @@ public class AxelActivity extends Activity implements
 
 		Intent edit = new Intent(getApplicationContext(),
 				AxelNodeEditorActivity.class);
-		edit.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY); 
+		edit.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		startActivityForResult(edit, Constants.REQUEST_EDIT_NODE);
 	}
 
@@ -1689,7 +1693,6 @@ public class AxelActivity extends Activity implements
 		}
 		mCurrentSelectedViews.clear();
 	}
-
 
 	/** */
 	private XmlNode mCurrentSelection;

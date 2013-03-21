@@ -17,102 +17,188 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/ui_additional_licences" />
+            android:text="@string/ui_additional_licences"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="email"
-            android:text="@string/ui_licence_crouton" />
+            android:text="@string/ui_licence_crouton"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="email"
-            android:text="@string/ui_licence_dragsortlistview" />
+            android:text="@string/ui_licence_dragsortlistview"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="email"
-            android:text="@string/ui_licence_htmlcleaner" />
+            android:text="@string/ui_licence_htmlcleaner"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="email"
-            android:text="@string/ui_licence_juniversalchardet" />
+            android:text="@string/ui_licence_juniversalchardet"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="@string/ui_history" />
+            android:text="@string/ui_history"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextSubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/release5" />
+            android:text="@string/release13"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/release5_log" />
+            android:text="@string/release13_log"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextSubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/release4" />
+            android:text="@string/release12"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/release4_log" />
+            android:text="@string/release12_log"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextSubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/release3" />
+            android:text="@string/release11"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/release3_log" />
+            android:text="@string/release11_log"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextSubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/release2" />
+            android:text="@string/release7"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/release2_log" />
+            android:text="@string/release7_log"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextSubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/release1" />
+            android:text="@string/release6"
+            android:textIsSelectable="true" />
 
         <TextView
             style="@style/TextContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/release1_log" />
+            android:text="@string/release6_log"
+            android:textIsSelectable="true" />
+
+        <TextView
+            style="@style/TextSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/release5"
+            android:textIsSelectable="true" />
+
+        <TextView
+            style="@style/TextContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/release5_log"
+            android:textIsSelectable="true" />
+
+        <TextView
+            style="@style/TextSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/release4"
+            android:textIsSelectable="true" />
+
+        <TextView
+            style="@style/TextContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/release4_log"
+            android:textIsSelectable="true" />
+
+        <TextView
+            style="@style/TextSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/release3"
+            android:textIsSelectable="true" />
+
+        <TextView
+            style="@style/TextContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/release3_log"
+            android:textIsSelectable="true" />
+
+        <TextView
+            style="@style/TextSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/release2"
+            android:textIsSelectable="true" />
+
+        <TextView
+            style="@style/TextContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/release2_log"
+            android:textIsSelectable="true" />
+
+        <TextView
+            style="@style/TextSubTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/release1"
+            android:textIsSelectable="true" />
+
+        <TextView
+            style="@style/TextContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/release1_log"
+            android:textIsSelectable="true" />
     </LinearLayout>
 
 </ScrollView>
