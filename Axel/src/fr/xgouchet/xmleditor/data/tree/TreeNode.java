@@ -23,6 +23,9 @@ public class TreeNode<T> {
 		mChildren = new LinkedList<TreeNode<T>>();
 		mContent = content;
 		mParent = parent;
+
+		mExpanded = true;
+		mViewCount = 1;
 		updateDepth();
 	}
 
@@ -41,6 +44,8 @@ public class TreeNode<T> {
 			onChildListChanged();
 		}
 
+		updateParentViewCount();
+
 		return result;
 	}
 
@@ -56,6 +61,8 @@ public class TreeNode<T> {
 		mChildren.add(position, child);
 		child.setParent(this);
 		onChildListChanged();
+
+		updateParentViewCount();
 	}
 
 	/**

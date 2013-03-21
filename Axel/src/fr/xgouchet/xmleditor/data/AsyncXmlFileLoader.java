@@ -94,7 +94,7 @@ public class AsyncXmlFileLoader extends
 	 */
 	protected void doReadFile(final File file) {
 		mResult.setFile(file);
-		mResult.setEncoding(TextFileUtils.getFileEncoding(file));
+		mResult.setEncoding(null);
 		setDialogTitle(R.string.ui_hashing);
 		mResult.setFileHash(FileUtils.getFileHash(file));
 
@@ -104,6 +104,7 @@ public class AsyncXmlFileLoader extends
 			} else if (PlistUtils.isBinaryPlist(file)) {
 				doOpenFileAsBinaryPlist(file);
 			} else {
+				mResult.setEncoding(TextFileUtils.getFileEncoding(file));
 				dOpenFileAsXml(file);
 			}
 		} catch (FileNotFoundException e) {
@@ -138,8 +139,8 @@ public class AsyncXmlFileLoader extends
 			document = XmlTreePullParser.parseXmlTree(input, true, encoding);
 
 			setDialogTitle(R.string.ui_generating);
-			document.setExpanded(true, true);
-			document.updateChildViewCount(true);
+			// document.setExpanded(true, true);
+			// document.updateChildViewCount(true);
 
 			mResult.setDocument(document);
 			mResult.setError(XmlError.noError);
@@ -168,8 +169,8 @@ public class AsyncXmlFileLoader extends
 			document = XmlCompressedTreeParser.parseXmlTree(file);
 
 			setDialogTitle(R.string.ui_generating);
-			document.setExpanded(true, true);
-			document.updateChildViewCount(true);
+			// document.setExpanded(true, true);
+			// document.updateChildViewCount(true);
 
 			mResult.setDocument(document);
 			mResult.setError(XmlError.noError);
@@ -199,8 +200,8 @@ public class AsyncXmlFileLoader extends
 			document = XMLPlistParser.parseXmlTree(file);
 
 			setDialogTitle(R.string.ui_generating);
-			document.setExpanded(true, true);
-			document.updateChildViewCount(true);
+			// document.setExpanded(true, true);
+			// document.updateChildViewCount(true);
 
 			mResult.setDocument(document);
 			mResult.setError(XmlError.noError);
