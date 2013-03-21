@@ -5,12 +5,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.NotSerializableException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map.Entry;
 
+import java.text.DateFormat;
 import android.util.Log;
 import fr.xgouchet.plist.PlistParser;
 import fr.xgouchet.plist.data.PArray;
 import fr.xgouchet.plist.data.PBoolean;
+import fr.xgouchet.plist.data.PDate;
 import fr.xgouchet.plist.data.PDict;
 import fr.xgouchet.plist.data.PInt;
 import fr.xgouchet.plist.data.PObject;
@@ -22,6 +27,10 @@ import fr.xgouchet.xmleditor.data.xml.XmlTreeParserException;
 import fr.xgouchet.xmleditor.data.xml.XmlTreeParserException.XmlError;
 
 public class XMLPlistParser extends XmlTreeParser {
+
+	private static final String ISO8601_PATTERN = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+	private static final DateFormat ISO8601 = new SimpleDateFormat(
+			ISO8601_PATTERN, Locale.US);
 
 	public static final XmlNode parseXmlTree(File file) {
 
@@ -89,6 +98,9 @@ public class XMLPlistParser extends XmlTreeParser {
 			break;
 		case DICT:
 			convertPDict((PDict) object);
+			break;
+		case DATE:
+			convertPDate((PDate) object);
 			break;
 		default:
 			Log.w("Axel", "Missing PList item " + type.name());
@@ -162,6 +174,17 @@ public class XMLPlistParser extends XmlTreeParser {
 
 			convertPObject(entry.getValue());
 		}
+
+		onCloseElement();
+	}
+
+	private void convertPDate(PDate date) {
+		onCreateElement(XmlNode.createElement("date"));
+
+		// Log.i("Axel", "Converting date " + date.getValue());
+
+		String value = ISO8601.format(new Date(date.getValue()));
+		onCreateElement(XmlNode.createText(value));
 
 		onCloseElement();
 	}
