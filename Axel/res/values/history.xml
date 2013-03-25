@@ -2,10 +2,10 @@
 <resources>
 
     <!--  -->
-    <string name="release13">Axel 2.4 (? Mar. 2013)</string>
+    <string name="release13">Axel 2.4 (25 Mar. 2013)</string>
     <string name="release13_log">"- Minor bug fixes;
 - Search feature (search will highlights nodes corresponding to the search query);
-- Fixed the element name validation to allo fullstop;"</string>
+- Fixed the element name validation to allow fullstop;"</string>
 
     <!--  -->
     <string name="release12">Axel 2.3 (15 Fev. 2013)</string>

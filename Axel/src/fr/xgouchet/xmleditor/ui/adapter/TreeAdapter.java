@@ -341,7 +341,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 		if ((mHighlighter != null) && mHighlighter.shouldHighlight(node)) {
 			handle.nodeView.setBackgroundResource(R.drawable.item_selected);
 		} else {
-			handle.nodeView.setBackground(null);
+			handle.nodeView.setBackgroundResource(0);
 		}
 
 		return view;

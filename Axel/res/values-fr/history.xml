@@ -2,6 +2,12 @@
 <resources>
 
     <!--  -->
+    <string name="release13">Axel 2.4 (25 Mar. 2013)</string>
+    <string name="release13_log">"- Correction de bugs mineurs;
+- Recherche (mise en subrillance d'élements contenant le texte recherché);
+- Autorisation du . dans les noms  d'elements XML;"</string>
+
+    <!--  -->
     <string name="release12">Axel 2.3 (15 Fev. 2013)</string>
     <string name="release12_log">"- Amélioration de l'interface (Actions rapides, Holo)
 - Possibilité de copier/coller le contenu XML vers/depuis le presse-papier de l'appareil;

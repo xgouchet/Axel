@@ -1,0 +1,1035 @@
+Buildfile: E:\PERSO\git\Axel\Axel\build.xml
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 21.1.0
+ [checkenv] Installed at C:\Android\android-sdk
+
+-setup:
+     [echo] Project Name: Axel
+  [gettype] Project Type: Application
+
+-pre-clean:
+
+clean:
+[getlibpath] Library dependencies:
+[getlibpath] 
+[getlibpath] ------------------
+[getlibpath] Ordered libraries:
+
+nodeps:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 21.1.0
+ [checkenv] Installed at C:\Android\android-sdk
+
+-setup:
+     [echo] Project Name: DragSortListView
+  [gettype] Project Type: Android Library
+
+-pre-clean:
+
+clean:
+   [delete] Deleting directory E:\PERSO\git\Axel\Drag-sort-listview\bin
+   [delete] Deleting directory E:\PERSO\git\Axel\Drag-sort-listview\gen
+
+nodeps:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 21.1.0
+ [checkenv] Installed at C:\Android\android-sdk
+
+-setup:
+     [echo] Project Name: NewQuickAction
+  [gettype] Project Type: Android Library
+
+-pre-clean:
+
+clean:
+   [delete] Deleting directory E:\PERSO\git\Axel\NewQuickAction\bin
+   [delete] Deleting directory E:\PERSO\git\Axel\NewQuickAction\gen
+
+nodeps:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 21.1.0
+ [checkenv] Installed at C:\Android\android-sdk
+
+-setup:
+     [echo] Project Name: PList
+  [gettype] Project Type: Android Library
+
+-pre-clean:
+
+clean:
+   [delete] Deleting directory E:\PERSO\git\Axel\PList\bin
+   [delete] Deleting directory E:\PERSO\git\Axel\PList\gen
+
+nodeps:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 21.1.0
+ [checkenv] Installed at C:\Android\android-sdk
+
+-setup:
+     [echo] Project Name: AXML
+  [gettype] Project Type: Android Library
+
+-pre-clean:
+
+clean:
+   [delete] Deleting directory E:\PERSO\git\Axel\AXML\bin
+   [delete] Deleting directory E:\PERSO\git\Axel\AXML\gen
+
+nodeps:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 21.1.0
+ [checkenv] Installed at C:\Android\android-sdk
+
+-setup:
+     [echo] Project Name: androidlib
+  [gettype] Project Type: Android Library
+
+-pre-clean:
+
+clean:
+   [delete] Deleting directory E:\PERSO\git\Axel\AndroidLib\bin
+   [delete] Deleting directory E:\PERSO\git\Axel\AndroidLib\gen
+
+-set-mode-check:
+
+-set-release-mode:
+
+-release-obfuscation-check:
+     [echo] proguard.config is ${proguard.config}
+
+-pre-build:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 21.1.0
+ [checkenv] Installed at C:\Android\android-sdk
+
+-setup:
+     [echo] Project Name: Axel
+  [gettype] Project Type: Application
+
+-build-setup:
+     [echo] Resolving Build Target for Axel...
+[gettarget] Project Target:   Android 4.1.2
+[gettarget] API level:        16
+     [echo] ----------
+     [echo] Creating output directories if needed...
+    [mkdir] Created dir: E:\PERSO\git\Axel\Axel\bin
+    [mkdir] Created dir: E:\PERSO\git\Axel\Axel\bin\res
+    [mkdir] Created dir: E:\PERSO\git\Axel\Axel\gen
+    [mkdir] Created dir: E:\PERSO\git\Axel\Axel\bin\classes
+    [mkdir] Created dir: E:\PERSO\git\Axel\Axel\bin\dexedLibs
+     [echo] ----------
+     [echo] Resolving Dependencies for Axel...
+[dependency] Ordered libraries:
+[dependency] E:\PERSO\git\Axel\AndroidLib
+[dependency] E:\PERSO\git\Axel\AXML
+[dependency] E:\PERSO\git\Axel\PList
+[dependency] E:\PERSO\git\Axel\NewQuickAction
+[dependency] E:\PERSO\git\Axel\Drag-sort-listview
+     [echo] ----------
+     [echo] Building Libraries with 'release'...
+
+nodeps:
+
+-set-mode-check:
+
+-set-release-mode:
+
+-release-obfuscation-check:
+     [echo] proguard.config is ${proguard.config}
+
+-pre-build:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 21.1.0
+ [checkenv] Installed at C:\Android\android-sdk
+
+-setup:
+     [echo] Project Name: DragSortListView
+  [gettype] Project Type: Android Library
+
+-build-setup:
+     [echo] Resolving Build Target for DragSortListView...
+[gettarget] Project Target:   Android 2.2
+[gettarget] API level:        8
+     [echo] ----------
+     [echo] Creating output directories if needed...
+    [mkdir] Created dir: E:\PERSO\git\Axel\Drag-sort-listview\libs
+    [mkdir] Created dir: E:\PERSO\git\Axel\Drag-sort-listview\bin
+    [mkdir] Created dir: E:\PERSO\git\Axel\Drag-sort-listview\bin\res
+    [mkdir] Created dir: E:\PERSO\git\Axel\Drag-sort-listview\gen
+    [mkdir] Created dir: E:\PERSO\git\Axel\Drag-sort-listview\bin\classes
+    [mkdir] Created dir: E:\PERSO\git\Axel\Drag-sort-listview\bin\dexedLibs
+     [echo] ----------
+     [echo] Resolving Dependencies for DragSortListView...
+[dependency] Library dependencies:
+[dependency] No Libraries
+[dependency] 
+[dependency] ------------------
+[dependency] API<=15: Adding annotations.jar to the classpath.
+
+-code-gen:
+[mergemanifest] Merging AndroidManifest files into one.
+[mergemanifest] Manifest merger disabled. Using project manifest only.
+     [echo] Handling aidl files...
+     [aidl] No AIDL files to compile.
+     [echo] ----------
+     [echo] Handling RenderScript files...
+[renderscript] No RenderScript files to compile.
+     [echo] ----------
+     [echo] Handling Resources...
+     [aapt] Generating resource IDs...
+     [echo] ----------
+     [echo] Handling BuildConfig class...
+[buildconfig] Generating BuildConfig class.
+
+-pre-compile:
+
+-compile:
+    [javac] Compiling 5 source files to E:\PERSO\git\Axel\Drag-sort-listview\bin\classes
+     [echo] Creating library output jar file...
+      [jar] Building jar: E:\PERSO\git\Axel\Drag-sort-listview\bin\classes.jar
+
+-post-compile:
+
+-obfuscate:
+
+-dex:
+     [echo] Library project: do not convert bytecode...
+
+-crunch:
+   [crunch] Crunching PNG Files in source dir: E:\PERSO\git\Axel\Drag-sort-listview\res
+   [crunch] To destination dir: E:\PERSO\git\Axel\Drag-sort-listview\bin\res
+   [crunch] Crunched 0 PNG files to update cache
+
+-package-resources:
+     [echo] Library project: do not package resources...
+
+-package:
+     [echo] Library project: do not package apk...
+
+-post-package:
+
+-release-prompt-for-password:
+
+-release-nosign:
+     [echo] 
+[propertyfile] Creating new property file: E:\PERSO\git\Axel\Drag-sort-listview\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\Drag-sort-listview\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\Drag-sort-listview\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\Drag-sort-listview\bin\build.prop
+
+-release-sign:
+
+-post-build:
+
+release:
+
+nodeps:
+
+-set-mode-check:
+
+-set-release-mode:
+
+-release-obfuscation-check:
+     [echo] proguard.config is ${proguard.config}
+
+-pre-build:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 21.1.0
+ [checkenv] Installed at C:\Android\android-sdk
+
+-setup:
+     [echo] Project Name: NewQuickAction
+  [gettype] Project Type: Android Library
+
+-build-setup:
+     [echo] Resolving Build Target for NewQuickAction...
+[gettarget] Project Target:   Android 4.2.2
+[gettarget] API level:        17
+     [echo] ----------
+     [echo] Creating output directories if needed...
+    [mkdir] Created dir: E:\PERSO\git\Axel\NewQuickAction\libs
+    [mkdir] Created dir: E:\PERSO\git\Axel\NewQuickAction\bin
+    [mkdir] Created dir: E:\PERSO\git\Axel\NewQuickAction\bin\res
+    [mkdir] Created dir: E:\PERSO\git\Axel\NewQuickAction\gen
+    [mkdir] Created dir: E:\PERSO\git\Axel\NewQuickAction\bin\classes
+    [mkdir] Created dir: E:\PERSO\git\Axel\NewQuickAction\bin\dexedLibs
+     [echo] ----------
+     [echo] Resolving Dependencies for NewQuickAction...
+[dependency] Library dependencies:
+[dependency] No Libraries
+
+-code-gen:
+[mergemanifest] Merging AndroidManifest files into one.
+[mergemanifest] Manifest merger disabled. Using project manifest only.
+     [echo] Handling aidl files...
+     [aidl] No AIDL files to compile.
+     [echo] ----------
+     [echo] Handling RenderScript files...
+[renderscript] No RenderScript files to compile.
+     [echo] ----------
+     [echo] Handling Resources...
+     [aapt] Generating resource IDs...
+     [echo] ----------
+     [echo] Handling BuildConfig class...
+[buildconfig] Generating BuildConfig class.
+
+-pre-compile:
+
+-compile:
+    [javac] Compiling 5 source files to E:\PERSO\git\Axel\NewQuickAction\bin\classes
+    [javac] Note: E:\PERSO\git\Axel\NewQuickAction\src\net\londatiga\android\QuickAction.java uses or overrides a deprecated API.
+    [javac] Note: Recompile with -Xlint:deprecation for details.
+     [echo] Creating library output jar file...
+      [jar] Building jar: E:\PERSO\git\Axel\NewQuickAction\bin\classes.jar
+
+-post-compile:
+
+-obfuscate:
+
+-dex:
+     [echo] Library project: do not convert bytecode...
+
+-crunch:
+   [crunch] Crunching PNG Files in source dir: E:\PERSO\git\Axel\NewQuickAction\res
+   [crunch] To destination dir: E:\PERSO\git\Axel\NewQuickAction\bin\res
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi-v11\quickaction_slider_btn_normal.9.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi-v11\quickaction_slider_btn_normal.9.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi-v11\quickaction_slider_btn_normal.9.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi-v11\quickaction_slider_btn_on.9.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi-v11\quickaction_slider_btn_on.9.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi-v11\quickaction_slider_btn_on.9.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi-v11\quickaction_slider_btn_pressed.9.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi-v11\quickaction_slider_btn_pressed.9.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi-v11\quickaction_slider_btn_pressed.9.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi-v11\quickaction_slider_btn_selected.9.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi-v11\quickaction_slider_btn_selected.9.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi-v11\quickaction_slider_btn_selected.9.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\ic_accept.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\ic_accept.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\ic_accept.png: 95% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\ic_add.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\ic_add.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\ic_add.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\ic_list_more.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\ic_list_more.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\ic_list_more.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\ic_list_more_selected.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\ic_list_more_selected.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\ic_list_more_selected.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\ic_up.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\ic_up.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\ic_up.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\quickaction_arrow_down.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_arrow_down.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_arrow_down.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\quickaction_arrow_up.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_arrow_up.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_arrow_up.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\quickaction_bottom_frame.9.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_bottom_frame.9.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_bottom_frame.9.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\quickaction_slider_background.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_slider_background.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_slider_background.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\quickaction_slider_btn_normal.9.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_slider_btn_normal.9.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_slider_btn_normal.9.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\quickaction_slider_btn_on.9.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_slider_btn_on.9.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_slider_btn_on.9.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\quickaction_slider_btn_pressed.9.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_slider_btn_pressed.9.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_slider_btn_pressed.9.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\quickaction_slider_btn_selected.9.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_slider_btn_selected.9.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_slider_btn_selected.9.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\quickaction_slider_grip_left.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_slider_grip_left.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_slider_grip_left.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\quickaction_slider_grip_right.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_slider_grip_right.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_slider_grip_right.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\quickaction_top_frame.9.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_top_frame.9.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickaction_top_frame.9.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\quickcontact_drop_shadow.9.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickcontact_drop_shadow.9.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\quickcontact_drop_shadow.9.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-hdpi\textfield_default.9.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\textfield_default.9.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-hdpi\textfield_default.9.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-ldpi\icon.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-ldpi\icon.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-ldpi\icon.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\NewQuickAction\res\drawable-mdpi\icon.png => E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-mdpi\icon.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\NewQuickAction\bin\res\drawable-mdpi\icon.png: 0% size of source)
+   [crunch] Crunched 24 PNG files to update cache
+
+-package-resources:
+     [echo] Library project: do not package resources...
+
+-package:
+     [echo] Library project: do not package apk...
+
+-post-package:
+
+-release-prompt-for-password:
+
+-release-nosign:
+     [echo] 
+[propertyfile] Creating new property file: E:\PERSO\git\Axel\NewQuickAction\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\NewQuickAction\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\NewQuickAction\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\NewQuickAction\bin\build.prop
+
+-release-sign:
+
+-post-build:
+
+release:
+
+nodeps:
+
+-set-mode-check:
+
+-set-release-mode:
+
+-release-obfuscation-check:
+     [echo] proguard.config is ${proguard.config}
+
+-pre-build:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 21.1.0
+ [checkenv] Installed at C:\Android\android-sdk
+
+-setup:
+     [echo] Project Name: PList
+  [gettype] Project Type: Android Library
+
+-build-setup:
+     [echo] Resolving Build Target for PList...
+[gettarget] Project Target:   Android 4.2.2
+[gettarget] API level:        17
+     [echo] ----------
+     [echo] Creating output directories if needed...
+    [mkdir] Created dir: E:\PERSO\git\Axel\PList\libs
+    [mkdir] Created dir: E:\PERSO\git\Axel\PList\bin
+    [mkdir] Created dir: E:\PERSO\git\Axel\PList\bin\res
+    [mkdir] Created dir: E:\PERSO\git\Axel\PList\gen
+    [mkdir] Created dir: E:\PERSO\git\Axel\PList\bin\classes
+    [mkdir] Created dir: E:\PERSO\git\Axel\PList\bin\dexedLibs
+     [echo] ----------
+     [echo] Resolving Dependencies for PList...
+[dependency] Library dependencies:
+[dependency] No Libraries
+
+-code-gen:
+[mergemanifest] Merging AndroidManifest files into one.
+[mergemanifest] Manifest merger disabled. Using project manifest only.
+     [echo] Handling aidl files...
+     [aidl] No AIDL files to compile.
+     [echo] ----------
+     [echo] Handling RenderScript files...
+[renderscript] No RenderScript files to compile.
+     [echo] ----------
+     [echo] Handling Resources...
+     [aapt] Generating resource IDs...
+     [echo] ----------
+     [echo] Handling BuildConfig class...
+[buildconfig] Generating BuildConfig class.
+
+-pre-compile:
+
+-compile:
+    [javac] Compiling 13 source files to E:\PERSO\git\Axel\PList\bin\classes
+     [echo] Creating library output jar file...
+      [jar] Building jar: E:\PERSO\git\Axel\PList\bin\classes.jar
+
+-post-compile:
+
+-obfuscate:
+
+-dex:
+     [echo] Library project: do not convert bytecode...
+
+-crunch:
+   [crunch] Crunching PNG Files in source dir: E:\PERSO\git\Axel\PList\res
+   [crunch] To destination dir: E:\PERSO\git\Axel\PList\bin\res
+   [crunch] Crunched 0 PNG files to update cache
+
+-package-resources:
+     [echo] Library project: do not package resources...
+
+-package:
+     [echo] Library project: do not package apk...
+
+-post-package:
+
+-release-prompt-for-password:
+
+-release-nosign:
+     [echo] 
+[propertyfile] Creating new property file: E:\PERSO\git\Axel\PList\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\PList\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\PList\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\PList\bin\build.prop
+
+-release-sign:
+
+-post-build:
+
+release:
+
+nodeps:
+
+-set-mode-check:
+
+-set-release-mode:
+
+-release-obfuscation-check:
+     [echo] proguard.config is ${proguard.config}
+
+-pre-build:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 21.1.0
+ [checkenv] Installed at C:\Android\android-sdk
+
+-setup:
+     [echo] Project Name: AXML
+  [gettype] Project Type: Android Library
+
+-build-setup:
+     [echo] Resolving Build Target for AXML...
+[gettarget] Project Target:   Android 4.2.2
+[gettarget] API level:        17
+     [echo] ----------
+     [echo] Creating output directories if needed...
+    [mkdir] Created dir: E:\PERSO\git\Axel\AXML\libs
+    [mkdir] Created dir: E:\PERSO\git\Axel\AXML\bin
+    [mkdir] Created dir: E:\PERSO\git\Axel\AXML\bin\res
+    [mkdir] Created dir: E:\PERSO\git\Axel\AXML\gen
+    [mkdir] Created dir: E:\PERSO\git\Axel\AXML\bin\classes
+    [mkdir] Created dir: E:\PERSO\git\Axel\AXML\bin\dexedLibs
+     [echo] ----------
+     [echo] Resolving Dependencies for AXML...
+[dependency] Library dependencies:
+[dependency] No Libraries
+
+-code-gen:
+[mergemanifest] Merging AndroidManifest files into one.
+[mergemanifest] Manifest merger disabled. Using project manifest only.
+     [echo] Handling aidl files...
+     [aidl] No AIDL files to compile.
+     [echo] ----------
+     [echo] Handling RenderScript files...
+[renderscript] No RenderScript files to compile.
+     [echo] ----------
+     [echo] Handling Resources...
+     [aapt] Generating resource IDs...
+     [echo] ----------
+     [echo] Handling BuildConfig class...
+[buildconfig] Generating BuildConfig class.
+
+-pre-compile:
+
+-compile:
+    [javac] Compiling 6 source files to E:\PERSO\git\Axel\AXML\bin\classes
+     [echo] Creating library output jar file...
+      [jar] Building jar: E:\PERSO\git\Axel\AXML\bin\classes.jar
+
+-post-compile:
+
+-obfuscate:
+
+-dex:
+     [echo] Library project: do not convert bytecode...
+
+-crunch:
+   [crunch] Crunching PNG Files in source dir: E:\PERSO\git\Axel\AXML\res
+   [crunch] To destination dir: E:\PERSO\git\Axel\AXML\bin\res
+   [crunch] Crunched 0 PNG files to update cache
+
+-package-resources:
+     [echo] Library project: do not package resources...
+
+-package:
+     [echo] Library project: do not package apk...
+
+-post-package:
+
+-release-prompt-for-password:
+
+-release-nosign:
+     [echo] 
+[propertyfile] Creating new property file: E:\PERSO\git\Axel\AXML\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\AXML\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\AXML\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\AXML\bin\build.prop
+
+-release-sign:
+
+-post-build:
+
+release:
+
+nodeps:
+
+-set-mode-check:
+
+-set-release-mode:
+
+-release-obfuscation-check:
+     [echo] proguard.config is ${proguard.config}
+
+-pre-build:
+
+-check-env:
+ [checkenv] Android SDK Tools Revision 21.1.0
+ [checkenv] Installed at C:\Android\android-sdk
+
+-setup:
+     [echo] Project Name: androidlib
+  [gettype] Project Type: Android Library
+
+-build-setup:
+     [echo] Resolving Build Target for androidlib...
+[gettarget] Project Target:   Android 4.2.2
+[gettarget] API level:        17
+     [echo] ----------
+     [echo] Creating output directories if needed...
+    [mkdir] Created dir: E:\PERSO\git\Axel\AndroidLib\bin
+    [mkdir] Created dir: E:\PERSO\git\Axel\AndroidLib\bin\res
+    [mkdir] Created dir: E:\PERSO\git\Axel\AndroidLib\gen
+    [mkdir] Created dir: E:\PERSO\git\Axel\AndroidLib\bin\classes
+    [mkdir] Created dir: E:\PERSO\git\Axel\AndroidLib\bin\dexedLibs
+     [echo] ----------
+     [echo] Resolving Dependencies for androidlib...
+[dependency] Library dependencies:
+[dependency] No Libraries
+
+-code-gen:
+[mergemanifest] Merging AndroidManifest files into one.
+[mergemanifest] Manifest merger disabled. Using project manifest only.
+     [echo] Handling aidl files...
+     [aidl] No AIDL files to compile.
+     [echo] ----------
+     [echo] Handling RenderScript files...
+[renderscript] No RenderScript files to compile.
+     [echo] ----------
+     [echo] Handling Resources...
+     [aapt] Generating resource IDs...
+     [echo] ----------
+     [echo] Handling BuildConfig class...
+[buildconfig] Generating BuildConfig class.
+
+-pre-compile:
+
+-compile:
+    [javac] Compiling 24 source files to E:\PERSO\git\Axel\AndroidLib\bin\classes
+     [echo] Creating library output jar file...
+      [jar] Building jar: E:\PERSO\git\Axel\AndroidLib\bin\classes.jar
+
+-post-compile:
+
+-obfuscate:
+
+-dex:
+     [echo] Library project: do not convert bytecode...
+
+-crunch:
+   [crunch] Crunching PNG Files in source dir: E:\PERSO\git\Axel\AndroidLib\res
+   [crunch] To destination dir: E:\PERSO\git\Axel\AndroidLib\bin\res
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\app_rating.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\app_rating.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\app_rating.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\donate.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\donate.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\donate.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_apk.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_apk.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_apk.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_apk_locked.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_apk_locked.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_apk_locked.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_apk_private.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_apk_private.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_apk_private.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_app.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_app.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_app.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_app_locked.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_app_locked.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_app_locked.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_app_private.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_app_private.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_app_private.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_audio.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_audio.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_audio.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_audio_locked.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_audio_locked.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_audio_locked.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_audio_private.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_audio_private.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_audio_private.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_compressed.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_compressed.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_compressed.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_compressed_locked.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_compressed_locked.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_compressed_locked.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_compressed_private.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_compressed_private.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_compressed_private.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_db.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_db.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_db.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_db_locked.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_db_locked.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_db_locked.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_db_private.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_db_private.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_db_private.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_image.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_image.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_image.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_image_locked.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_image_locked.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_image_locked.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_image_private.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_image_private.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_image_private.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_link.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_link.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_link.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_link_locked.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_link_locked.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_link_locked.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_link_private.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_link_private.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_link_private.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_locked.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_locked.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_locked.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_pdf.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_pdf.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_pdf.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_pdf_locked.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_pdf_locked.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_pdf_locked.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_pdf_private.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_pdf_private.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_pdf_private.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_private.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_private.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_private.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_text.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_text.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_text.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_text_locked.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_text_locked.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_text_locked.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_text_private.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_text_private.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_text_private.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_unknown.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_unknown.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_unknown.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_video.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_video.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_video.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_video_locked.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_video_locked.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_video_locked.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_video_private.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_video_private.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_video_private.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_xml.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_xml.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_xml.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_xml_locked.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_xml_locked.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_xml_locked.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\file_xml_private.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_xml_private.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\file_xml_private.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\folder.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\folder_downloads.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_downloads.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_downloads.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\folder_link.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_link.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_link.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\folder_link_locked.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_link_locked.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_link_locked.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\folder_link_private.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_link_private.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_link_private.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\folder_locked.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_locked.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_locked.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\folder_private.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_private.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_private.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\folder_trash_empty.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_trash_empty.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_trash_empty.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\folder_trash_full.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_trash_full.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\folder_trash_full.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\mail.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\mail.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\mail.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\market.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\market.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\market.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\sd_card.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\sd_card.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\sd_card.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\selected.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\selected.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\selected.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\AndroidLib\res\drawable-hdpi\up.png => E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\up.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\AndroidLib\bin\res\drawable-hdpi\up.png: 0% size of source)
+   [crunch] Crunched 53 PNG files to update cache
+
+-package-resources:
+     [echo] Library project: do not package resources...
+
+-package:
+     [echo] Library project: do not package apk...
+
+-post-package:
+
+-release-prompt-for-password:
+
+-release-nosign:
+     [echo] 
+[propertyfile] Creating new property file: E:\PERSO\git\Axel\AndroidLib\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\AndroidLib\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\AndroidLib\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\AndroidLib\bin\build.prop
+
+-release-sign:
+
+-post-build:
+
+release:
+
+-code-gen:
+[mergemanifest] Merging AndroidManifest files into one.
+[mergemanifest] Manifest merger disabled. Using project manifest only.
+     [echo] Handling aidl files...
+     [aidl] No AIDL files to compile.
+     [echo] ----------
+     [echo] Handling RenderScript files...
+[renderscript] No RenderScript files to compile.
+     [echo] ----------
+     [echo] Handling Resources...
+     [aapt] Generating resource IDs...
+     [echo] ----------
+     [echo] Handling BuildConfig class...
+[buildconfig] Generating BuildConfig class.
+
+-pre-compile:
+
+-compile:
+    [javac] Compiling 63 source files to E:\PERSO\git\Axel\Axel\bin\classes
+    [javac] Note: E:\PERSO\git\Axel\Axel\src\fr\xgouchet\xmleditor\AxelSettingsActivity.java uses or overrides a deprecated API.
+    [javac] Note: Recompile with -Xlint:deprecation for details.
+    [javac] Note: E:\PERSO\git\Axel\Axel\src\fr\xgouchet\xmleditor\ui\adapter\TreeAdapter.java uses unchecked or unsafe operations.
+    [javac] Note: Recompile with -Xlint:unchecked for details.
+
+-post-compile:
+
+-obfuscate:
+
+-dex:
+      [dex] input: E:\PERSO\git\Axel\Axel\bin\classes
+      [dex] input: E:\PERSO\git\Axel\AndroidLib\bin\classes.jar
+      [dex] input: E:\PERSO\git\Axel\AXML\bin\classes.jar
+      [dex] input: E:\PERSO\git\Axel\PList\bin\classes.jar
+      [dex] input: E:\PERSO\git\Axel\NewQuickAction\bin\classes.jar
+      [dex] input: E:\PERSO\git\Axel\Drag-sort-listview\bin\classes.jar
+      [dex] input: E:\PERSO\git\Axel\Axel\libs\XmlSchema-1.4.7.jar
+      [dex] input: E:\PERSO\git\Axel\AndroidLib\libs\juniversalchardet-1.0.3.jar
+      [dex] input: E:\PERSO\git\Axel\Axel\libs\htmlcleaner-2.2.jar
+      [dex] Pre-Dexing E:\PERSO\git\Axel\AndroidLib\bin\classes.jar -> classes-3912a92fdc57cb047ac930093a2ca63a.jar
+      [dex] Pre-Dexing E:\PERSO\git\Axel\AXML\bin\classes.jar -> classes-d5099966f7b60efb9a9f684274492227.jar
+      [dex] Pre-Dexing E:\PERSO\git\Axel\PList\bin\classes.jar -> classes-3946dffc2f71ce3bcb00119ad563df37.jar
+      [dex] Pre-Dexing E:\PERSO\git\Axel\NewQuickAction\bin\classes.jar -> classes-d9c1dedb4d8d472d22e98cc1e440a998.jar
+      [dex] Pre-Dexing E:\PERSO\git\Axel\Drag-sort-listview\bin\classes.jar -> classes-19658dcf70f3f600333480631d2ad6a8.jar
+      [dex] Pre-Dexing E:\PERSO\git\Axel\Axel\libs\XmlSchema-1.4.7.jar -> XmlSchema-1.4.7-a2f4244522e2e3079ae32568042fe456.jar
+       [dx] warning: Ignoring InnerClasses attribute for an anonymous inner class
+       [dx] (org.apache.ws.commons.schema.SchemaBuilder$1) that doesn't come with an
+       [dx] associated EnclosingMethod attribute. This class was probably produced by a
+       [dx] compiler that did not target the modern .class file format. The recommended
+       [dx] solution is to recompile the class from source, using an up-to-date compiler
+       [dx] and without specifying any "-target" type options. The consequence of ignoring
+       [dx] this warning is that reflective operations on this class will incorrectly
+       [dx] indicate that it is *not* an inner class.
+       [dx] warning: Ignoring InnerClasses attribute for an anonymous inner class
+       [dx] (org.apache.ws.commons.schema.SchemaBuilder$2) that doesn't come with an
+       [dx] associated EnclosingMethod attribute. This class was probably produced by a
+       [dx] compiler that did not target the modern .class file format. The recommended
+       [dx] solution is to recompile the class from source, using an up-to-date compiler
+       [dx] and without specifying any "-target" type options. The consequence of ignoring
+       [dx] this warning is that reflective operations on this class will incorrectly
+       [dx] indicate that it is *not* an inner class.
+       [dx] warning: Ignoring InnerClasses attribute for an anonymous inner class
+       [dx] (org.apache.ws.commons.schema.XmlSchemaCollection$1) that doesn't come with an
+       [dx] associated EnclosingMethod attribute. This class was probably produced by a
+       [dx] compiler that did not target the modern .class file format. The recommended
+       [dx] solution is to recompile the class from source, using an up-to-date compiler
+       [dx] and without specifying any "-target" type options. The consequence of ignoring
+       [dx] this warning is that reflective operations on this class will incorrectly
+       [dx] indicate that it is *not* an inner class.
+       [dx] warning: Ignoring InnerClasses attribute for an anonymous inner class
+       [dx] (org.apache.ws.commons.schema.tools.ReadSchemaFromURL$1) that doesn't come with an
+       [dx] associated EnclosingMethod attribute. This class was probably produced by a
+       [dx] compiler that did not target the modern .class file format. The recommended
+       [dx] solution is to recompile the class from source, using an up-to-date compiler
+       [dx] and without specifying any "-target" type options. The consequence of ignoring
+       [dx] this warning is that reflective operations on this class will incorrectly
+       [dx] indicate that it is *not* an inner class.
+       [dx] warning: Ignoring InnerClasses attribute for an anonymous inner class
+       [dx] (org.apache.ws.commons.schema.utils.NodeNamespaceContext$1) that doesn't come with an
+       [dx] associated EnclosingMethod attribute. This class was probably produced by a
+       [dx] compiler that did not target the modern .class file format. The recommended
+       [dx] solution is to recompile the class from source, using an up-to-date compiler
+       [dx] and without specifying any "-target" type options. The consequence of ignoring
+       [dx] this warning is that reflective operations on this class will incorrectly
+       [dx] indicate that it is *not* an inner class.
+      [dex] Pre-Dexing E:\PERSO\git\Axel\AndroidLib\libs\juniversalchardet-1.0.3.jar -> juniversalchardet-1.0.3-663e0182637f444515893b80fe080409.jar
+      [dex] Pre-Dexing E:\PERSO\git\Axel\Axel\libs\htmlcleaner-2.2.jar -> htmlcleaner-2.2-d78d19d3018b23342dfd40c29b5e8237.jar
+      [dex] Converting compiled files and external libraries into E:\PERSO\git\Axel\Axel\bin\classes.dex...
+       [dx] Merged dex A (148 defs/157,4KiB) with dex B (34 defs/80,1KiB). Result is 182 defs/281,5KiB. Took 0,1s
+       [dx] Merged dex A (182 defs/281,5KiB) with dex B (5 defs/11,3KiB). Result is 187 defs/362,8KiB. Took 0,0s
+       [dx] Merged dex A (187 defs/362,8KiB) with dex B (14 defs/14,0KiB). Result is 201 defs/507,3KiB. Took 0,0s
+       [dx] Merged dex A (201 defs/507,3KiB) with dex B (9 defs/11,9KiB). Result is 210 defs/756,2KiB. Took 0,0s
+       [dx] Merged dex A (210 defs/756,2KiB) with dex B (16 defs/35,4KiB). Result is 226 defs/1240,3KiB. Took 0,0s
+       [dx] Result compacted from 2261,9KiB to 414,8KiB to save 1847,2KiB
+       [dx] Merged dex A (226 defs/1240,3KiB) with dex B (108 defs/136,7KiB). Result is 334 defs/414,8KiB. Took 0,0s
+       [dx] Merged dex A (334 defs/414,8KiB) with dex B (62 defs/168,0KiB). Result is 396 defs/710,5KiB. Took 0,0s
+       [dx] Merged dex A (396 defs/710,5KiB) with dex B (46 defs/112,6KiB). Result is 442 defs/1044,1KiB. Took 0,0s
+
+-crunch:
+   [crunch] Crunching PNG Files in source dir: E:\PERSO\git\Axel\Axel\res
+   [crunch] To destination dir: E:\PERSO\git\Axel\Axel\bin\res
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi-v11\ic_action_discard.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi-v11\ic_action_discard.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi-v11\ic_action_discard.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi-v11\ic_action_done.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi-v11\ic_action_done.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi-v11\ic_action_done.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi-v11\ic_dialog_alert.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi-v11\ic_dialog_alert.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi-v11\ic_dialog_alert.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\expander_close.9.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\expander_close.9.png
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\expander_haschild.9.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\expander_haschild.9.png
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\expander_ignore.9.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\expander_ignore.9.png
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\expander_open.9.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\expander_open.9.png
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\folder_r.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\folder_r.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\folder_r.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\folder_rw.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\folder_rw.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\folder_rw.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_action_add_attr.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_add_attr.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_add_attr.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_action_add_child.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_add_child.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_add_child.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_action_comment.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_comment.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_comment.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_action_copy.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_copy.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_copy.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_action_cut.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_cut.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_cut.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_action_delete.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_delete.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_delete.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_action_edit.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_edit.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_edit.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_action_paste.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_paste.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_paste.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_action_search.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_search.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_search.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_action_sort.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_sort.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_action_sort.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_clear.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_clear.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_clear.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_dialog_alert.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_dialog_alert.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_dialog_alert.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_drag.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_drag.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_drag.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_launcher.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_launcher.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_launcher.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_menu_collapse.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_collapse.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_collapse.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_menu_expand.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_expand.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_expand.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_menu_file_new.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_file_new.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_file_new.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_menu_file_open.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_file_open.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_file_open.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_menu_recent.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_recent.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_recent.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_menu_save.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_save.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_save.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_menu_search.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_search.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_search.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_menu_undo.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_undo.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_menu_undo.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-hdpi\ic_search.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_search.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-hdpi\ic_search.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-ldpi\ic_action_add_attr.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_add_attr.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_add_attr.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-ldpi\ic_action_add_child.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_add_child.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_add_child.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-ldpi\ic_action_comment.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_comment.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_comment.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-ldpi\ic_action_copy.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_copy.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_copy.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-ldpi\ic_action_delete.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_delete.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_delete.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-ldpi\ic_action_edit.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_edit.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_edit.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-ldpi\ic_action_paste.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_paste.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_paste.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-ldpi\ic_action_sort.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_sort.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_action_sort.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-ldpi\ic_launcher.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_launcher.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-ldpi\ic_launcher.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-mdpi\ic_action_add_attr.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_add_attr.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_add_attr.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-mdpi\ic_action_add_child.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_add_child.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_add_child.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-mdpi\ic_action_comment.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_comment.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_comment.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-mdpi\ic_action_copy.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_copy.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_copy.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-mdpi\ic_action_cut.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_cut.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_cut.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-mdpi\ic_action_delete.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_delete.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_delete.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-mdpi\ic_action_edit.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_edit.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_edit.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-mdpi\ic_action_paste.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_paste.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_paste.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-mdpi\ic_action_search.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_search.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_search.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-mdpi\ic_action_sort.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_sort.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_action_sort.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-mdpi\ic_launcher.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_launcher.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-mdpi\ic_launcher.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-xhdpi-v11\ic_action_discard.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi-v11\ic_action_discard.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi-v11\ic_action_discard.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-xhdpi-v11\ic_action_done.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi-v11\ic_action_done.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi-v11\ic_action_done.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-xhdpi\ic_action_add_attr.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_add_attr.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_add_attr.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-xhdpi\ic_action_add_child.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_add_child.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_add_child.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-xhdpi\ic_action_comment.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_comment.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_comment.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-xhdpi\ic_action_copy.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_copy.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_copy.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-xhdpi\ic_action_cut.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_cut.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_cut.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-xhdpi\ic_action_delete.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_delete.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_delete.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-xhdpi\ic_action_edit.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_edit.png
+   [crunch] ERROR: 9-patch image E:\PERSO\git\Axel\Axel\res\drawable-hdpi\expander_close.9.png malformed.
+   [crunch]        No marked region found along edge.
+   [crunch]        Found along top edge.
+   [crunch] ERROR: 9-patch image E:\PERSO\git\Axel\Axel\res\drawable-hdpi\expander_haschild.9.png malformed.
+   [crunch]        No marked region found along edge.
+   [crunch]        Found along top edge.
+   [crunch] ERROR: 9-patch image E:\PERSO\git\Axel\Axel\res\drawable-hdpi\expander_ignore.9.png malformed.
+   [crunch]        No marked region found along edge.
+   [crunch]        Found along top edge.
+   [crunch] ERROR: 9-patch image E:\PERSO\git\Axel\Axel\res\drawable-hdpi\expander_open.9.png malformed.
+   [crunch]        No marked region found along edge.
+   [crunch]        Found along top edge.
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_edit.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-xhdpi\ic_action_paste.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_paste.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_paste.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-xhdpi\ic_action_search.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_search.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_search.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-xhdpi\ic_action_sort.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_sort.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_action_sort.png: 0% size of source)
+   [crunch] Processing image to cache: E:\PERSO\git\Axel\Axel\res\drawable-xhdpi\ic_launcher.png => E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_launcher.png
+   [crunch]   (processed image to cache entry E:\PERSO\git\Axel\Axel\bin\res\drawable-xhdpi\ic_launcher.png: 92% size of source)
+   [crunch] Crunched 65 PNG files to update cache
+
+-package-resources:
+     [aapt] Creating full resource package...
+
+-package:
+[apkbuilder] Current build type is different than previous build: forced apkbuilder run.
+[apkbuilder] Creating Axel-release-unsigned.apk for release...
+
+-post-package:
+
+-release-prompt-for-password:
+
+-release-nosign:
+
+-release-sign:
+     [echo] Signing final apk...
+ [zipalign] Running zip align on final apk...
+     [echo] Release Package: E:\PERSO\git\Axel\Axel\bin\Axel-release.apk
+[propertyfile] Creating new property file: E:\PERSO\git\Axel\Axel\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\Axel\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\Axel\bin\build.prop
+[propertyfile] Updating property file: E:\PERSO\git\Axel\Axel\bin\build.prop
+
+-post-build:
+
+release:
+
+apk-version-release:
+    [mkdir] Created dir: E:\PERSO\git\Axel\builds
+     [copy] Copying 1 file to E:\PERSO\git\Axel\builds
+   [delete] Deleting: E:\PERSO\git\Axel\Axel\bin\Axel-release.apk
+   [delete] Deleting: E:\PERSO\git\Axel\Axel\bin\Axel-release-unsigned.apk
+   [delete] Deleting: E:\PERSO\git\Axel\Axel\bin\Axel-release-unaligned.apk
+
+BUILD SUCCESSFUL
+Total time: 23 seconds
