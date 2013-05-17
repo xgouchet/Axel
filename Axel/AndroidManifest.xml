@@ -40,6 +40,7 @@
 
                 <data android:mimeType="text/xml" />
                 <data android:mimeType="text/html" />
+                <data android:mimeType="application/xml" />
             </intent-filter>
 
             <!-- File extensions filters -->
@@ -49,15 +50,13 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
 
+                <!-- Ignore Mimetype -->
+                <data
+                    android:host="*"
+                    android:mimeType="*/*" />
+
                 <!-- Standard XML extension -->
                 <data
-                    android:mimeType="application/xml"
-                    android:scheme="file" />
-                <data
-                    android:mimeType="text/xml"
-                    android:scheme="file" />
-                <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.xml"
                     android:scheme="file" />
 
@@ -66,145 +65,112 @@
                     android:mimeType="text/html"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.htm"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.html"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.xhtml"
                     android:scheme="file" />
 
                 <!-- XML APIs -->
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.xsd"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.xslt"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.rng"
                     android:scheme="file" />
 
                 <!-- RSS feeds -->
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.atom"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.rss"
                     android:scheme="file" />
 
                 <!-- Specific Markup Language -->
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.aiml"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.cml"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.ficml"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.gml"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.kml"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.opml"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.sbml"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.scxml"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.wml"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.xaml"
                     android:scheme="file" />
 
                 <!-- Graphic  Formats -->
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.dae"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.svg"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.x3d"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.xmp"
                     android:scheme="file" />
 
                 <!-- Other formats -->
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.dbk"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.ofx"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.plist"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.rnd"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.smil"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.wsdl"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.xbrl"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.xpl"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.xrc"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.xspf"
                     android:scheme="file" />
                 <data
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.xul"
                     android:scheme="file" />
             </intent-filter>
