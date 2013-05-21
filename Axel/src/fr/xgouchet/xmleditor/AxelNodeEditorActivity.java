@@ -55,7 +55,7 @@ public class AxelNodeEditorActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.layout_node_editor);
 
-		mNode = ((AxelApplication) getApplication()).getCurrentSelection();		
+		mNode = ((AxelApplication) getApplication()).getCurrentSelection();
 		mData = mNode.getContent();
 		setTitle(getString(R.string.title_editor, mData.getTypeName()));
 
@@ -195,12 +195,14 @@ public class AxelNodeEditorActivity extends Activity {
 		// Show the custom action bar view and hide the normal Home icon and
 		// title.
 		final ActionBar actionBar = getActionBar();
-		actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
-				ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME
-						| ActionBar.DISPLAY_SHOW_TITLE);
-		actionBar.setCustomView(custom, new ActionBar.LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.MATCH_PARENT));
+		if (actionBar != null) {
+			actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM,
+					ActionBar.DISPLAY_SHOW_CUSTOM | ActionBar.DISPLAY_SHOW_HOME
+							| ActionBar.DISPLAY_SHOW_TITLE);
+			actionBar.setCustomView(custom, new ActionBar.LayoutParams(
+					ViewGroup.LayoutParams.MATCH_PARENT,
+					ViewGroup.LayoutParams.MATCH_PARENT));
+		}
 	}
 
 	private boolean hasDefaultNamespace() {
