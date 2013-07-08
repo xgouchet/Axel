@@ -62,9 +62,6 @@
 
                 <!-- HTML extensions -->
                 <data
-                    android:mimeType="text/html"
-                    android:scheme="file" />
-                <data
                     android:pathPattern=".*\\.htm"
                     android:scheme="file" />
                 <data
