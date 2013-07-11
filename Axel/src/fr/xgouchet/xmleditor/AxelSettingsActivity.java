@@ -1,11 +1,7 @@
 package fr.xgouchet.xmleditor;
 
-import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.os.Build;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.PreferenceActivity;
@@ -22,7 +18,6 @@ public class AxelSettingsActivity extends PreferenceActivity implements
 	 */
 
 	@Override
-	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	protected void onCreate(final Bundle icicle) {
 		super.onCreate(icicle);
 
@@ -36,9 +31,7 @@ public class AxelSettingsActivity extends PreferenceActivity implements
 
 		updateSummaries();
 
-		if (VERSION.SDK_INT > VERSION_CODES.HONEYCOMB) {
-			getActionBar().setDisplayHomeAsUpEnabled(true);
-		}
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	public boolean onOptionsItemSelected(MenuItem item) {

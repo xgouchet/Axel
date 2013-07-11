@@ -13,7 +13,6 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.mobeta.android.dslv.DragSortListView;
@@ -56,11 +55,8 @@ public class AxelSortActivity extends Activity implements DropListener {
 		mListView.setDropListener(this);
 		mListView.setAdapter(mNodeAdapter);
 
-		if (VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
 			setupDoneDiscardActionBar();
-		} else {
-			setupDoneDiscardButtons();
-		}
+
 
 	}
 
@@ -77,23 +73,7 @@ public class AxelSortActivity extends Activity implements DropListener {
 		}
 	}
 
-	private void setupDoneDiscardButtons() {
-		// setup buttons
-		findViewById(R.id.buttonCancel).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(final View v) {
-						onDiscard();
-					}
-				});
 
-		findViewById(R.id.buttonOk).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				onApply();
-			}
-		});
-	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 	private void setupDoneDiscardActionBar() {

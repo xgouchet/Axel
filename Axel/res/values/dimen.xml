@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    
+    <dimen name="editor_margin">4dp</dimen>
 
     <dimen name="padding_unit_large">30dp</dimen>
     <dimen name="padding_unit">18dp</dimen>

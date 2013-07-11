@@ -17,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -59,11 +58,7 @@ public class AxelNodeEditorActivity extends Activity {
 		mData = mNode.getContent();
 		setTitle(getString(R.string.title_editor, mData.getTypeName()));
 
-		if (VERSION.SDK_INT >= VERSION_CODES.HONEYCOMB) {
-			setupDoneDiscardActionBar();
-		} else {
-			setupDoneDiscardButtons();
-		}
+		setupDoneDiscardActionBar();
 
 		setResult(RESULT_CANCELED);
 	}
@@ -145,23 +140,6 @@ public class AxelNodeEditorActivity extends Activity {
 
 	private void onDiscard() {
 		finish();
-	}
-
-	private void setupDoneDiscardButtons() {
-		findViewById(R.id.buttonCancel).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(final View v) {
-						onDiscard();
-					}
-				});
-
-		findViewById(R.id.buttonOk).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(final View v) {
-				onApply();
-			}
-		});
 	}
 
 	@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)

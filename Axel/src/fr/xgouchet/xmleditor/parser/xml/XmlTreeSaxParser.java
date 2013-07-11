@@ -1,4 +1,4 @@
-package fr.xgouchet.xmleditor.data.xml;
+package fr.xgouchet.xmleditor.parser.xml;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -14,7 +14,8 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import android.util.Log;
-import fr.xgouchet.xmleditor.data.xml.XmlTreeParserException.XmlError;
+import fr.xgouchet.xmleditor.data.xml.XmlNode;
+import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException.XmlError;
 
 /**
  * 

@@ -1,4 +1,4 @@
-package fr.xgouchet.xmleditor.data.xml;
+package fr.xgouchet.xmleditor.parser.xml;
 
 import android.content.Context;
 import fr.xgouchet.xmleditor.R;
@@ -6,6 +6,7 @@ import fr.xgouchet.xmleditor.R;
 /**
  * 
  */
+@Deprecated
 public final class XmlTreeParserException extends RuntimeException {
 
 	/** */
@@ -46,7 +47,7 @@ public final class XmlTreeParserException extends RuntimeException {
 	 * @param cause
 	 *            the cause of this exception
 	 */
-	public XmlTreeParserException(XmlError error, Throwable cause) {
+	public XmlTreeParserException(final XmlError error, final Throwable cause) {
 		super(cause);
 		mError = error;
 	}
@@ -63,7 +64,7 @@ public final class XmlTreeParserException extends RuntimeException {
 	 *            the current application context
 	 * @return the message to toast
 	 */
-	public String getMessage(Context context) {
+	public String getMessage(final Context context) {
 		String message;
 
 		switch (mError) {
@@ -87,6 +88,7 @@ public final class XmlTreeParserException extends RuntimeException {
 	/**
 	 * @see java.lang.Throwable#getMessage()
 	 */
+	@Override
 	public String getMessage() {
 		return getCause().getMessage();
 	}

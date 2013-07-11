@@ -1,4 +1,4 @@
-package fr.xgouchet.xmleditor.data.plist;
+package fr.xgouchet.xmleditor.parser.plist;
 
 import java.io.EOFException;
 import java.io.File;
@@ -22,9 +22,9 @@ import fr.xgouchet.plist.data.PObject;
 import fr.xgouchet.plist.data.PReal;
 import fr.xgouchet.plist.data.PString;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
-import fr.xgouchet.xmleditor.data.xml.XmlTreeParser;
-import fr.xgouchet.xmleditor.data.xml.XmlTreeParserException;
-import fr.xgouchet.xmleditor.data.xml.XmlTreeParserException.XmlError;
+import fr.xgouchet.xmleditor.parser.xml.XmlTreeParser;
+import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException;
+import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException.XmlError;
 
 public class XMLPlistParser extends XmlTreeParser {
 

@@ -1,4 +1,4 @@
-package fr.xgouchet.xmleditor.data.html;
+package fr.xgouchet.xmleditor.parser.html;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -16,7 +16,7 @@ import org.htmlcleaner.TagNodeVisitor;
 
 import android.text.TextUtils;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
-import fr.xgouchet.xmleditor.data.xml.XmlTreeParser;
+import fr.xgouchet.xmleditor.parser.xml.XmlTreeParser;
 
 public class HtmlCleanerParser extends XmlTreeParser implements TagNodeVisitor {
 

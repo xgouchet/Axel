@@ -1,4 +1,4 @@
-package fr.xgouchet.xmleditor.data.xml;
+package fr.xgouchet.xmleditor.parser.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,7 +7,8 @@ import java.io.IOException;
 import fr.xgouchet.axml.Attribute;
 import fr.xgouchet.axml.CompressedXmlParser;
 import fr.xgouchet.axml.CompressedXmlParserListener;
-import fr.xgouchet.xmleditor.data.xml.XmlTreeParserException.XmlError;
+import fr.xgouchet.xmleditor.data.xml.XmlNode;
+import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException.XmlError;
 
 public class XmlCompressedTreeParser extends XmlTreeParser implements
 		CompressedXmlParserListener {

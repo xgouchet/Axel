@@ -1,4 +1,4 @@
-package fr.xgouchet.xmleditor.data.xml;
+package fr.xgouchet.xmleditor.parser.xml;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,7 +8,9 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.text.TextUtils;
-import fr.xgouchet.xmleditor.data.xml.XmlTreeParserException.XmlError;
+import fr.xgouchet.xmleditor.data.xml.XmlData;
+import fr.xgouchet.xmleditor.data.xml.XmlNode;
+import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException.XmlError;
 
 /**
  * 

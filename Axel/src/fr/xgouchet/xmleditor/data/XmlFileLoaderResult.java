@@ -3,8 +3,9 @@ package fr.xgouchet.xmleditor.data;
 import java.io.File;
 
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
-import fr.xgouchet.xmleditor.data.xml.XmlTreeParserException;
+import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException;
 
+@Deprecated
 public class XmlFileLoaderResult {
 
 	public static final int FLAG_IGNORE_FILE = 0x01;

@@ -1,7 +1,8 @@
 package fr.xgouchet.xmleditor.data;
 
-import fr.xgouchet.xmleditor.data.xml.XmlTreeParserException.XmlError;
+import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException.XmlError;
 
+@Deprecated
 public class XmlFileWriterResult {
 
 	/**
@@ -22,7 +23,7 @@ public class XmlFileWriterResult {
 	 * @param path
 	 *            the path to set
 	 */
-	public void setPath(String path) {
+	public void setPath(final String path) {
 		mPath = path;
 	}
 
@@ -30,7 +31,7 @@ public class XmlFileWriterResult {
 	 * @param error
 	 *            the error to set
 	 */
-	public void setError(XmlError error) {
+	public void setError(final XmlError error) {
 		mError = error;
 	}
 

@@ -1,9 +1,12 @@
-package fr.xgouchet.xmleditor.data.xml;
+package fr.xgouchet.xmleditor.parser.xml;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
+
+import fr.xgouchet.xmleditor.data.xml.XmlNode;
+import fr.xgouchet.xmleditor.data.xml.XmlValidator;
 
 /**
  * 
