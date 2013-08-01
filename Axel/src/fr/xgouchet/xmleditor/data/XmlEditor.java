@@ -5,8 +5,12 @@ import java.io.File;
 import java.io.InputStream;
 
 import android.content.Context;
+import fr.xgouchet.androidlib.data.FileUtils;
 import fr.xgouchet.xmleditor.R;
 import fr.xgouchet.xmleditor.common.AxelUtils;
+import fr.xgouchet.xmleditor.common.Constants;
+import fr.xgouchet.xmleditor.common.RecentFiles;
+import fr.xgouchet.xmleditor.common.Settings;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
@@ -79,6 +83,12 @@ public class XmlEditor implements XmlFileLoaderListener {
 		 */
 		void onXmlConfirmNotification(String message);
 
+		/**
+		 * @param message
+		 *            an information message to display
+		 */
+		void onXmlInfoNotification(String message);
+
 	}
 
 	/** The listener for events on this editor */
@@ -112,12 +122,47 @@ public class XmlEditor implements XmlFileLoaderListener {
 		return mDirty;
 	}
 
+	public boolean hasRoot() {
+		return (mRoot != null);
+	}
+
 	/**
 	 * @return if the current document has a name and path, and can be saved as
 	 *         is
 	 */
 	public boolean hasPath() {
-		return ((mCurrentFilePath == null) || (mCurrentFilePath.length() == 0));
+		return ((mCurrentFilePath != null) && (mCurrentFilePath.length() >= 0));
+	}
+
+	/**
+	 * @return if the current document's file exists in the file system
+	 */
+	public boolean fileExists() {
+		File file = new File(mCurrentFilePath);
+		return file.exists();
+	}
+
+	/**
+	 * @return true if the file's hash has changed since last access (save /
+	 *         load), or if the file doesn't exist anymore.
+	 */
+	public boolean fileChanged() {
+		File file = new File(mCurrentFilePath);
+
+		String hash = FileUtils.getFileHash(file);
+		if (!hash.equals(mCurrentFileHash)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param selection
+	 *            the currently selected node
+	 */
+	public void setSelection(final XmlNode selection) {
+		mSelection = selection;
 	}
 
 	/**
@@ -148,8 +193,7 @@ public class XmlEditor implements XmlFileLoaderListener {
 		mRoot.setExpanded(true, true);
 		mRoot.updateChildViewCount(true);
 
-		mListener.onXmlDocumentChanged(mRoot, mCurrentFileName,
-				mCurrentFilePath);
+		onXmlDocumentChanged();
 	}
 
 	/**
@@ -229,6 +273,31 @@ public class XmlEditor implements XmlFileLoaderListener {
 		}
 	}
 
+	public void doAddChildToNode(final XmlNode node, final boolean edit) {
+		if (mSelection.addChildNode(node)) {
+			if (mSelection.isDocument()) {
+				mSelection.reorderDocumentChildren();
+			}
+
+			node.updateChildViewCount(false);
+			mSelection.updateChildViewCount(false);
+			mSelection.setExpanded(true, false);
+
+			if (edit && Settings.sEditOnCreate) {
+				mSelection = node;
+				doEditNode();
+			} else {
+				mSelection = null;
+			}
+
+			onXmlContentChanged();
+		}
+	}
+
+	public void doEditNode() {
+
+	}
+
 	/**
 	 * Copy a node's text value into the system clipboard
 	 */
@@ -266,7 +335,7 @@ public class XmlEditor implements XmlFileLoaderListener {
 		parent.removeChildNode(mSelection);
 		mSelection = null;
 
-		setDirty();
+		onXmlContentChanged();
 
 		crouton = mContext.getString(R.string.ui_copy_clipboard,
 				AxelUtils.ellipsize(text, 64));
@@ -291,7 +360,7 @@ public class XmlEditor implements XmlFileLoaderListener {
 		if (mSelection != null) {
 			if (mSelection.removeFromParent()) {
 				mSelection = null;
-				setDirty();
+				onXmlContentChanged();
 			}
 		}
 	}
@@ -316,7 +385,7 @@ public class XmlEditor implements XmlFileLoaderListener {
 					parent.setExpanded(true);
 					parent.updateParentViewCount();
 
-					setDirty();
+					onXmlContentChanged();
 				}
 			}
 		}
@@ -340,7 +409,7 @@ public class XmlEditor implements XmlFileLoaderListener {
 		comment.updateChildViewCount(true);
 		parent.updateParentViewCount();
 
-		setDirty();
+		onXmlContentChanged();
 	}
 
 	/**
@@ -364,7 +433,7 @@ public class XmlEditor implements XmlFileLoaderListener {
 
 				parent.updateParentViewCount();
 
-				setDirty();
+				onXmlContentChanged();
 			} else {
 				mListener.onXmlErrorNotification(mContext
 						.getString(R.string.toast_xml_uncomment));
@@ -415,21 +484,57 @@ public class XmlEditor implements XmlFileLoaderListener {
 		return node;
 	}
 
-	private void setDirty() {
+	/**
+	 * Fires the
+	 * {@link XmlEditorListener#onXmlDocumentChanged(XmlNode, String, String)}
+	 * methode on this editor's listener
+	 */
+	private void onXmlDocumentChanged() {
+		mListener.onXmlDocumentChanged(mRoot, mCurrentFileName,
+				mCurrentFilePath);
+	}
+
+	/**
+	 * Fires the {@link XmlEditorListener#onXmlContentChanged()} methode on this
+	 * editor's listener
+	 */
+	private void onXmlContentChanged() {
 		mDirty = true;
 		mListener.onXmlContentChanged();
 	}
 
 	@Override
 	public void onXmlFileError(final Throwable throwable, final String message) {
-		// TODO Auto-generated method stub
-
+		mListener.onXmlErrorNotification(throwable.getMessage());
 	}
 
 	@Override
-	public void onXmlFileLoaded(final XmlNode root, final File file, final String hash,
-			final String encoding, final boolean readOnly) {
-		// TODO Auto-generated method stub
+	public void onXmlFileLoaded(final XmlNode root, final File file,
+			final String hash, final String encoding, final boolean readOnly) {
+		mRoot = root;
 
+		if (file == null) {
+			mCurrentEncoding = null;
+			mCurrentFileName = null;
+			mCurrentFilePath = null;
+			mReadOnly = false;
+		} else {
+			mCurrentEncoding = encoding;
+			mCurrentFileName = file.getName();
+			mCurrentFilePath = file.getPath();
+			mCurrentFileHash = hash;
+			mReadOnly = readOnly || (!file.canWrite());
+
+			RecentFiles.updateRecentList(mCurrentFilePath);
+			RecentFiles.saveRecentList(mContext.getSharedPreferences(
+					Constants.PREFERENCES_NAME, Context.MODE_PRIVATE));
+		}
+
+		if (mReadOnly) {
+			mListener.onXmlInfoNotification(mContext
+					.getString(R.string.toast_open_read_only));
+		}
+
+		onXmlDocumentChanged();
 	}
 }

@@ -10,7 +10,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.text.TextUtils;
-import android.util.Log;
 import fr.xgouchet.androidlib.data.FileUtils;
 import fr.xgouchet.androidlib.data.TextFileUtils;
 import fr.xgouchet.axml.CompressedXmlUtils;
@@ -26,6 +25,13 @@ import fr.xgouchet.xmleditor.parser.xml.XmlTreePullParser;
  * An {@link AsyncTask} used to load an XML document from a file
  */
 public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
+
+	/** Asks the loader to ignore the original file */
+	public static final int FLAG_IGNORE_FILE = 0x01;
+	/** forces the result to be read only */
+	public static final int FLAG_FORCE_READ_ONLY = 0x02;
+	/** treat the document as HTML soup */
+	public static final int FLAG_HTML_SOUP = 0x04;
 
 	/**
 	 * An interface to listen to events occuring while loading the XML file
@@ -58,11 +64,15 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 	/** the loaded file's XML root */
 	protected XmlNode mRoot;
 
+	/** Ignores the source file */
+	private boolean mIgnoreFile;
 	/** Force file as read only ? */
 	private boolean mForceReadOnly;
 
 	/** the listener for this loader's events */
 	protected final XmlFileLoaderListener mListener;
+
+	private Throwable mThrowable;
 
 	/**
 	 * 
@@ -74,6 +84,8 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 			final XmlFileLoaderListener listener, final int flags) {
 		mContext = context;
 		mListener = listener;
+		mForceReadOnly = ((flags & FLAG_FORCE_READ_ONLY) == FLAG_FORCE_READ_ONLY);
+		mIgnoreFile = ((flags & FLAG_IGNORE_FILE) == FLAG_IGNORE_FILE);
 	}
 
 	/**
@@ -107,9 +119,20 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 	 */
 	@Override
 	protected Void doInBackground(final File... params) {
-		for (File file : params) {
-			doReadFile(file);
+		if (params == null) {
+			throw new IllegalArgumentException(new NullPointerException());
 		}
+
+		if (params.length != 1) {
+			throw new IllegalArgumentException();
+		}
+
+		if (params[0] == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+
+		doReadFile(params[0]);
+
 		return null;
 	}
 
@@ -129,6 +152,13 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 	protected void onPostExecute(final Void result) {
 		super.onPostExecute(result);
 
+		if (mThrowable == null) {
+			mListener.onXmlFileLoaded(mRoot, (mIgnoreFile ? null : mFile),
+					mHash, mEncoding, mForceReadOnly);
+		} else {
+			mListener.onXmlFileError(mThrowable, null);
+		}
+
 		mDialog.dismiss();
 		mDialog = null;
 	}
@@ -146,17 +176,8 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 
 		try {
 			doParseFile(file);
-			mListener.onXmlFileLoaded(mRoot, mFile, mHash, mEncoding,
-					mForceReadOnly);
-		} catch (FileNotFoundException e) {
-			mListener.onXmlFileError(e, null);
-		} catch (OutOfMemoryError e) {
-			mListener.onXmlFileError(e, null);
-		} catch (IOException e) {
-			mListener.onXmlFileError(e, null);
 		} catch (Exception e) {
-			Log.e("Axel", "Unknown error", e);
-			mListener.onXmlFileError(e, null);
+			mThrowable = e;
 		}
 
 	}

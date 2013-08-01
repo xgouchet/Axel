@@ -244,7 +244,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 	 * @see android.widget.Adapter#getItem(int)
 	 */
 	@Override
-	public Object getItem(final int position) {
+	public TreeNode<T> getItem(final int position) {
 		return getNode(position);
 	}
 

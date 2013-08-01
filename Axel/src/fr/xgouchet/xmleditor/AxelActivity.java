@@ -21,6 +21,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.ActionMode.Callback;
 import android.view.KeyEvent;
@@ -68,6 +69,12 @@ public class AxelActivity extends Activity implements
 	/** The underlying editor */
 	private XmlEditor mEditor;
 
+	/** the runable to run after a save */
+	private Runnable mAfterSave; // Mennen ? Axe ?
+
+	/** The List view displaying the XML data */
+	private ListView mListView;
+
 	/**
 	 * 
 	 */
@@ -88,7 +95,7 @@ public class AxelActivity extends Activity implements
 		// Widgets
 		mListView = (ListView) findViewById(android.R.id.list);
 		mListView.setFastScrollEnabled(true);
-		registerForContextMenu(mListView);
+		// registerForContextMenu(mListView);
 
 		// Editor
 		mEditor.doClearContents();
@@ -124,19 +131,18 @@ public class AxelActivity extends Activity implements
 	protected void onResume() {
 		super.onResume();
 
-		if (mDocument == null) {
-			mEditor.doClearContents();
-		} else if (!TextUtils.isEmpty(mCurrentFilePath)) {
-			File file = new File(mCurrentFilePath);
-			if (file.exists()) {
-				String hash = FileUtils.getFileHash(file);
-				if (!hash.equals(mCurrentFileHash)) {
-					promptFileChanged();
+		if (mEditor.hasRoot()) {
+			if (mEditor.hasPath()) {
+				if (mEditor.fileExists()) {
+					if (mEditor.fileChanged()) {
+						promptFileChanged();
+					}
+				} else {
+					promptFileDeleted();
 				}
-			} else {
-				promptFileDeleted();
 			}
-
+		} else {
+			mEditor.doClearContents();
 		}
 
 		Settings.updateFromPreferences(getSharedPreferences(
@@ -320,6 +326,9 @@ public class AxelActivity extends Activity implements
 	// @Override
 	public void onItemClick(final Object source, final int pos,
 			final int actionId) {
+		if (BuildConfig.DEBUG) {
+			Log.i("Axel", "onItemClick");
+		}
 		switch (actionId) {
 		case R.id.action_delete:
 			promptDeleteNode();
@@ -358,6 +367,9 @@ public class AxelActivity extends Activity implements
 	@Override
 	public void onNodeLongPressed(final TreeNode<XmlData> node,
 			final View view, final int position) {
+		if (BuildConfig.DEBUG) {
+			Log.i("Axel", "onNodeLongPressed");
+		}
 		performQuickAction(node, view, Settings.sLongPressQA);
 	}
 
@@ -368,6 +380,9 @@ public class AxelActivity extends Activity implements
 	@Override
 	public void onNodeTapped(final TreeNode<XmlData> node, final View view,
 			final int position) {
+		if (BuildConfig.DEBUG) {
+			Log.i("Axel", "onNodeTapped");
+		}
 		performQuickAction(node, view, Settings.sSingleTapQA);
 	}
 
@@ -378,6 +393,9 @@ public class AxelActivity extends Activity implements
 	@Override
 	public void onNodeDoubleTapped(final TreeNode<XmlData> node,
 			final View view, final int position) {
+		if (BuildConfig.DEBUG) {
+			Log.i("Axel", "onNodeDoubleTapped");
+		}
 		performQuickAction(node, view, Settings.sDoubleTapQA);
 	}
 
@@ -570,6 +588,14 @@ public class AxelActivity extends Activity implements
 	}
 
 	/**
+	 * @see fr.xgouchet.xmleditor.data.XmlEditor.XmlEditorListener#onXmlInfoNotification(String)
+	 */
+	@Override
+	public void onXmlInfoNotification(final String message) {
+		Crouton.makeText(this, message, Style.INFO).show();
+	}
+
+	/**
 	 * @see fr.xgouchet.xmleditor.data.XmlEditor.XmlEditorListener#onXmlErrorNotification(java.lang.String)
 	 */
 	@Override
@@ -588,12 +614,12 @@ public class AxelActivity extends Activity implements
 		} else if (Constants.QUICK_ACTION_DISPLAY_MENU.equals(action)) {
 			// displayQuickAction((XmlNode) node, view);
 			startNodeActionMode((XmlNode) node);
-		} else if (mEditor.isReadOnly()) {
+		} else if (!mEditor.isReadOnly()) {
+			mEditor.setSelection((XmlNode) node);
 			mCurrentSelection = (XmlNode) node;
 			if (Constants.QUICK_ACTION_ADD_CHILD.equals(action)) {
 				if (mCurrentSelection.isElement()
 						|| mCurrentSelection.isDocument()) {
-					// doAddChildToNode(XmlNode.createElement("element"), true);
 					promptNodeAddChild();
 				}
 			} else if (Constants.QUICK_ACTION_COMMENT_TOGGLE.equals(action)) {
@@ -1206,7 +1232,7 @@ public class AxelActivity extends Activity implements
 			public void onClick(final DialogInterface dialog, final int which) {
 				XmlNode node = getXmlNode(options[which]);
 				if (node != null) {
-					doAddChildToNode(node, true);
+					mEditor.doAddChildToNode(node, true);
 				}
 			}
 		});
@@ -1296,38 +1322,6 @@ public class AxelActivity extends Activity implements
 		intent.putExtra(Intent.EXTRA_SUBJECT, "Axel - File open error");
 		startActivity(Intent.createChooser(intent,
 				getString(R.string.ui_choose_mail)));
-	}
-
-	/**
-	 * Adds a child to the given node
-	 * 
-	 * @param node
-	 *            the node to add
-	 * @param edit
-	 *            edit the added node ?
-	 */
-	private void doAddChildToNode(final XmlNode node, final boolean edit) {
-		if (mCurrentSelection.addChildNode(node)) {
-			if (mCurrentSelection.isDocument()) {
-				mCurrentSelection.reorderDocumentChildren();
-			} else {
-				// todo reorder element chidlren based on validator
-			}
-
-			node.updateChildViewCount(false);
-			mCurrentSelection.updateChildViewCount(false);
-			mCurrentSelection.setExpanded(true, false);
-
-			if (edit && Settings.sEditOnCreate) {
-				mCurrentSelection = node;
-				doEditNode();
-			} else {
-				mCurrentSelection = null;
-			}
-
-			// FIXME onXmlContentChanged(true);
-
-		}
 	}
 
 	/**
@@ -1429,14 +1423,14 @@ public class AxelActivity extends Activity implements
 	}
 
 	/** */
+	@Deprecated
 	private XmlNode mCurrentSelection;
 	private final List<View> mCurrentSelectedViews;
 
 	/** */
 	@Deprecated
 	private XmlNode mDocument;
-	/** */
-	private ListView mListView;
+
 	/** */
 	private TreeAdapter<XmlData> mAdapter;
 
@@ -1452,9 +1446,6 @@ public class AxelActivity extends Activity implements
 	/** the file's encoding */
 	@Deprecated
 	private String mCurrentEncoding;
-
-	/** the runable to run after a save */
-	private Runnable mAfterSave; // Mennen ? Axe ?
 
 	private AxelApplication mAxelApplication;
 	private ClipboardProxy mClipboard;
