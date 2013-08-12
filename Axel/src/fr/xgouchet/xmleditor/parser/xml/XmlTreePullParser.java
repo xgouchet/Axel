@@ -10,12 +10,43 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import android.text.TextUtils;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
-import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException.XmlError;
 
 /**
  * 
  */
 public class XmlTreePullParser extends XmlTreeParser {
+
+	/**
+	 * 
+	 */
+	public static class XmlPullParserInstantiationException extends
+			XmlPullParserException {
+
+		public XmlPullParserInstantiationException(final String message) {
+			super(message);
+		}
+
+		public XmlPullParserInstantiationException(final String message,
+				final XmlPullParser parser, final Throwable chain) {
+			super(message, parser, chain);
+		}
+	}
+
+	/**
+	 * 
+	 */
+	public static class XmlPullParserUnavailableFeatureException extends
+			XmlPullParserException {
+
+		public XmlPullParserUnavailableFeatureException(final String message) {
+			super(message);
+		}
+
+		public XmlPullParserUnavailableFeatureException(final String message,
+				final XmlPullParser parser, final Throwable chain) {
+			super(message, parser, chain);
+		}
+	}
 
 	/** The xml document property : Version */
 	public static final String PROPERTY_XML_VERSION = "http://xmlpull.org/v1/doc/properties.html#xmldecl-version";
@@ -30,12 +61,20 @@ public class XmlTreePullParser extends XmlTreeParser {
 	 * @param encoding
 	 *            the encoding of the input stream
 	 * @return an XML Node from the parser
-	 * @throws XmlTreeParserException
-	 *             if an error occurs during the parsing
+	 * @throws XmlPullParserUnavailableFeatureException
+	 *             when a feature is not supported by the current device
+	 * @throws XmlPullParserInstantiationException
+	 *             when the factory can't create a new parser
+	 * @throws XmlPullParserException
+	 *             when a parsing error occurs
+	 * @throws IOException
+	 * @throws StringIndexOutOfBoundsException
 	 */
 	public static XmlNode parseXmlTree(final InputStream input,
 			final boolean createDocDecl, final String encoding)
-			throws XmlTreeParserException {
+			throws XmlPullParserUnavailableFeatureException,
+			XmlPullParserInstantiationException, XmlPullParserException,
+			StringIndexOutOfBoundsException, IOException {
 
 		XmlPullParserFactory factory;
 		XmlPullParser xpp;
@@ -46,38 +85,21 @@ public class XmlTreePullParser extends XmlTreeParser {
 		try {
 			factory = XmlPullParserFactory.newInstance();
 		} catch (XmlPullParserException e) {
-			throw new XmlTreeParserException(XmlError.noParser, e);
+			throw new XmlPullParserInstantiationException(
+					"Factory couldn't create new parser instance", null, e);
 		}
 
 		try {
-			// factory.setNamespaceAware(true);
-			// factory.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES,
-			// true);
 			xpp = factory.newPullParser();
 		} catch (XmlPullParserException e) {
-			throw new XmlTreeParserException(XmlError.featureUnavailable, e);
+			throw new XmlPullParserUnavailableFeatureException(
+					"Some required features are unavailable", null, e);
 		}
 
-		try {
-			xpp.setInput(input, encoding);
-			parser.parse(xpp);
-			if (createDocDecl) {
-				parser.pullDocumentDeclaration(xpp);
-			}
-		} catch (XmlPullParserException e) {
-			XmlTreeParserException xtpe = new XmlTreeParserException(
-					XmlError.parseException, e);
-			throw xtpe;
-		} catch (IllegalStateException e) {
-			XmlTreeParserException xtpe = new XmlTreeParserException(
-					XmlError.parseException, e);
-			throw xtpe;
-		} catch (StringIndexOutOfBoundsException e) {
-			XmlTreeParserException xtpe = new XmlTreeParserException(
-					XmlError.parseException, e);
-			throw xtpe;
-		} catch (IOException e) {
-			throw new XmlTreeParserException(XmlError.ioException, e);
+		xpp.setInput(input, encoding);
+		parser.parse(xpp);
+		if (createDocDecl) {
+			parser.pullDocumentDeclaration(xpp);
 		}
 
 		return parser.getRoot();

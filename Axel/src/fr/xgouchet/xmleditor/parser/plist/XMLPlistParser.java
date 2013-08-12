@@ -3,14 +3,15 @@ package fr.xgouchet.xmleditor.parser.plist;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.NotSerializableException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map.Entry;
 
-import java.text.DateFormat;
 import android.util.Log;
 import fr.xgouchet.plist.PlistParser;
 import fr.xgouchet.plist.data.PArray;
@@ -23,8 +24,6 @@ import fr.xgouchet.plist.data.PReal;
 import fr.xgouchet.plist.data.PString;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.parser.xml.XmlTreeParser;
-import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException;
-import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException.XmlError;
 
 public class XMLPlistParser extends XmlTreeParser {
 
@@ -32,20 +31,14 @@ public class XMLPlistParser extends XmlTreeParser {
 	private static final DateFormat ISO8601 = new SimpleDateFormat(
 			ISO8601_PATTERN, Locale.US);
 
-	public static final XmlNode parseXmlTree(File file) {
+	public static final XmlNode parseXmlTree(final File file)
+			throws NotSerializableException, EOFException,
+			FileNotFoundException, IOException {
 
 		XMLPlistParser parser = new XMLPlistParser();
 		PObject root;
 
-		try {
-			root = new PlistParser().parse(new FileInputStream(file));
-		} catch (NotSerializableException e) {
-			throw new XmlTreeParserException(XmlError.parseException, e);
-		} catch (EOFException e) {
-			throw new XmlTreeParserException(XmlError.parseException, e);
-		} catch (IOException e) {
-			throw new XmlTreeParserException(XmlError.ioException, e);
-		}
+		root = new PlistParser().parse(new FileInputStream(file));
 
 		parser.createRootDocument();
 		parser.createDocDecl();
@@ -77,7 +70,7 @@ public class XMLPlistParser extends XmlTreeParser {
 	/**
 	 * 
 	 */
-	private void convertPObject(PObject object) {
+	private void convertPObject(final PObject object) {
 		PObject.Type type = object.getType();
 
 		switch (type) {
@@ -111,7 +104,7 @@ public class XMLPlistParser extends XmlTreeParser {
 	/**
 	 * @param bool
 	 */
-	private void convertPBoolean(PBoolean bool) {
+	private void convertPBoolean(final PBoolean bool) {
 		if (bool.isTrue()) {
 			onCreateElement(XmlNode.createElement("true"));
 		} else {
@@ -124,7 +117,7 @@ public class XMLPlistParser extends XmlTreeParser {
 	 * 
 	 * @param integer
 	 */
-	private void convertPInt(PInt integer) {
+	private void convertPInt(final PInt integer) {
 		onCreateElement(XmlNode.createElement("integer"));
 		onCreateNode(XmlNode.createText(String.valueOf(integer.getValue())));
 		onCloseElement();
@@ -134,7 +127,7 @@ public class XMLPlistParser extends XmlTreeParser {
 	 * 
 	 * @param real
 	 */
-	private void convertPReal(PReal real) {
+	private void convertPReal(final PReal real) {
 		onCreateElement(XmlNode.createElement("real"));
 		onCreateNode(XmlNode.createText(String.valueOf(real.getValue())));
 		onCloseElement();
@@ -144,7 +137,7 @@ public class XMLPlistParser extends XmlTreeParser {
 	 * 
 	 * @param string
 	 */
-	private void convertPString(PString string) {
+	private void convertPString(final PString string) {
 		onCreateElement(XmlNode.createElement("string"));
 		onCreateNode(XmlNode.createText(string.getValue()));
 		onCloseElement();
@@ -153,7 +146,7 @@ public class XMLPlistParser extends XmlTreeParser {
 	/**
 	 * @param array
 	 */
-	private void convertPArray(PArray array) {
+	private void convertPArray(final PArray array) {
 
 		onCreateElement(XmlNode.createElement("array"));
 
@@ -164,7 +157,7 @@ public class XMLPlistParser extends XmlTreeParser {
 		onCloseElement();
 	}
 
-	private void convertPDict(PDict dict) {
+	private void convertPDict(final PDict dict) {
 		onCreateElement(XmlNode.createElement("dict"));
 
 		for (Entry<String, PObject> entry : dict) {
@@ -178,7 +171,7 @@ public class XMLPlistParser extends XmlTreeParser {
 		onCloseElement();
 	}
 
-	private void convertPDate(PDate date) {
+	private void convertPDate(final PDate date) {
 		onCreateElement(XmlNode.createElement("date"));
 
 		// Log.i("Axel", "Converting date " + date.getValue());

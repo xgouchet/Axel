@@ -2,9 +2,14 @@ package fr.xgouchet.xmleditor.data;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import android.content.Context;
+import fr.xgouchet.androidlib.data.ClipboardUtils;
+import fr.xgouchet.androidlib.data.ClipboardUtils.ClipboardProxy;
 import fr.xgouchet.androidlib.data.FileUtils;
 import fr.xgouchet.xmleditor.R;
 import fr.xgouchet.xmleditor.common.AxelUtils;
@@ -14,17 +19,17 @@ import fr.xgouchet.xmleditor.common.Settings;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
-import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException;
 import fr.xgouchet.xmleditor.parser.xml.XmlTreePullParser;
 import fr.xgouchet.xmleditor.tasks.AsyncHtmlFileLoader;
 import fr.xgouchet.xmleditor.tasks.AsyncXmlFileLoader;
 import fr.xgouchet.xmleditor.tasks.AsyncXmlFileLoader.XmlFileLoaderListener;
 import fr.xgouchet.xmleditor.tasks.AsyncXmlFileWriter;
+import fr.xgouchet.xmleditor.tasks.AsyncXmlFileWriter.XmlFileWriterListener;
 
 /**
  * This class handles all
  */
-public class XmlEditor implements XmlFileLoaderListener {
+public class XmlEditor {
 
 	/** The root of the underlying document */
 	private XmlNode mRoot;
@@ -49,6 +54,9 @@ public class XmlEditor implements XmlFileLoaderListener {
 	private AsyncXmlFileLoader mLoader;
 	/** the writer for async write */
 	private AsyncXmlFileWriter mWriter;
+
+	/** the clipboard manager proxy */
+	private ClipboardProxy mClipboardManager;
 
 	/**
 	 * Callback for events on the document being edited
@@ -89,6 +97,11 @@ public class XmlEditor implements XmlFileLoaderListener {
 		 */
 		void onXmlInfoNotification(String message);
 
+		/**
+		 * Called when the current document has been saved
+		 */
+		void onXmlDocumentSaved();
+
 	}
 
 	/** The listener for events on this editor */
@@ -106,6 +119,13 @@ public class XmlEditor implements XmlFileLoaderListener {
 		}
 		mListener = listener;
 		mContext = context;
+	}
+
+	/**
+	 * 
+	 */
+	public void onActivityCreated() {
+		mClipboardManager = ClipboardUtils.getClipboardProxy(mContext);
 	}
 
 	/**
@@ -166,6 +186,13 @@ public class XmlEditor implements XmlFileLoaderListener {
 	}
 
 	/**
+	 * @return the current selected node
+	 */
+	public XmlNode getSelection() {
+		return mSelection;
+	}
+
+	/**
 	 * Called when the app leaves foreground, and async operation must be
 	 * canceled
 	 */
@@ -208,10 +235,11 @@ public class XmlEditor implements XmlFileLoaderListener {
 		if (mLoader == null) {
 			int flags = 0;
 			if (ignore) {
-				flags |= XmlFileLoaderResult.FLAG_IGNORE_FILE;
+				flags |= AsyncXmlFileLoader.FLAG_IGNORE_FILE;
 			}
 
-			mLoader = new AsyncXmlFileLoader(mContext, this, flags);
+			mLoader = new AsyncXmlFileLoader(mContext, mXmlFileLoaderListener,
+					flags);
 			mLoader.execute(file);
 		}
 	}
@@ -230,8 +258,8 @@ public class XmlEditor implements XmlFileLoaderListener {
 	public void doOpenFileAsHtml(final File file, final boolean forceReadOnly) {
 		if (mLoader == null) {
 
-			mLoader = new AsyncHtmlFileLoader(mContext, this,
-					XmlFileLoaderResult.FLAG_HTML_SOUP);
+			mLoader = new AsyncHtmlFileLoader(mContext, mXmlFileLoaderListener,
+					AsyncXmlFileLoader.FLAG_HTML_SOUP);
 			mLoader.execute(file);
 		}
 	}
@@ -267,9 +295,9 @@ public class XmlEditor implements XmlFileLoaderListener {
 		}
 
 		if (mWriter == null) {
-			// TODO mWriter = new AsyncXmlFileWriter(this, mRoot,
-			// mCurrentEncoding);
-			// mWriter.execute(path);
+			mWriter = new AsyncXmlFileWriter(mContext, mXmlFileWriterListener,
+					mRoot, mCurrentEncoding);
+			mWriter.execute(path);
 		}
 	}
 
@@ -309,7 +337,7 @@ public class XmlEditor implements XmlFileLoaderListener {
 
 		text = builder.toString().trim();
 		label = mSelection.getContent().toString();
-		// FIXME mClipboard.setText(text, label);
+		mClipboardManager.setText(text, label);
 
 		crouton = mContext.getString(R.string.ui_copy_clipboard,
 				AxelUtils.ellipsize(text, 64));
@@ -328,7 +356,7 @@ public class XmlEditor implements XmlFileLoaderListener {
 		// copy to clipboard
 		text = builder.toString().trim();
 		label = mSelection.getContent().toString();
-		// FIXME mClipboard.setText(text, label);
+		mClipboardManager.setText(text, label);
 
 		// remove selected node
 		XmlNode parent = (XmlNode) mSelection.getParent();
@@ -371,13 +399,13 @@ public class XmlEditor implements XmlFileLoaderListener {
 	public void doPasteContentInNode() {
 		XmlNode node, parent;
 
-		String[] clipboardText = null;// FIXME mClipboard.getText();
+		String[] clipboardText = mClipboardManager.getText();
 
 		for (String clip : clipboardText) {
 			node = contentAsXml(clip);
 			if (node != null) {
 				parent = mSelection;
-				if (parent.canHasChild(node)) {
+				if (parent.canHaveChild(node)) {
 					node.setExpanded(true, true);
 					node.updateChildViewCount(true);
 
@@ -423,7 +451,7 @@ public class XmlEditor implements XmlFileLoaderListener {
 
 		if (node != null) {
 			parent = (XmlNode) mSelection.getParent();
-			if (parent.canHasChild(node)) {
+			if (parent.canHaveChild(node)) {
 				node.setExpanded(true, true);
 				node.updateChildViewCount(true);
 
@@ -472,8 +500,8 @@ public class XmlEditor implements XmlFileLoaderListener {
 			input = new ByteArrayInputStream(content.getBytes());
 			try {
 				doc = XmlTreePullParser.parseXmlTree(input, false, null);
-			} catch (XmlTreeParserException e) {
-				mListener.onXmlErrorNotification(e.getMessage(mContext));
+			} catch (Exception e) {
+				mListener.onXmlErrorNotification(e.getMessage());
 			}
 
 			if ((doc != null) && (doc.getChildrenCount() > 0)) {
@@ -503,38 +531,93 @@ public class XmlEditor implements XmlFileLoaderListener {
 		mListener.onXmlContentChanged();
 	}
 
-	@Override
-	public void onXmlFileError(final Throwable throwable, final String message) {
-		mListener.onXmlErrorNotification(throwable.getMessage());
-	}
+	/** the fiel writer listener for this editor */
+	private XmlFileWriterListener mXmlFileWriterListener = new XmlFileWriterListener() {
 
-	@Override
-	public void onXmlFileLoaded(final XmlNode root, final File file,
-			final String hash, final String encoding, final boolean readOnly) {
-		mRoot = root;
-
-		if (file == null) {
-			mCurrentEncoding = null;
-			mCurrentFileName = null;
-			mCurrentFilePath = null;
-			mReadOnly = false;
-		} else {
-			mCurrentEncoding = encoding;
+		@Override
+		public void onXmlFileWritten(final String filePath) {
+			File file = new File(filePath);
+			mCurrentFilePath = FileUtils.getCanonizePath(file);
 			mCurrentFileName = file.getName();
-			mCurrentFilePath = file.getPath();
-			mCurrentFileHash = hash;
-			mReadOnly = readOnly || (!file.canWrite());
+			mCurrentFileHash = FileUtils.getFileHash(file);
 
-			RecentFiles.updateRecentList(mCurrentFilePath);
+			RecentFiles.updateRecentList(filePath);
 			RecentFiles.saveRecentList(mContext.getSharedPreferences(
 					Constants.PREFERENCES_NAME, Context.MODE_PRIVATE));
+
+			// mReadOnly = false;
+			mDirty = false;
+			onXmlDocumentChanged();
+
+			mListener.onXmlConfirmNotification(mContext
+					.getString(R.string.toast_save_success));
+			mListener.onXmlDocumentSaved();
 		}
 
-		if (mReadOnly) {
-			mListener.onXmlInfoNotification(mContext
-					.getString(R.string.toast_open_read_only));
+		@Override
+		public void onXmlFileError(final Throwable throwable,
+				final String message) {
+			// TODO handle each possible exception
+			throwable.printStackTrace();
+
+		}
+	};
+
+	/** the File loader listener for this editor */
+	private XmlFileLoaderListener mXmlFileLoaderListener = new XmlFileLoaderListener() {
+
+		/**
+		 * TODO handle all possible exception from {@link AsyncXmlFileLoader}
+		 */
+		@Override
+		public void onXmlFileLoadError(final Throwable throwable,
+				final String message) {
+			try {
+				throw throwable;
+			} catch (OutOfMemoryError e) {
+				mListener.onXmlErrorNotification(mContext
+						.getString(R.string.toast_open_memory_error));
+			} catch (IOException e) {
+				mListener.onXmlErrorNotification(mContext
+						.getString(R.string.toast_xml_io_exception));
+			} catch (XmlPullParserException e) {
+				mListener.onXmlErrorNotification(mContext
+						.getString(R.string.toast_xml_no_parser_found));
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 
-		onXmlDocumentChanged();
-	}
+		@Override
+		public void onXmlFileLoaded(final XmlNode root, final File file,
+				final String hash, final String encoding, final boolean readOnly) {
+			mRoot = root;
+
+			if (file == null) {
+				mCurrentEncoding = null;
+				mCurrentFileName = null;
+				mCurrentFilePath = null;
+				mReadOnly = false;
+			} else {
+				mCurrentEncoding = encoding;
+				mCurrentFileName = file.getName();
+				mCurrentFilePath = file.getPath();
+				mCurrentFileHash = hash;
+				mReadOnly = readOnly || (!file.canWrite());
+
+				RecentFiles.updateRecentList(mCurrentFilePath);
+				RecentFiles.saveRecentList(mContext.getSharedPreferences(
+						Constants.PREFERENCES_NAME, Context.MODE_PRIVATE));
+			}
+
+			if (mReadOnly) {
+				mListener.onXmlInfoNotification(mContext
+						.getString(R.string.toast_open_read_only));
+			}
+
+			onXmlDocumentChanged();
+
+			mLoader = null;
+		}
+	};
 }

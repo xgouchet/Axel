@@ -643,7 +643,7 @@ public final class XmlNode extends TreeNode<XmlData> {
 	 *            a node to add as child to this one
 	 * @return if this node can accept such a node
 	 */
-	public boolean canHasChild(final XmlNode node) {
+	public boolean canHaveChild(final XmlNode node) {
 		boolean result = false;
 		if (mContent.isElement()) {
 			result = !node.getContent().isDoctype();
@@ -657,4 +657,21 @@ public final class XmlNode extends TreeNode<XmlData> {
 		return result;
 	}
 
+	/**
+	 * @return if this node allows children to be added
+	 */
+	public boolean canHaveChildren() {
+		return (mContent.isDocument() || mContent.isElement());
+	}
+
+	/**
+	 * @return if this node allows manual sort
+	 */
+	public boolean canSortChildren() {
+		return mContent.isElement() && (mChildren.size() > 1);
+	}
+
+	public boolean canBeRemovedFromParent() {
+		return !(mContent.isDocument() || mContent.isDocumentDeclaration());
+	}
 }

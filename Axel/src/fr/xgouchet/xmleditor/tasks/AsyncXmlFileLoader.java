@@ -1,10 +1,14 @@
 package fr.xgouchet.xmleditor.tasks;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.NotSerializableException;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,8 +22,9 @@ import fr.xgouchet.xmleditor.R;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.parser.plist.XMLPlistParser;
 import fr.xgouchet.xmleditor.parser.xml.XmlCompressedTreeParser;
-import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException;
 import fr.xgouchet.xmleditor.parser.xml.XmlTreePullParser;
+import fr.xgouchet.xmleditor.parser.xml.XmlTreePullParser.XmlPullParserInstantiationException;
+import fr.xgouchet.xmleditor.parser.xml.XmlTreePullParser.XmlPullParserUnavailableFeatureException;
 
 /**
  * An {@link AsyncTask} used to load an XML document from a file
@@ -47,7 +52,7 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 		/**
 		 * Called when an error occured while trying to read the document
 		 */
-		void onXmlFileError(Throwable throwable, String message);
+		void onXmlFileLoadError(Throwable throwable, String message);
 	}
 
 	/** The current application context */
@@ -72,6 +77,7 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 	/** the listener for this loader's events */
 	protected final XmlFileLoaderListener mListener;
 
+	/** Throwable thrown while loading */
 	private Throwable mThrowable;
 
 	/**
@@ -93,6 +99,7 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 	 */
 	@Override
 	protected void onCancelled(final Void result) {
+
 		if (mDialog != null) {
 			mDialog.dismiss();
 		}
@@ -156,7 +163,7 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 			mListener.onXmlFileLoaded(mRoot, (mIgnoreFile ? null : mFile),
 					mHash, mEncoding, mForceReadOnly);
 		} else {
-			mListener.onXmlFileError(mThrowable, null);
+			mListener.onXmlFileLoadError(mThrowable, null);
 		}
 
 		mDialog.dismiss();
@@ -187,12 +194,11 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 	 * 
 	 * @param file
 	 *            the file to parse
-	 * @throws FileNotFoundException
-	 * @throws OutOfMemoryError
-	 * @throws IOException
 	 */
 	private void doParseFile(final File file) throws FileNotFoundException,
-			OutOfMemoryError, IOException {
+			OutOfMemoryError, IOException, StringIndexOutOfBoundsException,
+			XmlPullParserUnavailableFeatureException,
+			XmlPullParserInstantiationException, XmlPullParserException {
 		mFile = file;
 		mEncoding = null;
 
@@ -219,7 +225,9 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 	 *            the file to load
 	 */
 	private void dOpenFileAsXml(final File file) throws FileNotFoundException,
-			IOException, XmlTreeParserException {
+			IOException, StringIndexOutOfBoundsException,
+			XmlPullParserUnavailableFeatureException,
+			XmlPullParserInstantiationException, XmlPullParserException {
 		InputStream input = null;
 
 		final String encoding = TextFileUtils.getFileEncoding(file);
@@ -241,7 +249,7 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 	 *            the file to load
 	 */
 	private void doOpenFileAsCompressedXml(final File file)
-			throws FileNotFoundException, IOException, XmlTreeParserException {
+			throws FileNotFoundException, IOException {
 		InputStream input = null;
 
 		input = new FileInputStream(file);
@@ -261,7 +269,8 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 	 *            the file to load
 	 */
 	private void doOpenFileAsBinaryPlist(final File file)
-			throws FileNotFoundException, IOException, XmlTreeParserException {
+			throws FileNotFoundException, IOException, EOFException,
+			NotSerializableException {
 		InputStream input = null;
 
 		input = new FileInputStream(file);

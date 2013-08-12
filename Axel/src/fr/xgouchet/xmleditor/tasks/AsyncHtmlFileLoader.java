@@ -39,14 +39,14 @@ public class AsyncHtmlFileLoader extends AsyncXmlFileLoader {
 
 			mListener.onXmlFileLoaded(mRoot, mFile, mHash, mEncoding, false);
 		} catch (FileNotFoundException e) {
-			mListener.onXmlFileError(e, null);
+			mListener.onXmlFileLoadError(e, null);
 		} catch (OutOfMemoryError e) {
-			mListener.onXmlFileError(e, null);
+			mListener.onXmlFileLoadError(e, null);
 		} catch (IOException e) {
-			mListener.onXmlFileError(e, null);
+			mListener.onXmlFileLoadError(e, null);
 		} catch (Exception e) {
 			Log.e("Axel", "Unknown error", e);
-			mListener.onXmlFileError(e, null);
+			mListener.onXmlFileLoadError(e, null);
 		}
 	}
 

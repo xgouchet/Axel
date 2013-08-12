@@ -21,7 +21,6 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.ActionMode.Callback;
 import android.view.KeyEvent;
@@ -36,26 +35,20 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import de.neofonie.mobile.app.android.widget.crouton.Crouton;
 import de.neofonie.mobile.app.android.widget.crouton.Style;
-import fr.xgouchet.androidlib.data.ClipboardUtils.ClipboardProxy;
-import fr.xgouchet.androidlib.data.FileUtils;
 import fr.xgouchet.androidlib.data.TextFileUtils;
 import fr.xgouchet.xmleditor.common.AxelChangeLog;
-import fr.xgouchet.xmleditor.common.AxelUtils;
 import fr.xgouchet.xmleditor.common.Constants;
 import fr.xgouchet.xmleditor.common.RecentFiles;
 import fr.xgouchet.xmleditor.common.Settings;
 import fr.xgouchet.xmleditor.common.TemplateFiles;
 import fr.xgouchet.xmleditor.data.XmlEditor;
 import fr.xgouchet.xmleditor.data.XmlEditor.XmlEditorListener;
-import fr.xgouchet.xmleditor.data.XmlFileLoaderResult;
-import fr.xgouchet.xmleditor.data.XmlFileWriterResult;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
 import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
 import fr.xgouchet.xmleditor.data.xml.XmlHighlighter;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.data.xml.XmlNodeStyler;
-import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException.XmlError;
 import fr.xgouchet.xmleditor.ui.adapter.TreeAdapter;
 import fr.xgouchet.xmleditor.ui.adapter.TreeAdapter.TreeNodeEventListener;
 import fr.xgouchet.xmleditor.ui.dialog.AttributeEditDialog;
@@ -98,6 +91,7 @@ public class AxelActivity extends Activity implements
 		// registerForContextMenu(mListView);
 
 		// Editor
+		mEditor.onActivityCreated();
 		mEditor.doClearContents();
 
 		// Activity
@@ -326,9 +320,7 @@ public class AxelActivity extends Activity implements
 	// @Override
 	public void onItemClick(final Object source, final int pos,
 			final int actionId) {
-		if (BuildConfig.DEBUG) {
-			Log.i("Axel", "onItemClick");
-		}
+
 		switch (actionId) {
 		case R.id.action_delete:
 			promptDeleteNode();
@@ -367,9 +359,6 @@ public class AxelActivity extends Activity implements
 	@Override
 	public void onNodeLongPressed(final TreeNode<XmlData> node,
 			final View view, final int position) {
-		if (BuildConfig.DEBUG) {
-			Log.i("Axel", "onNodeLongPressed");
-		}
 		performQuickAction(node, view, Settings.sLongPressQA);
 	}
 
@@ -380,9 +369,6 @@ public class AxelActivity extends Activity implements
 	@Override
 	public void onNodeTapped(final TreeNode<XmlData> node, final View view,
 			final int position) {
-		if (BuildConfig.DEBUG) {
-			Log.i("Axel", "onNodeTapped");
-		}
 		performQuickAction(node, view, Settings.sSingleTapQA);
 	}
 
@@ -393,136 +379,7 @@ public class AxelActivity extends Activity implements
 	@Override
 	public void onNodeDoubleTapped(final TreeNode<XmlData> node,
 			final View view, final int position) {
-		if (BuildConfig.DEBUG) {
-			Log.i("Axel", "onNodeDoubleTapped");
-		}
 		performQuickAction(node, view, Settings.sDoubleTapQA);
-	}
-
-	/**
-	 * Callback when the file has been read
-	 * 
-	 * @param result
-	 */
-	@Deprecated
-	public void onFileOpened(final XmlFileLoaderResult result) {
-		File file = result.getFile();
-
-		if (result.getError() == XmlError.noError) {
-			mDocument = result.getDocument();
-
-			if ((file == null) || (result.hasIgnoreFile())) {
-				mCurrentEncoding = null;
-				mCurrentFileName = null;
-				mCurrentFilePath = null;
-				// mReadOnly = false;
-			} else {
-				mCurrentEncoding = result.getEncoding();
-				mCurrentFileName = file.getName();
-				mCurrentFilePath = file.getPath();
-				mCurrentFileHash = result.getFileHash();
-				// mReadOnly = result.hasForceReadOnly() || (!file.canWrite());
-
-				// if (mReadOnly) {
-				// Crouton.showText(this, R.string.toast_open_read_only,
-				// Style.INFO);
-				// }
-
-				RecentFiles.updateRecentList(mCurrentFilePath);
-				RecentFiles.saveRecentList(getSharedPreferences(
-						Constants.PREFERENCES_NAME, MODE_PRIVATE));
-			}
-
-			if (result.isHtmlSoup()) {
-				Crouton.showText(this, R.string.toast_html_soup, Style.INFO);
-			}
-
-			// TODO onXmlDocumentChanged();
-		} else {
-			switch (result.getError()) {
-			case featureUnavailable:
-				Crouton.showText(this, R.string.toast_xml_unsupported_feature,
-						Style.ALERT);
-				break;
-			case noParser:
-				Crouton.showText(this, R.string.toast_xml_no_parser_found,
-						Style.ALERT);
-				break;
-			case fileNotFound:
-			case noInput:
-				Crouton.showText(this, R.string.toast_open_not_found_error,
-						Style.ALERT);
-				break;
-			case outOfMemory:
-				Crouton.showText(this, R.string.toast_open_memory_error,
-						Style.ALERT);
-				break;
-			case noError:
-				break;
-			case parseException:
-				if (AxelUtils.isHtmlDocument(file)) {
-					promptOpenHtmlError(file, result.hasForceReadOnly());
-				} else if (AxelUtils.isXmlDocument(file)) {
-					promptOpenError(file);
-				} else {
-					Crouton.showText(this, R.string.toast_xml_parse_error,
-							Style.ALERT);
-				}
-				break;
-			case ioException:
-				Crouton.showText(this, R.string.toast_xml_io_exception,
-						Style.ALERT);
-				break;
-			case unknown:
-			default:
-				Crouton.showText(this, R.string.toast_open_error, Style.ALERT);
-				break;
-
-			}
-		}
-	}
-
-	/**
-	 * @param result
-	 */
-	@Deprecated
-	public void onFileSaved(final XmlFileWriterResult result) {
-
-		if (result.getError() == XmlError.noError) {
-			File file = new File(result.getPath());
-			mCurrentFilePath = FileUtils.getCanonizePath(file);
-			mCurrentFileName = file.getName();
-			mCurrentFileHash = FileUtils.getFileHash(file);
-			RecentFiles.updateRecentList(result.getPath());
-			RecentFiles.saveRecentList(getSharedPreferences(
-					Constants.PREFERENCES_NAME, MODE_PRIVATE));
-			// mReadOnly = false;
-			// mDirty = false;
-			// TODO onXmlDocumentChanged();
-
-			Crouton.showText(this, R.string.toast_save_success, Style.CONFIRM);
-
-			runAfterSave();
-		} else {
-			switch (result.getError()) {
-			case delete:
-				Crouton.showText(this, R.string.toast_save_delete, Style.ALERT);
-				break;
-			case rename:
-				Crouton.showText(this, R.string.toast_save_rename, Style.ALERT);
-				break;
-			case write:
-				Crouton.showText(this, R.string.toast_save_temp, Style.ALERT);
-				break;
-			case outOfMemory:
-				Crouton.showText(this, R.string.toast_open_memory_error,
-						Style.ALERT);
-				break;
-			default:
-				Crouton.showText(this, R.string.toast_save_null, Style.ALERT);
-				break;
-			}
-		}
 	}
 
 	/**
@@ -562,6 +419,14 @@ public class AxelActivity extends Activity implements
 		mAdapter.setListener(this);
 		mListView.setAdapter(mAdapter);
 		mAdapter.setHighlighter(null);
+	}
+
+	/**
+	 * @see fr.xgouchet.xmleditor.data.XmlEditor.XmlEditorListener#onXmlDocumentSaved()
+	 */
+	@Override
+	public void onXmlDocumentSaved() {
+		runAfterSave();
 	}
 
 	/**
@@ -612,7 +477,6 @@ public class AxelActivity extends Activity implements
 		if (Constants.QUICK_ACTION_NONE.equals(action)) {
 			// do nothing, yeah !!!
 		} else if (Constants.QUICK_ACTION_DISPLAY_MENU.equals(action)) {
-			// displayQuickAction((XmlNode) node, view);
 			startNodeActionMode((XmlNode) node);
 		} else if (!mEditor.isReadOnly()) {
 			mEditor.setSelection((XmlNode) node);
@@ -645,104 +509,10 @@ public class AxelActivity extends Activity implements
 	}
 
 	private void startNodeActionMode(final XmlNode node) {
-		startActionMode(new Callback() {
-
-			@Override
-			public boolean onCreateActionMode(final ActionMode mode,
-					final Menu menu) {
-				// TODO Auto-generated method stub
-				return true;
-			}
-
-			@Override
-			public boolean onPrepareActionMode(final ActionMode mode,
-					final Menu menu) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-
-			@Override
-			public void onDestroyActionMode(final ActionMode mode) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public boolean onActionItemClicked(final ActionMode mode,
-					final MenuItem item) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		});
-	}
-
-	/**
-	 * 
-	 * @param node
-	 * @param view
-	 */
-	@Deprecated
-	private void displayQuickAction(final XmlNode node, final View view) {
-		if ((node == null) || (node.getContent() == null)) {
-			return;
+		if (!mActionModeActive) {
+			mEditor.setSelection(node);
+			startActionMode(mActionModeCallback);
 		}
-
-		mCurrentSelection = node;
-		// QuickAction quickAction = new QuickAction(this);
-
-		if (node.isDocument() || node.isElement()) {
-			// quickAction.addActionItem(R.id.action_add_child,
-			// R.string.action_add_child, R.drawable.ic_action_add_child);
-		}
-
-		if (node.isElement()) {
-			// quickAction.addActionItem(R.id.action_add_attr,
-			// R.string.menu_add_attribute, R.drawable.ic_action_add_attr);
-
-			if (node.getChildrenCount() > 1) {
-				// quickAction.addActionItem(R.id.action_sort_children,
-				// R.string.action_sort_children,
-				// R.drawable.ic_action_sort);
-			}
-		}
-
-		if (!node.isDocument()) {
-			// quickAction.addActionItem(R.id.action_edit, R.string.action_edit,
-			// R.drawable.ic_action_edit);
-
-			if (node.isComment()) {
-				// quickAction.addActionItem(R.id.action_comment,
-				// R.string.action_uncomment,
-				//
-				// R.drawable.ic_action_comment);
-			} else if (!node.isDocumentDeclaration()) {
-				// quickAction.addActionItem(R.id.action_comment,
-				// R.string.action_comment, R.drawable.ic_action_comment);
-			}
-			if (!node.isDocumentDeclaration()) {
-				// quickAction.addActionItem(R.id.action_delete,
-				// R.string.action_delete, R.drawable.ic_action_delete);
-			}
-		}
-
-		if (!(node.isDocument() || node.isDocumentDeclaration())) {
-			// quickAction.addActionItem(R.id.action_cut, R.string.action_cut,
-			// R.drawable.ic_action_cut);
-		}
-		if (!node.isDocumentDeclaration()) {
-			// quickAction.addActionItem(R.id.action_copy, R.string.action_copy,
-			// R.drawable.ic_action_copy);
-		}
-
-		if (node.isDocument() || node.isElement()) {
-			if (mClipboard.hasTextContent()) {
-				// quickAction.addActionItem(R.id.action_paste,
-				// R.string.action_paste, R.drawable.ic_action_paste);
-			}
-		}
-
-		// quickAction.setOnActionItemClickListener(this);
-		// quickAction.show(view);
 	}
 
 	/**
@@ -1242,41 +1012,6 @@ public class AxelActivity extends Activity implements
 	}
 
 	/**
-	 * Called when a file is successfully parsed
-	 * 
-	 * @param file
-	 *            the source file
-	 * @param document
-	 *            the root node (document)
-	 * @param encoding
-	 *            the file encoding
-	 * @param forceReadOnly
-	 *            force the editor to be read only
-	 * @param ignoreFile
-	 *            ignore the file
-	 */
-	// private void onFileParsed(final File file, final XmlNode document,
-	// final String encoding, final boolean forceReadOnly,
-	// final boolean ignoreFile) {
-	// mDocument = document;
-	// mReadOnly = forceReadOnly;
-	//
-	// if (!ignoreFile) {
-	// mCurrentFileName = file.getName();
-	// mCurrentFilePath = FileUtils.getCanonizePath(file);
-	// mCurrentEncoding = encoding;
-	//
-	// RecentFiles.updateRecentList(mCurrentFilePath);
-	// RecentFiles.saveRecentList(getSharedPreferences(
-	// Constants.PREFERENCES_NAME, MODE_PRIVATE));
-	//
-	// mReadOnly |= !file.canWrite();
-	// }
-	//
-	// onXmlDocumentChanged();
-	// }
-
-	/**
 	 * Opens a Web view to preview the current file
 	 */
 	private void doPreviewFile() {
@@ -1434,12 +1169,6 @@ public class AxelActivity extends Activity implements
 	/** */
 	private TreeAdapter<XmlData> mAdapter;
 
-	/** the path of the file currently opened */
-	@Deprecated
-	private String mCurrentFilePath;
-	/** the last known hash of the file currently opened */
-	@Deprecated
-	private String mCurrentFileHash;
 	/** the name of the file currently opened */
 	@Deprecated
 	private String mCurrentFileName;
@@ -1448,6 +1177,83 @@ public class AxelActivity extends Activity implements
 	private String mCurrentEncoding;
 
 	private AxelApplication mAxelApplication;
-	private ClipboardProxy mClipboard;
 
+	/** Is the action mode active ? */
+	private boolean mActionModeActive;
+
+	/** The action mode callbacks */
+	private final Callback mActionModeCallback = new Callback() {
+
+		private XmlNode mActiveNode;
+
+		@Override
+		public boolean onCreateActionMode(final ActionMode mode, final Menu menu) {
+			mActiveNode = mEditor.getSelection();
+			if ((mActiveNode == null) || (mActiveNode.getContent() == null)) {
+				return false;
+			}
+
+			MenuInflater inflater = new MenuInflater(AxelActivity.this);
+			inflater.inflate(R.menu.editor_actions, menu);
+
+			if (!mActiveNode.canHaveChildren()) {
+				menu.removeItem(R.id.action_add_child);
+				menu.removeItem(R.id.action_paste);
+			}
+
+			if (!mActiveNode.canSortChildren()) {
+				menu.removeItem(R.id.action_sort_children);
+			}
+
+			if (!mActiveNode.isElement()) {
+				menu.removeItem(R.id.action_add_attr);
+			}
+
+			if (!mActiveNode.canBeRemovedFromParent()) {
+				menu.removeItem(R.id.action_cut);
+				menu.removeItem(R.id.action_delete);
+			}
+
+			if (mActiveNode.isDocumentDeclaration()) {
+				menu.removeItem(R.id.action_copy);
+			}
+
+			if (mActiveNode.isDocument()) {
+				menu.removeItem(R.id.action_edit);
+				menu.removeItem(R.id.action_comment);
+			} else {
+				if (mActiveNode.isComment()) {
+					menu.findItem(R.id.action_comment).setTitle(
+							R.string.action_uncomment);
+					// TODO also change the icon?
+				}
+			}
+
+			// only start action mode when there is something to do!
+			if (menu.size() == 0) {
+				return false;
+			} else {
+				mActionModeActive = true;
+				return true;
+			}
+		}
+
+		@Override
+		public boolean onPrepareActionMode(final ActionMode mode,
+				final Menu menu) {
+			return false;
+		}
+
+		@Override
+		public boolean onActionItemClicked(final ActionMode mode,
+				final MenuItem item) {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public void onDestroyActionMode(final ActionMode mode) {
+			mActionModeActive = false;
+		}
+	};
 }

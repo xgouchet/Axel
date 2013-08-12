@@ -1,10 +1,11 @@
 package fr.xgouchet.xmleditor.tasks;
 
+import java.io.IOException;
+
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.text.TextUtils;
-import android.util.Log;
 import fr.xgouchet.androidlib.data.FileUtils;
 import fr.xgouchet.androidlib.data.TextFileUtils;
 import fr.xgouchet.xmleditor.R;
@@ -19,7 +20,7 @@ public class AsyncXmlFileWriter extends AsyncTask<String, String, Void> {
 		/**
 		 * Called when the XML document has been loaded successfully
 		 */
-		void onXmlFileWritten();
+		void onXmlFileWritten(String filePath);
 
 		/**
 		 * Called when an error occured while trying to write the document
@@ -36,9 +37,14 @@ public class AsyncXmlFileWriter extends AsyncTask<String, String, Void> {
 	protected String mEncoding;
 	/** the saved file's XML root */
 	protected XmlNode mRoot;
+	/** the file path */
+	protected String mFilePath;
 
 	/** the listener for this writer's events */
 	private final XmlFileWriterListener mListener;
+
+	/** Throwable thrown while loading */
+	private Throwable mThrowable;
 
 	/**
 	 * 
@@ -89,18 +95,22 @@ public class AsyncXmlFileWriter extends AsyncTask<String, String, Void> {
 	@Override
 	protected Void doInBackground(final String... params) {
 
-		if (params.length == 0) {
-			// TODO mResult.setError(XmlError.fileNotFound);
-		} else {
-			try {
-				doSaveFile(params[0]);
-			} catch (OutOfMemoryError e) {
-				Log.e("Axel", "Error while saving", e);
-				// TODO mResult.setError(XmlError.outOfMemory);
-			} catch (Exception e) {
-				Log.e("Axel", "Error while saving", e);
-				// TODO mResult.setError(XmlError.unknown);
-			}
+		if (params == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+
+		if (params.length != 1) {
+			throw new IllegalArgumentException();
+		}
+
+		if (params[0] == null) {
+			throw new IllegalArgumentException(new NullPointerException());
+		}
+
+		try {
+			doSaveFile(params[0]);
+		} catch (Exception e) {
+			mThrowable = e;
 		}
 
 		return null;
@@ -113,41 +123,46 @@ public class AsyncXmlFileWriter extends AsyncTask<String, String, Void> {
 	protected void onPostExecute(final Void result) {
 		super.onPostExecute(result);
 
-		mListener.onXmlFileWritten();
+		if (mThrowable == null) {
+			mListener.onXmlFileWritten(mFilePath);
+		} else {
+			mListener.onXmlFileError(mThrowable, mThrowable.getMessage());
+		}
+
 		mDialog.dismiss();
 	}
 
 	/**
 	 * 
 	 * @param path
+	 *            the path to save to
+	 * @throws IOException
+	 *             if an error occurs while saving
 	 */
-	protected void doSaveFile(final String path) {
+	protected void doSaveFile(final String path) throws IOException {
 
 		StringBuilder builder;
 
 		publishProgress(mContext.getString(R.string.ui_generating));
+
 		builder = new StringBuilder();
 		mRoot.buildXmlString(builder);
 
 		publishProgress(mContext.getString(R.string.ui_writing));
 		if (!TextFileUtils.writeTextFile(path + ".tmp", builder.toString(),
 				mEncoding)) {
-			// TODO mResult.setError(XmlError.write);
-			return;
+			throw new IOException("Unable to write temp file");
 		}
 
 		if (!FileUtils.deleteItem(path)) {
-			// TODO mResult.setError(XmlError.delete);
-			return;
+			throw new IOException("Unable to write delete file");
 		}
 
 		if (!FileUtils.renameItem(path + ".tmp", path)) {
-			// TODO mResult.setError(XmlError.rename);
-			return;
+			throw new IOException("Unable to rename temp file");
 		}
 
-		// TODO mResult.setError(XmlError.noError);
-
+		mFilePath = path;
 	}
 
 	/**

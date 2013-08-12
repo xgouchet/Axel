@@ -2,29 +2,23 @@ package fr.xgouchet.xmleditor.parser.xml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import fr.xgouchet.axml.Attribute;
 import fr.xgouchet.axml.CompressedXmlParser;
 import fr.xgouchet.axml.CompressedXmlParserListener;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
-import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException.XmlError;
 
 public class XmlCompressedTreeParser extends XmlTreeParser implements
 		CompressedXmlParserListener {
 
-	public static final XmlNode parseXmlTree(File file)
-			throws XmlTreeParserException {
+	public static final XmlNode parseXmlTree(final File file)
+			throws FileNotFoundException, IOException {
 
 		XmlCompressedTreeParser parser = new XmlCompressedTreeParser();
 
-		try {
-			new CompressedXmlParser().parse(new FileInputStream(file), parser);
-		} catch (IllegalStateException e) {
-			throw new XmlTreeParserException(XmlError.parseException, e);
-		} catch (IOException e) {
-			throw new XmlTreeParserException(XmlError.parseException, e);
-		}
+		new CompressedXmlParser().parse(new FileInputStream(file), parser);
 
 		return parser.getRoot();
 	}
@@ -32,6 +26,7 @@ public class XmlCompressedTreeParser extends XmlTreeParser implements
 	/**
 	 * @see fr.xgouchet.apkxmllib.CompressedXmlParserListener#startDocument()
 	 */
+	@Override
 	public void startDocument() {
 		createRootDocument();
 	}
@@ -39,6 +34,7 @@ public class XmlCompressedTreeParser extends XmlTreeParser implements
 	/**
 	 * @see fr.xgouchet.apkxmllib.CompressedXmlParserListener#endDocument()
 	 */
+	@Override
 	public void endDocument() {
 		XmlNode decl = XmlNode.createDocumentDeclaration("1.0", "UTF-8", false);
 		onCreateNode(decl);
@@ -48,11 +44,13 @@ public class XmlCompressedTreeParser extends XmlTreeParser implements
 	 * @see fr.xgouchet.apkxmllib.CompressedXmlParserListener#startPrefixMapping(java.lang.String,
 	 *      java.lang.String)
 	 */
-	public void startPrefixMapping(String prefix, String uri) {
+	@Override
+	public void startPrefixMapping(final String prefix, final String uri) {
 		declareNamespace(prefix, uri);
 	}
 
-	public void endPrefixMapping(String prefix, String uri) {
+	@Override
+	public void endPrefixMapping(final String prefix, final String uri) {
 
 	}
 
@@ -61,8 +59,9 @@ public class XmlCompressedTreeParser extends XmlTreeParser implements
 	 *      java.lang.String, java.lang.String,
 	 *      fr.xgouchet.apkxmllib.Attribute[])
 	 */
-	public void startElement(String uri, String localName, String qName,
-			Attribute[] atts) {
+	@Override
+	public void startElement(final String uri, final String localName,
+			final String qName, final Attribute[] atts) {
 		String prefix = getPrefixForUri(uri);
 
 		XmlNode tag = XmlNode.createElement(prefix, localName);
@@ -85,21 +84,25 @@ public class XmlCompressedTreeParser extends XmlTreeParser implements
 	 * @see fr.xgouchet.apkxmllib.CompressedXmlParserListener#endElement(java.lang.String,
 	 *      java.lang.String, java.lang.String)
 	 */
-	public void endElement(String uri, String localName, String qName) {
+	@Override
+	public void endElement(final String uri, final String localName,
+			final String qName) {
 		onCloseElement();
 	}
 
 	/**
 	 * @see fr.xgouchet.apkxmllib.CompressedXmlParserListener#characterData(java.lang.String)
 	 */
-	public void characterData(String data) {
+	@Override
+	public void characterData(final String data) {
 		onCreateNode(XmlNode.createCDataSection(data));
 	}
 
 	/**
 	 * @see fr.xgouchet.apkxmllib.CompressedXmlParserListener#text(java.lang.String)
 	 */
-	public void text(String data) {
+	@Override
+	public void text(final String data) {
 		onCreateNode(XmlNode.createText(data));
 	}
 
@@ -107,7 +110,8 @@ public class XmlCompressedTreeParser extends XmlTreeParser implements
 	 * @see fr.xgouchet.apkxmllib.CompressedXmlParserListener#processingInstruction(java.lang.String,
 	 *      java.lang.String)
 	 */
-	public void processingInstruction(String target, String data) {
+	@Override
+	public void processingInstruction(final String target, final String data) {
 		XmlNode pi;
 
 		pi = XmlNode.createProcessingInstruction(target, data);
