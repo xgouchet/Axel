@@ -17,6 +17,7 @@ import fr.xgouchet.xmleditor.common.Constants;
 import fr.xgouchet.xmleditor.common.RecentFiles;
 import fr.xgouchet.xmleditor.common.Settings;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
+import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.parser.xml.XmlTreePullParser;
@@ -177,6 +178,10 @@ public class XmlEditor {
 		return false;
 	}
 
+	public void setDirty(){
+		onXmlContentChanged();
+	}
+	
 	/**
 	 * @param selection
 	 *            the currently selected node
@@ -190,6 +195,13 @@ public class XmlEditor {
 	 */
 	public XmlNode getSelection() {
 		return mSelection;
+	}
+
+	/**
+	 * @return the current document's file name
+	 */
+	public String getCurrentFileName() {
+		return mCurrentFileName;
 	}
 
 	/**
@@ -288,6 +300,21 @@ public class XmlEditor {
 	 *            the path to the file (must be a valid path and not null)
 	 */
 	public void doSaveFile(final String path) {
+		doSaveFile(path, true);
+	}
+
+	/**
+	 * Saves the text editor's content into a file at the given path. If an
+	 * after save {@link Runnable} exists, run it
+	 * 
+	 * @param path
+	 *            the path to the file (must be a valid path and not null)
+	 * @param keepPath
+	 *            if true, then this document will assume the given path is the
+	 *            document's path. If false, the document will keep a link to
+	 *            any previous path
+	 */
+	public void doSaveFile(final String path, final boolean keepPath) {
 		if (path == null) {
 			mListener.onXmlErrorNotification(mContext
 					.getString(R.string.toast_save_null));
@@ -297,10 +324,36 @@ public class XmlEditor {
 		if (mWriter == null) {
 			mWriter = new AsyncXmlFileWriter(mContext, mXmlFileWriterListener,
 					mRoot, mCurrentEncoding);
+			mWriter.setKeepPath(false);
 			mWriter.execute(path);
 		}
 	}
 
+	/**
+	 * Adds an attribute to the selected node
+	 * 
+	 * @param attribute
+	 *            the attribute to add
+	 */
+	public void doAddAttribute(final XmlAttribute attribute) {
+		if (attribute == null) {
+			return;
+		}
+
+		if ((mSelection != null) && (mSelection.isElement())) {
+			mSelection.getContent().addAttribute(attribute);
+			setDirty();
+		}
+	}
+
+	/**
+	 * Adds a new child to the selected node
+	 * 
+	 * @param node
+	 *            the node to add
+	 * @param edit
+	 *            if the node editor should be opened once the node is added
+	 */
 	public void doAddChildToNode(final XmlNode node, final boolean edit) {
 		if (mSelection.addChildNode(node)) {
 			if (mSelection.isDocument()) {
@@ -318,7 +371,7 @@ public class XmlEditor {
 				mSelection = null;
 			}
 
-			onXmlContentChanged();
+			setDirty();
 		}
 	}
 
@@ -363,7 +416,7 @@ public class XmlEditor {
 		parent.removeChildNode(mSelection);
 		mSelection = null;
 
-		onXmlContentChanged();
+		setDirty();
 
 		crouton = mContext.getString(R.string.ui_copy_clipboard,
 				AxelUtils.ellipsize(text, 64));
@@ -388,7 +441,7 @@ public class XmlEditor {
 		if (mSelection != null) {
 			if (mSelection.removeFromParent()) {
 				mSelection = null;
-				onXmlContentChanged();
+				setDirty();
 			}
 		}
 	}
@@ -413,7 +466,7 @@ public class XmlEditor {
 					parent.setExpanded(true);
 					parent.updateParentViewCount();
 
-					onXmlContentChanged();
+					setDirty();
 				}
 			}
 		}
@@ -437,7 +490,7 @@ public class XmlEditor {
 		comment.updateChildViewCount(true);
 		parent.updateParentViewCount();
 
-		onXmlContentChanged();
+		setDirty();
 	}
 
 	/**
@@ -461,7 +514,7 @@ public class XmlEditor {
 
 				parent.updateParentViewCount();
 
-				onXmlContentChanged();
+				setDirty();
 			} else {
 				mListener.onXmlErrorNotification(mContext
 						.getString(R.string.toast_xml_uncomment));
@@ -535,27 +588,29 @@ public class XmlEditor {
 	private XmlFileWriterListener mXmlFileWriterListener = new XmlFileWriterListener() {
 
 		@Override
-		public void onXmlFileWritten(final String filePath) {
-			File file = new File(filePath);
-			mCurrentFilePath = FileUtils.getCanonizePath(file);
-			mCurrentFileName = file.getName();
-			mCurrentFileHash = FileUtils.getFileHash(file);
+		public void onXmlFileWritten(final String filePath,
+				final boolean keepPath) {
+			if (keepPath) {
+				File file = new File(filePath);
+				mCurrentFilePath = FileUtils.getCanonizePath(file);
+				mCurrentFileName = file.getName();
+				mCurrentFileHash = FileUtils.getFileHash(file);
 
-			RecentFiles.updateRecentList(filePath);
-			RecentFiles.saveRecentList(mContext.getSharedPreferences(
-					Constants.PREFERENCES_NAME, Context.MODE_PRIVATE));
+				RecentFiles.updateRecentList(filePath);
+				RecentFiles.saveRecentList(mContext.getSharedPreferences(
+						Constants.PREFERENCES_NAME, Context.MODE_PRIVATE));
 
-			// mReadOnly = false;
-			mDirty = false;
-			onXmlDocumentChanged();
+				mDirty = false;
 
+				onXmlDocumentChanged();
+			}
 			mListener.onXmlConfirmNotification(mContext
 					.getString(R.string.toast_save_success));
 			mListener.onXmlDocumentSaved();
 		}
 
 		@Override
-		public void onXmlFileError(final Throwable throwable,
+		public void onXmlFileWriteError(final Throwable throwable,
 				final String message) {
 			// TODO handle each possible exception
 			throwable.printStackTrace();

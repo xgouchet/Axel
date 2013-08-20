@@ -35,7 +35,6 @@ import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import de.neofonie.mobile.app.android.widget.crouton.Crouton;
 import de.neofonie.mobile.app.android.widget.crouton.Style;
-import fr.xgouchet.androidlib.data.TextFileUtils;
 import fr.xgouchet.xmleditor.common.AxelChangeLog;
 import fr.xgouchet.xmleditor.common.Constants;
 import fr.xgouchet.xmleditor.common.RecentFiles;
@@ -44,7 +43,6 @@ import fr.xgouchet.xmleditor.common.TemplateFiles;
 import fr.xgouchet.xmleditor.data.XmlEditor;
 import fr.xgouchet.xmleditor.data.XmlEditor.XmlEditorListener;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
-import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
 import fr.xgouchet.xmleditor.data.xml.XmlHighlighter;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
@@ -213,10 +211,12 @@ public class AxelActivity extends Activity implements
 				case Constants.REQUEST_EDIT_NODE:
 					getAxelApplication().getCurrentSelection()
 							.onContentChanged();
-					// FIXME onXmlContentChanged(true);
+					mEditor.setDirty();
 					break;
 				case Constants.REQUEST_SORT_CHILDREN:
-					// FIXME onXmlContentChanged(true);
+					getAxelApplication().getCurrentSelection()
+							.onContentChanged();
+					mEditor.setDirty();
 					break;
 				}
 			}
@@ -318,6 +318,7 @@ public class AxelActivity extends Activity implements
 	}
 
 	// @Override
+	@Deprecated
 	public void onItemClick(final Object source, final int pos,
 			final int actionId) {
 
@@ -474,34 +475,44 @@ public class AxelActivity extends Activity implements
 	private void performQuickAction(final TreeNode<XmlData> node,
 			final View view, final String action) {
 
+		if (mActionMode != null) {
+			mActionMode.finish();
+			mActionMode = null;
+			return;
+		}
+
 		if (Constants.QUICK_ACTION_NONE.equals(action)) {
 			// do nothing, yeah !!!
+
 		} else if (Constants.QUICK_ACTION_DISPLAY_MENU.equals(action)) {
+			// display the menu using Android's Action mode
 			startNodeActionMode((XmlNode) node);
 		} else if (!mEditor.isReadOnly()) {
-			mEditor.setSelection((XmlNode) node);
-			mCurrentSelection = (XmlNode) node;
+
+			// some quick actions that modify the node
+			XmlNode xmlNode = (XmlNode) node;
+			mEditor.setSelection(xmlNode);
+
 			if (Constants.QUICK_ACTION_ADD_CHILD.equals(action)) {
-				if (mCurrentSelection.isElement()
-						|| mCurrentSelection.isDocument()) {
+				if (xmlNode.isElement() || xmlNode.isDocument()) {
 					promptNodeAddChild();
 				}
 			} else if (Constants.QUICK_ACTION_COMMENT_TOGGLE.equals(action)) {
-				if ((!mCurrentSelection.isDocument())
-						&& (!mCurrentSelection.isDocumentDeclaration())) {
+				if ((!xmlNode.isDocument())
+						&& (!xmlNode.isDocumentDeclaration())) {
 					mEditor.doCommentUncommentNode();
 				}
 			} else if (Constants.QUICK_ACTION_DELETE.equals(action)) {
-				if ((!mCurrentSelection.isDocument())
-						&& (!mCurrentSelection.isDocumentDeclaration())) {
+				if ((!xmlNode.isDocument())
+						&& (!xmlNode.isDocumentDeclaration())) {
 					promptDeleteNode();
 				}
 			} else if (Constants.QUICK_ACTION_EDIT.equals(action)) {
-				if (!mCurrentSelection.isDocument()) {
+				if (!xmlNode.isDocument()) {
 					doEditNode();
 				}
 			} else if (Constants.QUICK_ACTION_ORDER_CHILDREN.equals(action)) {
-				if (mCurrentSelection.hasChildren()) {
+				if (xmlNode.hasChildren()) {
 					doSortChildren();
 				}
 			}
@@ -509,10 +520,8 @@ public class AxelActivity extends Activity implements
 	}
 
 	private void startNodeActionMode(final XmlNode node) {
-		if (!mActionModeActive) {
-			mEditor.setSelection(node);
-			startActionMode(mActionModeCallback);
-		}
+		mEditor.setSelection(node);
+		mActionMode = startActionMode(mActionModeCallback);
 	}
 
 	/**
@@ -940,35 +949,35 @@ public class AxelActivity extends Activity implements
 		final AttributeEditDialog dlg;
 
 		dlg = new AttributeEditDialog(this, LayoutInflater.from(this), null);
-		dlg.setNode(mCurrentSelection);
-		dlg.setSiblingsAttribute(mCurrentSelection.getContent().getAttributes());
+		dlg.setNode(mEditor.getSelection());
+		dlg.setSiblingsAttribute(mEditor.getSelection().getContent()
+				.getAttributes());
 
 		dlg.setOnDismissListener(new OnDismissListener() {
 			@Override
 			public void onDismiss(final DialogInterface dialog) {
-				XmlAttribute attr = dlg.getAttribute();
-				if (attr != null) {
-					mCurrentSelection.getContent().addAttribute(attr);
-					// FIXME onXmlContentChanged(true);
-				}
+				mEditor.doAddAttribute(dlg.getAttribute());
 			}
 		});
 		dlg.show();
 	}
 
+	/**
+	 * 
+	 */
 	private void promptNodeAddChild() {
 		Builder builder = new Builder(this);
 
 		final String[] options;
-		if (mCurrentSelection.isElement()) {
+		if (mEditor.getSelection().isElement()) {
 			options = new String[] { getString(R.string.action_add_element),
 					getString(R.string.action_add_text),
 					getString(R.string.action_add_cdata),
 					getString(R.string.action_add_pi),
 					getString(R.string.action_add_comment) };
-		} else if (mCurrentSelection.isDocument()) {
-			if (mCurrentSelection.hasDoctype()) {
-				if (mCurrentSelection.hasRootChild()) {
+		} else if (mEditor.getSelection().isDocument()) {
+			if (mEditor.getSelection().hasDoctype()) {
+				if (mEditor.getSelection().hasRootChild()) {
 					options = new String[] { getString(R.string.action_add_pi),
 							getString(R.string.action_add_comment) };
 				} else {
@@ -978,7 +987,7 @@ public class AxelActivity extends Activity implements
 							getString(R.string.action_add_comment) };
 				}
 			} else {
-				if (mCurrentSelection.hasRootChild()) {
+				if (mEditor.getSelection().hasRootChild()) {
 					options = new String[] {
 							getString(R.string.action_add_doctype),
 							getString(R.string.action_add_pi),
@@ -1025,20 +1034,9 @@ public class AxelActivity extends Activity implements
 	 *            saves the template
 	 */
 	private void doSaveTemplate(final String fileName) {
-		StringBuilder builder;
 		String path = TemplateFiles.getOuputPath(this, fileName);
 
-		builder = new StringBuilder();
-		mDocument.buildXmlString(builder);
-
-		if (!TextFileUtils.writeTextFile(path, builder.toString(),
-				mCurrentEncoding)) {
-			Crouton.makeText(this, R.string.toast_save_template_error,
-					Style.ALERT).show();
-			return;
-		}
-		Crouton.makeText(this, R.string.toast_save_template_success,
-				Style.CONFIRM).show();
+		mEditor.doSaveFile(path, false);
 	}
 
 	/**
@@ -1063,7 +1061,7 @@ public class AxelActivity extends Activity implements
 	 * Opens an editor for the selected node
 	 */
 	private void doEditNode() {
-		getAxelApplication().setCurrentSelection(mCurrentSelection);
+		getAxelApplication().setCurrentSelection(mEditor.getSelection());
 
 		Intent edit = new Intent(getApplicationContext(),
 				AxelNodeEditorActivity.class);
@@ -1075,7 +1073,7 @@ public class AxelActivity extends Activity implements
 	 * Opens an editor to sort an element's children;
 	 */
 	private void doSortChildren() {
-		getAxelApplication().setCurrentSelection(mCurrentSelection);
+		getAxelApplication().setCurrentSelection(mEditor.getSelection());
 
 		Intent edit = new Intent(getApplicationContext(),
 				AxelSortActivity.class);
@@ -1090,9 +1088,9 @@ public class AxelActivity extends Activity implements
 		String title;
 		String name;
 
-		name = "?";
-		if ((mCurrentFileName != null) && (mCurrentFileName.length() > 0)) {
-			name = mCurrentFileName;
+		name = mEditor.getCurrentFileName();
+		if (TextUtils.isEmpty(name)) {
+			name = "?";
 		}
 
 		if (mEditor.isReadOnly()) {
@@ -1158,28 +1156,15 @@ public class AxelActivity extends Activity implements
 	}
 
 	/** */
-	@Deprecated
-	private XmlNode mCurrentSelection;
 	private final List<View> mCurrentSelectedViews;
-
-	/** */
-	@Deprecated
-	private XmlNode mDocument;
 
 	/** */
 	private TreeAdapter<XmlData> mAdapter;
 
-	/** the name of the file currently opened */
-	@Deprecated
-	private String mCurrentFileName;
-	/** the file's encoding */
-	@Deprecated
-	private String mCurrentEncoding;
-
 	private AxelApplication mAxelApplication;
 
-	/** Is the action mode active ? */
-	private boolean mActionModeActive;
+	/** The current action mode */
+	private ActionMode mActionMode;
 
 	/** The action mode callbacks */
 	private final Callback mActionModeCallback = new Callback() {
@@ -1221,7 +1206,7 @@ public class AxelActivity extends Activity implements
 			if (mActiveNode.isDocument()) {
 				menu.removeItem(R.id.action_edit);
 				menu.removeItem(R.id.action_comment);
-			} else {
+			} else if (!mActiveNode.isDocumentDeclaration()) {
 				if (mActiveNode.isComment()) {
 					menu.findItem(R.id.action_comment).setTitle(
 							R.string.action_uncomment);
@@ -1230,12 +1215,7 @@ public class AxelActivity extends Activity implements
 			}
 
 			// only start action mode when there is something to do!
-			if (menu.size() == 0) {
-				return false;
-			} else {
-				mActionModeActive = true;
-				return true;
-			}
+			return (menu.size() >= 0);
 		}
 
 		@Override
@@ -1247,13 +1227,44 @@ public class AxelActivity extends Activity implements
 		@Override
 		public boolean onActionItemClicked(final ActionMode mode,
 				final MenuItem item) {
-			// TODO Auto-generated method stub
-			return false;
+
+			mEditor.setSelection(mActiveNode);
+			switch (item.getItemId()) {
+			case R.id.action_delete:
+				promptDeleteNode();
+				break;
+			case R.id.action_add_child:
+				promptNodeAddChild();
+				break;
+			case R.id.action_add_attr:
+				promptElementAddAttribute();
+				break;
+			case R.id.action_edit:
+				doEditNode();
+				break;
+			case R.id.action_sort_children:
+				doSortChildren();
+				break;
+			case R.id.action_comment:
+				mEditor.doCommentUncommentNode();
+				break;
+			case R.id.action_cut:
+				mEditor.doCutNode();
+				break;
+			case R.id.action_copy:
+				mEditor.doCopyNode();
+				break;
+			case R.id.action_paste:
+				mEditor.doPasteContentInNode();
+				break;
+			}
+
+			mActionMode.finish();
+			return true;
 		}
 
 		@Override
 		public void onDestroyActionMode(final ActionMode mode) {
-			mActionModeActive = false;
 		}
 	};
 }

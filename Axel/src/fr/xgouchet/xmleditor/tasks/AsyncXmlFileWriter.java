@@ -19,13 +19,16 @@ public class AsyncXmlFileWriter extends AsyncTask<String, String, Void> {
 	public static interface XmlFileWriterListener {
 		/**
 		 * Called when the XML document has been loaded successfully
+		 * 
+		 * @param keepPath
+		 *            if the document should keep a link to the file path
 		 */
-		void onXmlFileWritten(String filePath);
+		void onXmlFileWritten(String filePath, boolean keepPath);
 
 		/**
 		 * Called when an error occured while trying to write the document
 		 */
-		void onXmlFileError(Throwable throwable, String message);
+		void onXmlFileWriteError(Throwable throwable, String message);
 	}
 
 	/** The current application context */
@@ -39,6 +42,8 @@ public class AsyncXmlFileWriter extends AsyncTask<String, String, Void> {
 	protected XmlNode mRoot;
 	/** the file path */
 	protected String mFilePath;
+	/** option to keep the path */
+	private boolean mKeepPath;
 
 	/** the listener for this writer's events */
 	private final XmlFileWriterListener mListener;
@@ -60,6 +65,14 @@ public class AsyncXmlFileWriter extends AsyncTask<String, String, Void> {
 		mRoot = root;
 		mEncoding = encoding;
 		mListener = listener;
+		mKeepPath = true;
+	}
+
+	/**
+	 * @param keepPath
+	 */
+	public void setKeepPath(final boolean keepPath) {
+		mKeepPath = keepPath;
 	}
 
 	/**
@@ -124,9 +137,9 @@ public class AsyncXmlFileWriter extends AsyncTask<String, String, Void> {
 		super.onPostExecute(result);
 
 		if (mThrowable == null) {
-			mListener.onXmlFileWritten(mFilePath);
+			mListener.onXmlFileWritten(mFilePath, mKeepPath);
 		} else {
-			mListener.onXmlFileError(mThrowable, mThrowable.getMessage());
+			mListener.onXmlFileWriteError(mThrowable, mThrowable.getMessage());
 		}
 
 		mDialog.dismiss();
