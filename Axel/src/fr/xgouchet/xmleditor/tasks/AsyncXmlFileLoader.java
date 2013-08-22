@@ -19,6 +19,8 @@ import fr.xgouchet.androidlib.data.TextFileUtils;
 import fr.xgouchet.axml.CompressedXmlUtils;
 import fr.xgouchet.plist.PlistUtils;
 import fr.xgouchet.xmleditor.R;
+import fr.xgouchet.xmleditor.common.AxelUtils;
+import fr.xgouchet.xmleditor.data.xml.UnknownFileFormatException;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.parser.plist.XMLPlistParser;
 import fr.xgouchet.xmleditor.parser.xml.XmlCompressedTreeParser;
@@ -211,9 +213,11 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 			doOpenFileAsCompressedXml(file);
 		} else if (PlistUtils.isBinaryPlist(file)) {
 			doOpenFileAsBinaryPlist(file);
-		} else {
+		} else if (AxelUtils.isValidXmlFile(file)){
 			mEncoding = TextFileUtils.getFileEncoding(file);
 			dOpenFileAsXml(file);
+		} else {
+			mThrowable = new UnknownFileFormatException();
 		}
 
 	}

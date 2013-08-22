@@ -1,6 +1,8 @@
 package fr.xgouchet.xmleditor.common;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,7 +44,7 @@ public class AxelUtils {
 
 			prefix.setOnClickListener(new View.OnClickListener() {
 				@Override
-				public void onClick(View v) {
+				public void onClick(final View v) {
 					displayPrefixDialog(prefix, node, allowXmlns);
 				}
 			});
@@ -165,5 +167,29 @@ public class AxelUtils {
 
 	public static boolean canOpenCompressedFiles() {
 		return false;
+	}
+
+	public static boolean isValidXmlFile(final File file) {
+		boolean result;
+
+		try {
+			final InputStream input = new FileInputStream(file.getPath());
+			final byte[] header = new byte[5];
+			input.read(header, 0, 5);
+
+			result = true;
+			result &= (header[0] == '<');
+			result &= (header[1] == '?');
+			result &= (header[2] == 'x');
+			result &= (header[3] == 'm');
+			result &= (header[4] == 'l');
+
+			input.close();
+		} catch (Exception e) {
+			result = false;
+		}
+
+		return result;
+
 	}
 }

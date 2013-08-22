@@ -17,6 +17,7 @@ import fr.xgouchet.xmleditor.common.Constants;
 import fr.xgouchet.xmleditor.common.RecentFiles;
 import fr.xgouchet.xmleditor.common.Settings;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
+import fr.xgouchet.xmleditor.data.xml.UnknownFileFormatException;
 import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
@@ -178,10 +179,10 @@ public class XmlEditor {
 		return false;
 	}
 
-	public void setDirty(){
+	public void setDirty() {
 		onXmlContentChanged();
 	}
-	
+
 	/**
 	 * @param selection
 	 *            the currently selected node
@@ -632,13 +633,20 @@ public class XmlEditor {
 			} catch (OutOfMemoryError e) {
 				mListener.onXmlErrorNotification(mContext
 						.getString(R.string.toast_open_memory_error));
+			} catch (UnknownFileFormatException e) {
+				mListener.onXmlErrorNotification(mContext
+						.getString(R.string.toast_xml_unknown_format));
 			} catch (IOException e) {
 				mListener.onXmlErrorNotification(mContext
 						.getString(R.string.toast_xml_io_exception));
+				// TODO prompt for HTML soup ?
 			} catch (XmlPullParserException e) {
 				mListener.onXmlErrorNotification(mContext
 						.getString(R.string.toast_xml_no_parser_found));
+				// TODO add a check with W3C validator API here
 			} catch (Throwable e) {
+				mListener.onXmlErrorNotification(mContext
+						.getString(R.string.toast_xml_no_parser_found));
 				e.printStackTrace();
 			}
 		}

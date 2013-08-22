@@ -36,6 +36,7 @@
     <item name="menu_doctype_xhtml_frameset" type="id"/>
     <item name="menu_doctype_xhtml_1_1" type="id"/>
     <item name="menu_search" type="id"/>
+    <item name="menu_group_template" type="id"/>
 
     <!-- UIs -->
     <item name="buttonDone" type="id"/>

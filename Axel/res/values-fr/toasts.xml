@@ -33,6 +33,7 @@
     <string name="toast_write_memory_error">"Impossible d'écrire le fichier, mémoire insuffisante"</string>
 
     <!--  -->
+    <string name="toast_xml_unknown_format">"Impossible d'ouvrir le fichier, format inconnu"</string>
     <string name="toast_xml_no_parser_found">"Impossible de lire les document XML sur cet appareil"</string>
     <string name="toast_xml_unsupported_feature">"Impossible de lire les document XML sur cet appareil"</string>
     <string name="toast_xml_parse_error">"Erreur de syntaxe dans le document XML"</string>

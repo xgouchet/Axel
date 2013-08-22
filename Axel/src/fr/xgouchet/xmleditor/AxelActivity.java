@@ -28,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -256,10 +257,23 @@ public class AxelActivity extends Activity implements
 	public boolean onPrepareOptionsMenu(final Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 
-		menu.findItem(R.id.menu_save).setEnabled(mEditor.isReadOnly());
+		// disable save for read only files
+		menu.findItem(R.id.menu_save).setEnabled(!mEditor.isReadOnly());
 
+		// disable preview for non previewable files (duh...)
 		menu.findItem(R.id.menu_preview_in_browser).setEnabled(
 				getAxelApplication().canBePreviewed());
+
+		// add templates as submenus
+		MenuItem newTemplate = menu.findItem(R.id.menu_new_template);
+		SubMenu templates = newTemplate.getSubMenu();
+		templates.clear();
+
+		List<File> templateFiles = TemplateFiles.getTemplateFiles(this);
+		for (File template : templateFiles) {
+			templates.add(R.id.menu_group_template, 0, Menu.NONE,
+					template.getName());
+		}
 
 		return true;
 	}
@@ -270,6 +284,22 @@ public class AxelActivity extends Activity implements
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
 		boolean result;
+
+		if (item.getGroupId() == R.id.menu_group_template) {
+			String template = item.getTitle().toString();
+			String templatePath = TemplateFiles.getOuputPath(this, template);
+			final File file = new File(templatePath);
+
+			mAfterSave = new Runnable() {
+				@Override
+				public void run() {
+					mEditor.doOpenFile(file, true);
+				}
+			};
+			
+			promptSaveDirty();
+
+		}
 
 		result = true;
 		switch (item.getItemId()) {
@@ -283,7 +313,8 @@ public class AxelActivity extends Activity implements
 			openRecentFile();
 			break;
 		case R.id.menu_new_template:
-			openTemplateFile();
+			// openTemplateFile();
+			// Now we use fast access
 			break;
 		case R.id.menu_preview_in_browser:
 			previewFile();
@@ -651,7 +682,12 @@ public class AxelActivity extends Activity implements
 		mAfterSave = new Runnable() {
 			@Override
 			public void run() {
-				doPreviewFile();
+				if (mEditor.hasPath()) {
+					doPreviewFile();
+				} else {
+					Crouton.showText(AxelActivity.this,
+							R.string.toast_preview_file_not_saved, Style.ALERT);
+				}
 			}
 		};
 
@@ -665,9 +701,9 @@ public class AxelActivity extends Activity implements
 	 */
 	private void saveContent() {
 		if (mEditor.hasPath()) {
-			saveContentAs();
-		} else {
 			mEditor.doSaveFile();
+		} else {
+			saveContentAs();
 		}
 	}
 
@@ -893,7 +929,7 @@ public class AxelActivity extends Activity implements
 					@Override
 					public void onClick(final DialogInterface dialog,
 							final int which) {
-
+						mAfterSave = null;
 					}
 				});
 		builder.setNeutralButton(R.string.ui_no_save,

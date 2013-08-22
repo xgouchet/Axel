@@ -18,7 +18,10 @@
                 android:title="@string/menu_new_empty"/>
             <item
                 android:id="@id/menu_new_template"
-                android:title="@string/menu_new_template"/>
+                android:title="@string/menu_new_template">
+                <menu>
+                </menu>
+            </item>
         </menu>
     </item>
     <item
