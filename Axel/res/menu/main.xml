@@ -2,61 +2,57 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@id/menu_search"
-        android:icon="@android:drawable/ic_menu_search"
+        android:id="@id/action_search"
+        android:icon="@drawable/ic_action_search"
         android:showAsAction="always"
         android:title="@android:string/search_go">
     </item>
     <item
-        android:id="@id/menu_new"
-        android:icon="@drawable/ic_menu_file_new"
+        android:id="@id/action_new"
         android:showAsAction="never"
-        android:title="@string/menu_new">
+        android:title="@string/action_new">
         <menu>
             <item
-                android:id="@id/menu_new_empty"
-                android:title="@string/menu_new_empty"/>
+                android:id="@id/action_new_empty"
+                android:title="@string/action_new_empty"/>
             <item
-                android:id="@id/menu_new_template"
-                android:title="@string/menu_new_template">
+                android:id="@id/action_new_template"
+                android:title="@string/action_new_template">
                 <menu>
                 </menu>
             </item>
         </menu>
     </item>
     <item
-        android:id="@id/menu_open_file"
-        android:icon="@drawable/ic_menu_file_open"
+        android:id="@id/action_open_file"
         android:showAsAction="never"
-        android:title="@string/menu_open"/>
+        android:title="@string/action_open"/>
     <item
-        android:id="@id/menu_open_recent"
-        android:icon="@drawable/ic_menu_recent"
+        android:id="@id/action_open_recent"
         android:showAsAction="never"
-        android:title="@string/menu_open_recent"/>
+        android:title="@string/action_open_recent"/>
     <item
-        android:id="@id/menu_save"
-        android:icon="@drawable/ic_menu_save"
+        android:id="@id/action_save"
         android:showAsAction="never"
-        android:title="@string/menu_save"/>
+        android:title="@string/action_save"/>
     <item
-        android:id="@id/menu_preview_in_browser"
+        android:id="@id/action_preview_in_browser"
         android:showAsAction="never"
-        android:title="@string/menu_preview"/>
+        android:title="@string/action_preview"/>
     <item
-        android:id="@id/menu_save_as"
-        android:title="@string/menu_save_as"/>
+        android:id="@id/action_save_as"
+        android:title="@string/action_save_as"/>
     <item
-        android:id="@id/menu_save_as_template"
-        android:title="@string/menu_save_as_template"/>
+        android:id="@id/action_save_as_template"
+        android:title="@string/action_save_as_template"/>
     <item
-        android:id="@id/menu_help"
+        android:id="@id/action_help"
         android:title="@string/ui_help"/>
     <item
-        android:id="@id/menu_settings"
-        android:title="@string/menu_settings"/>
+        android:id="@id/action_settings"
+        android:title="@string/action_settings"/>
     <item
-        android:id="@id/menu_about"
-        android:title="@string/menu_about"/>
+        android:id="@id/action_about"
+        android:title="@string/action_about"/>
 
 </menu>

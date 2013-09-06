@@ -54,7 +54,7 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 		/**
 		 * Called when an error occured while trying to read the document
 		 */
-		void onXmlFileLoadError(Throwable throwable, String message);
+		void onXmlFileLoadError(File file, Throwable throwable, String message);
 	}
 
 	/** The current application context */
@@ -80,7 +80,7 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 	protected final XmlFileLoaderListener mListener;
 
 	/** Throwable thrown while loading */
-	private Throwable mThrowable;
+	protected Throwable mThrowable;
 
 	/**
 	 * 
@@ -165,7 +165,7 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 			mListener.onXmlFileLoaded(mRoot, (mIgnoreFile ? null : mFile),
 					mHash, mEncoding, mForceReadOnly);
 		} else {
-			mListener.onXmlFileLoadError(mThrowable, null);
+			mListener.onXmlFileLoadError(mFile, mThrowable, null);
 		}
 
 		mDialog.dismiss();
@@ -213,7 +213,7 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 			doOpenFileAsCompressedXml(file);
 		} else if (PlistUtils.isBinaryPlist(file)) {
 			doOpenFileAsBinaryPlist(file);
-		} else if (AxelUtils.isValidXmlFile(file)){
+		} else if (AxelUtils.isValidXmlFile(file)) {
 			mEncoding = TextFileUtils.getFileEncoding(file);
 			dOpenFileAsXml(file);
 		} else {

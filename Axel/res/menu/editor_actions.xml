@@ -28,7 +28,7 @@
     <item
         android:id="@id/action_add_attr"
         android:icon="@drawable/ic_action_add_attr"
-        android:title="@string/menu_add_attribute"/>
+        android:title="@string/action_add_attribute"/>
     <item
         android:id="@id/action_sort_children"
         android:icon="@drawable/ic_action_sort"

@@ -97,10 +97,14 @@ public class AxelNodeEditorActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu) {
 
+		MenuInflater inflater = new MenuInflater(this);
+
 		if (mData.isElement()) {
-			(new MenuInflater(this)).inflate(R.menu.editor_tag_menu, menu);
+			inflater.inflate(R.menu.editor_tag_menu, menu);
 		} else if (mData.isDoctype()) {
-			(new MenuInflater(this)).inflate(R.menu.editor_doctype_menu, menu);
+			inflater.inflate(R.menu.editor_doctype_menu, menu);
+		} else if (mData.isProcessingInstruction()) {
+			inflater.inflate(R.menu.editor_processing_menu, menu);
 		}
 
 		return true;
@@ -114,13 +118,13 @@ public class AxelNodeEditorActivity extends Activity {
 		boolean result;
 
 		if (mData.isElement()) {
-			menu.findItem(R.id.menu_attr_default_namespace).setEnabled(
+			menu.findItem(R.id.action_attr_default_namespace).setEnabled(
 					!hasDefaultNamespace());
 
-			menu.findItem(R.id.menu_attr_xml_schema_local).setEnabled(
+			menu.findItem(R.id.action_attr_xml_schema_local).setEnabled(
 					!hasLocalSchema());
 
-			menu.findItem(R.id.menu_attr_xml_schema_public).setEnabled(
+			menu.findItem(R.id.action_attr_xml_schema_public).setEnabled(
 					!hasPublicSchema());
 
 			result = true;
@@ -245,33 +249,37 @@ public class AxelNodeEditorActivity extends Activity {
 
 		result = true;
 		switch (item.getItemId()) {
-		case R.id.menu_attr_custom:
+		case R.id.action_attr_custom:
 			addAttribute();
 			break;
-		case R.id.menu_attr_namespace:
+		case R.id.action_attr_namespace:
 			addNamespaceAttribute(false);
 			break;
-		case R.id.menu_attr_default_namespace:
+		case R.id.action_attr_default_namespace:
 			addNamespaceAttribute(true);
 			break;
-		case R.id.menu_attr_xml_schema_public:
+		case R.id.action_attr_xml_schema_public:
 			addPublicSchema();
 			break;
-		case R.id.menu_attr_xml_schema_local:
+		case R.id.action_attr_xml_schema_local:
 			addLocalSchema();
 			break;
 
-		case R.id.menu_doctype_xhtml_strict:
+		case R.id.action_doctype_xhtml_strict:
 			mEditText.setText(DTD_XHTML_STRICT_1_0);
 			break;
-		case R.id.menu_doctype_xhtml_transitional:
+		case R.id.action_doctype_xhtml_transitional:
 			mEditText.setText(DTD_XHTML_TRANSITIONAL_1_0);
 			break;
-		case R.id.menu_doctype_xhtml_frameset:
+		case R.id.action_doctype_xhtml_frameset:
 			mEditText.setText(DTD_XHTML_FRAMESET_1_0);
 			break;
-		case R.id.menu_doctype_xhtml_1_1:
+		case R.id.action_doctype_xhtml_1_1:
 			mEditText.setText(DTD_XHTML_1_1);
+			break;
+		case R.id.action_xsl_link:
+			mEditName.setText("xml-stylesheet");
+			mEditText.setText("type=\"text/xsl\" href=\"stylesheet.xsl\"");
 			break;
 		default:
 			result = super.onOptionsItemSelected(item);

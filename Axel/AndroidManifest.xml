@@ -179,6 +179,7 @@
             android:name="fr.xgouchet.xmleditor.AxelNodeEditorActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
             android:label="@string/title_editor"
+            android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="adjustResize" >
         </activity>
 

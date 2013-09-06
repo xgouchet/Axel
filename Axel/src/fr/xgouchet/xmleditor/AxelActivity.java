@@ -245,7 +245,7 @@ public class AxelActivity extends Activity implements
 		search.setQueryHint(getString(android.R.string.search_go));
 		search.setOnQueryTextListener(this);
 
-		menu.findItem(R.id.menu_search).setActionView(search);
+		menu.findItem(R.id.action_search).setActionView(search);
 
 		return true;
 	}
@@ -258,20 +258,20 @@ public class AxelActivity extends Activity implements
 		super.onPrepareOptionsMenu(menu);
 
 		// disable save for read only files
-		menu.findItem(R.id.menu_save).setEnabled(!mEditor.isReadOnly());
+		menu.findItem(R.id.action_save).setEnabled(!mEditor.isReadOnly());
 
 		// disable preview for non previewable files (duh...)
-		menu.findItem(R.id.menu_preview_in_browser).setEnabled(
+		menu.findItem(R.id.action_preview_in_browser).setEnabled(
 				getAxelApplication().canBePreviewed());
 
 		// add templates as submenus
-		MenuItem newTemplate = menu.findItem(R.id.menu_new_template);
+		MenuItem newTemplate = menu.findItem(R.id.action_new_template);
 		SubMenu templates = newTemplate.getSubMenu();
 		templates.clear();
 
 		List<File> templateFiles = TemplateFiles.getTemplateFiles(this);
 		for (File template : templateFiles) {
-			templates.add(R.id.menu_group_template, 0, Menu.NONE,
+			templates.add(R.id.action_group_template, 0, Menu.NONE,
 					template.getName());
 		}
 
@@ -285,7 +285,7 @@ public class AxelActivity extends Activity implements
 	public boolean onOptionsItemSelected(final MenuItem item) {
 		boolean result;
 
-		if (item.getGroupId() == R.id.menu_group_template) {
+		if (item.getGroupId() == R.id.action_group_template) {
 			String template = item.getTitle().toString();
 			String templatePath = TemplateFiles.getOuputPath(this, template);
 			final File file = new File(templatePath);
@@ -296,47 +296,47 @@ public class AxelActivity extends Activity implements
 					mEditor.doOpenFile(file, true);
 				}
 			};
-			
+
 			promptSaveDirty();
 
 		}
 
 		result = true;
 		switch (item.getItemId()) {
-		case R.id.menu_new_empty:
+		case R.id.action_new_empty:
 			newContent();
 			break;
-		case R.id.menu_open_file:
+		case R.id.action_open_file:
 			openFile();
 			break;
-		case R.id.menu_open_recent:
+		case R.id.action_open_recent:
 			openRecentFile();
 			break;
-		case R.id.menu_new_template:
+		case R.id.action_new_template:
 			// openTemplateFile();
 			// Now we use fast access
 			break;
-		case R.id.menu_preview_in_browser:
+		case R.id.action_preview_in_browser:
 			previewFile();
 			break;
-		case R.id.menu_save:
+		case R.id.action_save:
 			saveContent();
 			break;
-		case R.id.menu_save_as:
+		case R.id.action_save_as:
 			saveContentAs();
 			break;
-		case R.id.menu_save_as_template:
+		case R.id.action_save_as_template:
 			promptTemplateName();
 			break;
-		case R.id.menu_help:
+		case R.id.action_help:
 			startActivity(new Intent(getApplicationContext(),
 					AxelHelpActivity.class));
 			break;
-		case R.id.menu_settings:
+		case R.id.action_settings:
 			startActivity(new Intent(getApplicationContext(),
 					AxelSettingsActivity.class));
 			break;
-		case R.id.menu_about:
+		case R.id.action_about:
 			startActivity(new Intent(getApplicationContext(),
 					AxelAboutActivity.class));
 			break;
@@ -476,27 +476,63 @@ public class AxelActivity extends Activity implements
 		clearSelectedViews(true);
 	}
 
+	@Override
+	public void onXmlParseError(String message) {
+		final AlertDialog.Builder builder;
+
+		builder = new AlertDialog.Builder(this);
+		builder.setIcon(R.drawable.ic_dialog_alert);
+		builder.setTitle(R.string.ui_open_error);
+		builder.setCancelable(true);
+		builder.setMessage(getString(R.string.ui_prompt_open_error, message));
+
+		builder.setPositiveButton(R.string.ui_check_errors,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
+						// doSendFile(file);
+						// TODO call w3c validator
+					}
+				});
+		builder.setNegativeButton(R.string.ui_cancel,
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(final DialogInterface dialog,
+							final int which) {
+					}
+				});
+
+		builder.create().show();
+	}
+
+	@Override
+	public void onHtmlParseError() {
+		// TODO Auto-generated method stub
+
+	}
+
 	/**
-	 * @see fr.xgouchet.xmleditor.data.XmlEditor.XmlEditorListener#onXmlConfirmNotification(java.lang.String)
+	 * @see fr.xgouchet.xmleditor.data.XmlEditor.XmlEditorListener#onConfirmNotification(java.lang.String)
 	 */
 	@Override
-	public void onXmlConfirmNotification(final String message) {
+	public void onConfirmNotification(final String message) {
 		Crouton.makeText(this, message, Style.CONFIRM).show();
 	}
 
 	/**
-	 * @see fr.xgouchet.xmleditor.data.XmlEditor.XmlEditorListener#onXmlInfoNotification(String)
+	 * @see fr.xgouchet.xmleditor.data.XmlEditor.XmlEditorListener#onInfoNotification(String)
 	 */
 	@Override
-	public void onXmlInfoNotification(final String message) {
+	public void onInfoNotification(final String message) {
 		Crouton.makeText(this, message, Style.INFO).show();
 	}
 
 	/**
-	 * @see fr.xgouchet.xmleditor.data.XmlEditor.XmlEditorListener#onXmlErrorNotification(java.lang.String)
+	 * @see fr.xgouchet.xmleditor.data.XmlEditor.XmlEditorListener#onErrorNotification(java.lang.String)
 	 */
 	@Override
-	public void onXmlErrorNotification(final String message) {
+	public void onErrorNotification(final String message) {
 		Crouton.makeText(this, message, Style.ALERT).show();
 	}
 
@@ -651,31 +687,6 @@ public class AxelActivity extends Activity implements
 	}
 
 	/**
-	 * Open the template files activity to open a template
-	 */
-	private void openTemplateFile() {
-
-		if (TemplateFiles.getTemplateFiles(this).size() == 0) {
-			Crouton.makeText(this, R.string.toast_no_template_files, Style.INFO)
-					.show();
-		} else {
-			mAfterSave = new Runnable() {
-				@Override
-				public void run() {
-					Intent open;
-
-					open = new Intent(getApplicationContext(),
-							AxelOpenTemplateActivity.class);
-
-					startActivityForResult(open, Constants.REQUEST_OPEN);
-				}
-			};
-
-			promptSaveDirty();
-		}
-	}
-
-	/**
 	 * Prompts to save if dirty before openning the current file
 	 */
 	private void previewFile() {
@@ -779,7 +790,7 @@ public class AxelActivity extends Activity implements
 					}
 				});
 
-		builder.setNeutralButton(R.string.menu_save_as,
+		builder.setNeutralButton(R.string.action_save_as,
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(final DialogInterface dialog,

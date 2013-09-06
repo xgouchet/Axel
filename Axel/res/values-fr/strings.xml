@@ -16,26 +16,26 @@
     <string name="title_help">Axel - Aide</string>
 
     <!-- Options Menu -->
-    <string name="menu_new">Nouveau</string>
-    <string name="menu_new_empty">Document vierge</string>
-    <string name="menu_new_template">"D'après un modèle"</string>
-    <string name="menu_open">Ouvrir</string>
-    <string name="menu_open_recent">Documents récents</string>
-    <string name="menu_save">Sauver</string>
-    <string name="menu_save_as">Sauver sous</string>
-    <string name="menu_save_as_template">Sauver comme modèle</string>
-    <string name="menu_settings">Paramètres</string>
-    <string name="menu_about">A propos</string>
-    <string name="menu_expand_all">Tout déplier</string>
-    <string name="menu_preview">Aperçu</string>
-    <string name="menu_collapse_all">Tout replier</string>
-    <string name="menu_add_attribute">Ajouter un attribut</string>
-    <string name="menu_add_attribute_custom">Attribut</string>
-    <string name="menu_add_namespace">Espace de nom</string>
-    <string name="menu_add_default_namespace">Espace de nom par défaut</string>
-    <string name="menu_add_xml_schema_public">XML Schema (publique)</string>
-    <string name="menu_add_xml_schema_local">XML Schema (local)</string>
-    <string name="menu_presets">Modèles</string>
+    <string name="action_new">Nouveau</string>
+    <string name="action_new_empty">Document vierge</string>
+    <string name="action_new_template">"D'après un modèle"</string>
+    <string name="action_open">Ouvrir</string>
+    <string name="action_open_recent">Documents récents</string>
+    <string name="action_save">Sauver</string>
+    <string name="action_save_as">Sauver sous</string>
+    <string name="action_save_as_template">Sauver comme modèle</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="action_about">A propos</string>
+    <string name="action_expand_all">Tout déplier</string>
+    <string name="action_preview">Aperçu</string>
+    <string name="action_collapse_all">Tout replier</string>
+    <string name="action_add_attribute">Ajouter un attribut</string>
+    <string name="action_add_attribute_custom">Attribut</string>
+    <string name="action_add_namespace">Espace de nom</string>
+    <string name="action_add_default_namespace">Espace de nom par défaut</string>
+    <string name="action_add_xml_schema_public">XML Schema (publique)</string>
+    <string name="action_add_xml_schema_local">XML Schema (local)</string>
+    <string name="action_presets">Modèles</string>
 
     <!-- Context menu -->
     <string name="action_add_child">Ajouter un noeud</string>
@@ -87,11 +87,9 @@
     <string name="ui_prompt_delete_node">"Voulez vous réellement supprimer ce noeud?"</string>
     <string name="ui_open_error">Erreur de lecture</string>
     <string name="ui_copy_clipboard">Le contenu du noeud (%1$s) a été copié dans le presse-papier</string>
-    <string name="ui_prompt_open_error">"Une erreur est survenue lors de la lecture de ce fichier. 
+    <string name="ui_prompt_open_error">"Une erreur est survenue lors de la lecture de ce fichier : 
         
-Si votre document est valide, envoyez le moi afin que je corrige ce problème.  
-         
-Erreur : %s "</string>
+%s"</string>
     <string name="ui_prompt_open_error_html">"Une erreur est survenue lors de la lecture de ce fichier. 
         
 Il semble que vous essayez de lire un fichier HTML, vous pouvez essayer de le convertir en document xHTML valide. "</string>
@@ -101,6 +99,7 @@ Toute modification non sauvée sera perdue."</string>
     <string name="ui_prompt_file_deleted">"le document actuel n'existe plus sur le disque. Voulez vous le sauver ? 
          
 Toute modification non sauvée sera perdue."</string>
+    <string name="ui_check_errors">Verifier le document</string>
     <string name="ui_send_file">Envoyer le fichier</string>
     <string name="ui_convert_html">Lire comme HTML</string>
 

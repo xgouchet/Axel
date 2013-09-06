@@ -85,24 +85,37 @@ public class XmlEditor {
 		 * @param message
 		 *            an error message to display
 		 */
-		void onXmlErrorNotification(String message);
+		void onErrorNotification(String message);
 
 		/**
 		 * @param message
 		 *            an confirmation message to display
 		 */
-		void onXmlConfirmNotification(String message);
+		void onConfirmNotification(String message);
 
 		/**
 		 * @param message
 		 *            an information message to display
 		 */
-		void onXmlInfoNotification(String message);
+		void onInfoNotification(String message);
 
 		/**
 		 * Called when the current document has been saved
 		 */
 		void onXmlDocumentSaved();
+
+		/**
+		 * Called when a parse error occured while reading a file
+		 * 
+		 * @param message
+		 *            the error message
+		 */
+		void onXmlParseError(String message);
+
+		/**
+		 * Called when a parse error occured on a file detected as html
+		 */
+		void onHtmlParseError();
 
 	}
 
@@ -317,7 +330,7 @@ public class XmlEditor {
 	 */
 	public void doSaveFile(final String path, final boolean keepPath) {
 		if (path == null) {
-			mListener.onXmlErrorNotification(mContext
+			mListener.onErrorNotification(mContext
 					.getString(R.string.toast_save_null));
 			return;
 		}
@@ -327,6 +340,8 @@ public class XmlEditor {
 					mRoot, mCurrentEncoding);
 			mWriter.setKeepPath(false);
 			mWriter.execute(path);
+		} else {
+			// TODO throw error : current file being written
 		}
 	}
 
@@ -395,7 +410,7 @@ public class XmlEditor {
 
 		crouton = mContext.getString(R.string.ui_copy_clipboard,
 				AxelUtils.ellipsize(text, 64));
-		mListener.onXmlConfirmNotification(crouton);
+		mListener.onConfirmNotification(crouton);
 	}
 
 	/**
@@ -421,7 +436,7 @@ public class XmlEditor {
 
 		crouton = mContext.getString(R.string.ui_copy_clipboard,
 				AxelUtils.ellipsize(text, 64));
-		mListener.onXmlConfirmNotification(crouton);
+		mListener.onConfirmNotification(crouton);
 	}
 
 	/**
@@ -517,7 +532,7 @@ public class XmlEditor {
 
 				setDirty();
 			} else {
-				mListener.onXmlErrorNotification(mContext
+				mListener.onErrorNotification(mContext
 						.getString(R.string.toast_xml_uncomment));
 			}
 		}
@@ -555,7 +570,7 @@ public class XmlEditor {
 			try {
 				doc = XmlTreePullParser.parseXmlTree(input, false, null);
 			} catch (Exception e) {
-				mListener.onXmlErrorNotification(e.getMessage());
+				mListener.onErrorNotification(e.getMessage());
 			}
 
 			if ((doc != null) && (doc.getChildrenCount() > 0)) {
@@ -605,9 +620,11 @@ public class XmlEditor {
 
 				onXmlDocumentChanged();
 			}
-			mListener.onXmlConfirmNotification(mContext
+			mListener.onConfirmNotification(mContext
 					.getString(R.string.toast_save_success));
 			mListener.onXmlDocumentSaved();
+
+			mWriter = null;
 		}
 
 		@Override
@@ -616,6 +633,7 @@ public class XmlEditor {
 			// TODO handle each possible exception
 			throwable.printStackTrace();
 
+			mWriter = null;
 		}
 	};
 
@@ -626,29 +644,37 @@ public class XmlEditor {
 		 * TODO handle all possible exception from {@link AsyncXmlFileLoader}
 		 */
 		@Override
-		public void onXmlFileLoadError(final Throwable throwable,
-				final String message) {
+		public void onXmlFileLoadError(final File file,
+				final Throwable throwable, final String message) {
 			try {
 				throw throwable;
 			} catch (OutOfMemoryError e) {
-				mListener.onXmlErrorNotification(mContext
+				mListener.onErrorNotification(mContext
 						.getString(R.string.toast_open_memory_error));
 			} catch (UnknownFileFormatException e) {
-				mListener.onXmlErrorNotification(mContext
-						.getString(R.string.toast_xml_unknown_format));
+				if (AxelUtils.isHtmlDocument(file)) {
+					mListener.onHtmlParseError();
+				} else {
+					mListener.onXmlParseError(mContext
+							.getString(R.string.toast_xml_unknown_format));
+				}
 			} catch (IOException e) {
-				mListener.onXmlErrorNotification(mContext
+				mListener.onErrorNotification(mContext
 						.getString(R.string.toast_xml_io_exception));
-				// TODO prompt for HTML soup ?
 			} catch (XmlPullParserException e) {
-				mListener.onXmlErrorNotification(mContext
-						.getString(R.string.toast_xml_no_parser_found));
-				// TODO add a check with W3C validator API here
+				if (AxelUtils.isHtmlDocument(file)) {
+					mListener.onHtmlParseError();
+				} else {
+					mListener.onXmlParseError(mContext
+							.getString(R.string.toast_xml_parse_error));
+				}
 			} catch (Throwable e) {
-				mListener.onXmlErrorNotification(mContext
+				mListener.onErrorNotification(mContext
 						.getString(R.string.toast_xml_no_parser_found));
 				e.printStackTrace();
 			}
+
+			mLoader = null;
 		}
 
 		@Override
@@ -674,7 +700,7 @@ public class XmlEditor {
 			}
 
 			if (mReadOnly) {
-				mListener.onXmlInfoNotification(mContext
+				mListener.onInfoNotification(mContext
 						.getString(R.string.toast_open_read_only));
 			}
 

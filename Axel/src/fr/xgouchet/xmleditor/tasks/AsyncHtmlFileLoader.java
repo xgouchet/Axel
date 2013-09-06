@@ -8,13 +8,11 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 import android.content.Context;
-import android.util.Log;
 import fr.xgouchet.androidlib.data.FileUtils;
 import fr.xgouchet.androidlib.data.TextFileUtils;
 import fr.xgouchet.xmleditor.R;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.parser.html.HtmlCleanerParser;
-import fr.xgouchet.xmleditor.parser.xml.XmlTreeParserException;
 
 public class AsyncHtmlFileLoader extends AsyncXmlFileLoader {
 
@@ -36,17 +34,8 @@ public class AsyncHtmlFileLoader extends AsyncXmlFileLoader {
 
 		try {
 			doOpenFileAsHtmlSoup(file);
-
-			mListener.onXmlFileLoaded(mRoot, mFile, mHash, mEncoding, false);
-		} catch (FileNotFoundException e) {
-			mListener.onXmlFileLoadError(e, null);
-		} catch (OutOfMemoryError e) {
-			mListener.onXmlFileLoadError(e, null);
-		} catch (IOException e) {
-			mListener.onXmlFileLoadError(e, null);
 		} catch (Exception e) {
-			Log.e("Axel", "Unknown error", e);
-			mListener.onXmlFileLoadError(e, null);
+			mThrowable = e;
 		}
 	}
 
@@ -57,7 +46,7 @@ public class AsyncHtmlFileLoader extends AsyncXmlFileLoader {
 	 *            the file to load
 	 */
 	private void doOpenFileAsHtmlSoup(final File file)
-			throws FileNotFoundException, IOException, XmlTreeParserException {
+			throws FileNotFoundException, IOException {
 		Reader input = null;
 
 		input = new InputStreamReader(new FileInputStream(file));
