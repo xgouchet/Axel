@@ -107,10 +107,12 @@ public class XmlEditor {
 		/**
 		 * Called when a parse error occured while reading a file
 		 * 
+		 * @param file
+		 *            the source file
 		 * @param message
 		 *            the error message
 		 */
-		void onXmlParseError(String message);
+		void onXmlParseError(File file, String message);
 
 		/**
 		 * Called when a parse error occured on a file detected as html
@@ -652,21 +654,27 @@ public class XmlEditor {
 				mListener.onErrorNotification(mContext
 						.getString(R.string.toast_open_memory_error));
 			} catch (UnknownFileFormatException e) {
-				if (AxelUtils.isHtmlDocument(file)) {
+				if (file == null) {
+					mListener.onErrorNotification(mContext
+							.getString(R.string.toast_xml_unknown_format));
+				} else if (AxelUtils.isHtmlDocument(file)) {
 					mListener.onHtmlParseError();
 				} else {
-					mListener.onXmlParseError(mContext
+					mListener.onXmlParseError(file, mContext
 							.getString(R.string.toast_xml_unknown_format));
 				}
 			} catch (IOException e) {
 				mListener.onErrorNotification(mContext
 						.getString(R.string.toast_xml_io_exception));
 			} catch (XmlPullParserException e) {
-				if (AxelUtils.isHtmlDocument(file)) {
+				if (file == null) {
+					mListener.onErrorNotification(mContext
+							.getString(R.string.toast_xml_parse_error));
+				} else if (AxelUtils.isHtmlDocument(file)) {
 					mListener.onHtmlParseError();
 				} else {
-					mListener.onXmlParseError(mContext
-							.getString(R.string.toast_xml_parse_error));
+					mListener.onXmlParseError(file,
+							mContext.getString(R.string.toast_xml_parse_error));
 				}
 			} catch (Throwable e) {
 				mListener.onErrorNotification(mContext

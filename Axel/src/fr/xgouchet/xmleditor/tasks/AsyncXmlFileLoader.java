@@ -160,12 +160,12 @@ public class AsyncXmlFileLoader extends AsyncTask<File, String, Void> {
 	@Override
 	protected void onPostExecute(final Void result) {
 		super.onPostExecute(result);
-
+		File file = (mIgnoreFile ? null : mFile);
 		if (mThrowable == null) {
-			mListener.onXmlFileLoaded(mRoot, (mIgnoreFile ? null : mFile),
-					mHash, mEncoding, mForceReadOnly);
+			mListener.onXmlFileLoaded(mRoot, file, mHash, mEncoding,
+					mForceReadOnly);
 		} else {
-			mListener.onXmlFileLoadError(mFile, mThrowable, null);
+			mListener.onXmlFileLoadError(file, mThrowable, null);
 		}
 
 		mDialog.dismiss();

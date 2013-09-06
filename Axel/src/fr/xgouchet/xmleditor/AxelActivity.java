@@ -477,7 +477,7 @@ public class AxelActivity extends Activity implements
 	}
 
 	@Override
-	public void onXmlParseError(String message) {
+	public void onXmlParseError(final File file, final String message) {
 		final AlertDialog.Builder builder;
 
 		builder = new AlertDialog.Builder(this);
@@ -491,8 +491,7 @@ public class AxelActivity extends Activity implements
 					@Override
 					public void onClick(final DialogInterface dialog,
 							final int which) {
-						// doSendFile(file);
-						// TODO call w3c validator
+						doValidateFile(file);
 					}
 				});
 		builder.setNegativeButton(R.string.ui_cancel,
@@ -1073,6 +1072,19 @@ public class AxelActivity extends Activity implements
 	private void doPreviewFile() {
 		Intent intent = new Intent();
 		intent.setClass(getBaseContext(), AxelPreviewActivity.class);
+		startActivity(intent);
+	}
+
+	/**
+	 * TODO add an option to validate from action bar
+	 * Validates a file with the W3C validator API
+	 * 
+	 * @param file
+	 *            the file to validate
+	 */
+	private void doValidateFile(final File file) {
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromFile(file));
+		intent.setClass(getBaseContext(), AxelValidatorActivity.class);
 		startActivity(intent);
 	}
 
