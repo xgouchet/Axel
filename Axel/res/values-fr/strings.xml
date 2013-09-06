@@ -2,6 +2,7 @@
 
     <string name="app_name">Axel</string>
     <string name="app_name_full">Axel (Editeur de XML)</string>
+    <string name="app_name_validator">Axel Validation</string>
 
     <!-- Titles -->
     <string name="title_editor">Axel - %1$s</string>
@@ -14,6 +15,7 @@
     <string name="title_settings">Axel - Paramètres </string>
     <string name="title_about">Axel - A propos &#8230; </string>
     <string name="title_help">Axel - Aide</string>
+    <string name="title_validator">Axel Validation - %1$s</string>
 
     <!-- Options Menu -->
     <string name="action_new">Nouveau</string>
