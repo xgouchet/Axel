@@ -10,6 +10,3 @@
 [submodule "PList"]
 	path = PList
 	url = git://github.com/xgouchet/PList
-[submodule "ion"]
-	path = ion
-	url = git@github.com:koush/ion.git
