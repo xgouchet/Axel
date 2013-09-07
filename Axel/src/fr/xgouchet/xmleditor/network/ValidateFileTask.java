@@ -14,11 +14,11 @@ import android.util.Log;
 
 public class ValidateFileTask extends AsyncTask<File, Integer, Void> {
 
-	private static final String VALIDATOR_URL = "http://validator.w3.org/check";
+	private static final String VALIDATOR_URL = "http://validator.w3.org/check?output=soap12";
 
 	private static final String END = "\r\n";
 	private static final String HYPHENS = "--";
-	private static final String BOUNDARY = "*****++++++************++++++++++++";
+	private static final String BOUNDARY = "AaB03x";
 	private static final String SEP_LINE = HYPHENS + BOUNDARY + END;
 
 	private static final int BUFFER_SIZE = 1024;
@@ -176,6 +176,7 @@ public class ValidateFileTask extends AsyncTask<File, Integer, Void> {
 		request.append('"');
 		request.append(END);
 
+		Log.d("Validate", request.toString());
 		return request.toString();
 	}
 
