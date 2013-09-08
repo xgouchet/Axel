@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
+import android.widget.ExpandableListView;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -20,6 +21,8 @@ import fr.xgouchet.androidlib.ui.Toaster;
 import fr.xgouchet.xmleditor.network.ValidateFileTask;
 import fr.xgouchet.xmleditor.network.ValidateFileTask.ValidationListener;
 import fr.xgouchet.xmleditor.parser.validator.ValidatorParser;
+import fr.xgouchet.xmleditor.parser.validator.ValidatorResult;
+import fr.xgouchet.xmleditor.ui.adapter.ValidatorEntryAdapter;
 
 /**
  * Idependant activity checking for Errors in XML files
@@ -114,13 +117,15 @@ public class AxelValidatorActivity extends Activity implements
 		if (e == null) {
 
 			InputStream input = new ByteArrayInputStream(response.getBytes());
-
+			ValidatorResult result = null;
 			try {
 				Log.v("PARSER", response);
-				ValidatorParser.parseValidatorResponse(input);
+				result = ValidatorParser.parseValidatorResponse(input);
+				displayResult(result);
 			} catch (Exception e1) {
-				Log.e("RESPONSE", "PARSE ERROR", e);
+				Log.e("RESPONSE", "PARSE ERROR", e1);
 			}
+
 		} else {
 			Log.e("RESPONSE", "REQUEST ERROR", e);
 		}
@@ -130,5 +135,15 @@ public class AxelValidatorActivity extends Activity implements
 	public void onValidationRequestProgress(final int progress) {
 		setProgressBarIndeterminate(false);
 		setProgress(progress);
+	}
+
+	private void displayResult(final ValidatorResult result) {
+		setProgressBarVisibility(false);
+
+		ExpandableListView list = (ExpandableListView) findViewById(android.R.id.list);
+
+		ValidatorEntryAdapter adapter = new ValidatorEntryAdapter(this,
+				result.getEntries());
+		list.setAdapter(adapter);
 	}
 }
