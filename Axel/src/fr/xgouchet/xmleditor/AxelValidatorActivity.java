@@ -1,16 +1,25 @@
 package fr.xgouchet.xmleditor;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
+
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.builder.Builders.Any.B;
+
 import fr.xgouchet.androidlib.ui.Toaster;
 import fr.xgouchet.xmleditor.network.ValidateFileTask;
 import fr.xgouchet.xmleditor.network.ValidateFileTask.ValidationListener;
+import fr.xgouchet.xmleditor.parser.validator.ValidatorParser;
 
 /**
  * Idependant activity checking for Errors in XML files
@@ -19,7 +28,7 @@ import fr.xgouchet.xmleditor.network.ValidateFileTask.ValidationListener;
  * 
  */
 public class AxelValidatorActivity extends Activity implements
-		ValidationListener {
+		ValidationListener, FutureCallback<String> {
 
 	private File mCurrentFile;
 	private ValidateFileTask mValidateTask;
@@ -86,9 +95,35 @@ public class AxelValidatorActivity extends Activity implements
 	 * 
 	 */
 	private void validateCurrentFile() {
-		mValidateTask = new ValidateFileTask();
-		mValidateTask.setListener(this);
-		mValidateTask.execute(mCurrentFile);
+
+		// TODO rewrite all the network thing to get rid of 3 heavy libraries
+		// mValidateTask = new ValidateFileTask();
+		// mValidateTask.setListener(this);
+		// mValidateTask.execute(mCurrentFile);
+
+		B requestBuilder = Ion.with(this, ValidateFileTask.VALIDATOR_URL);
+		requestBuilder.setMultipartParameter("output", "soap12");
+		requestBuilder.setMultipartParameter("debug", "1");
+		requestBuilder.setMultipartFile("uploaded_file", mCurrentFile);
+
+		requestBuilder.asString().setCallback(this);
+	}
+
+	@Override
+	public void onCompleted(final Exception e, final String response) {
+		if (e == null) {
+
+			InputStream input = new ByteArrayInputStream(response.getBytes());
+
+			try {
+				Log.v("PARSER", response);
+				ValidatorParser.parseValidatorResponse(input);
+			} catch (Exception e1) {
+				Log.e("RESPONSE", "PARSE ERROR", e);
+			}
+		} else {
+			Log.e("RESPONSE", "REQUEST ERROR", e);
+		}
 	}
 
 	@Override

@@ -8,17 +8,20 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.UUID;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 public class ValidateFileTask extends AsyncTask<File, Integer, Void> {
 
-	private static final String VALIDATOR_URL = "http://validator.w3.org/check?output=soap12";
+	public static final String VALIDATOR_URL = "http://validator.w3.org/check?output=soap12";
 
 	private static final String END = "\r\n";
 	private static final String HYPHENS = "--";
-	private static final String BOUNDARY = "AaB03x";
+	private static final String BOUNDARY = "----------------------------"
+			+ UUID.randomUUID().toString().replace("-", "");;
 	private static final String SEP_LINE = HYPHENS + BOUNDARY + END;
 
 	private static final int BUFFER_SIZE = 1024;
@@ -32,8 +35,18 @@ public class ValidateFileTask extends AsyncTask<File, Integer, Void> {
 		void onValidationRequestProgress(int progress);
 	}
 
+	/** */
 	private ValidationListener mListener;
 
+	/** the current app context */
+	private Context mContext;
+
+	/**
+	 * Sets the listener
+	 * 
+	 * @param listener
+	 *            the listener
+	 */
 	public void setListener(final ValidationListener listener) {
 		mListener = listener;
 	}
@@ -46,11 +59,7 @@ public class ValidateFileTask extends AsyncTask<File, Integer, Void> {
 	@Override
 	protected Void doInBackground(final File... params) {
 		// TODO check input
-		try {
-			requestValidation(params[0]);
-		} catch (Exception e) {
-			Log.e("Validate", "Error", e);
-		}
+
 		return null;
 	}
 
@@ -71,6 +80,8 @@ public class ValidateFileTask extends AsyncTask<File, Integer, Void> {
 	protected void onPostExecute(final Void result) {
 		super.onPostExecute(result);
 	}
+
+	// ///////////////////////////////////////////////////////////////////
 
 	private void requestValidation(final File file) throws IOException {
 
@@ -146,8 +157,7 @@ public class ValidateFileTask extends AsyncTask<File, Integer, Void> {
 	}
 
 	/**
-	 * TODO see why it returns HTML instead of SOAP
-	 * Builds the request parameter
+	 * TODO see why it returns HTML instead of SOAP Builds the request parameter
 	 * 
 	 * @param filename
 	 *            the file name
