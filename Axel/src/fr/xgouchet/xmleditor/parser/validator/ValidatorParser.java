@@ -83,7 +83,7 @@ public class ValidatorParser {
 
 	private static final String TAG_DOCTYPE = "doctype";
 	private static final String TAG_CHARSET = "charset";
-	// we wont check validity as no doctype means invalide
+	// we wont check validity as no doctype means invalid
 	// private static final String TAG_VALIDITY = "validity";
 	private static final String TAG_ERROR = "error";
 	private static final String TAG_WARNING = "warning";
@@ -145,7 +145,7 @@ public class ValidatorParser {
 				mCurrentEntry.setMessage(text);
 			}
 		} else {
-			Log.d("PARSER", "TAG : " + tag + " @(" + ns + ")");
+			Log.d("PARSER", "TAG : " + tag + " @(" + ns + ") : ");
 		}
 	}
 

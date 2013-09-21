@@ -5,13 +5,17 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.LinkedList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -20,6 +24,8 @@ import com.koushikdutta.ion.builder.Builders.Any.B;
 import fr.xgouchet.androidlib.ui.Toaster;
 import fr.xgouchet.xmleditor.network.ValidateFileTask;
 import fr.xgouchet.xmleditor.network.ValidateFileTask.ValidationListener;
+import fr.xgouchet.xmleditor.parser.validator.ValidatorEntry;
+import fr.xgouchet.xmleditor.parser.validator.ValidatorError;
 import fr.xgouchet.xmleditor.parser.validator.ValidatorParser;
 import fr.xgouchet.xmleditor.parser.validator.ValidatorResult;
 import fr.xgouchet.xmleditor.ui.adapter.ValidatorEntryAdapter;
@@ -36,6 +42,9 @@ public class AxelValidatorActivity extends Activity implements
 	private File mCurrentFile;
 	private ValidateFileTask mValidateTask;
 
+	private ExpandableListView mList;
+	private TextView mMessage;
+
 	/**
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -45,6 +54,9 @@ public class AxelValidatorActivity extends Activity implements
 
 		requestWindowFeature(Window.FEATURE_PROGRESS);
 		setContentView(R.layout.layout_validator);
+
+		mList = (ExpandableListView) findViewById(android.R.id.list);
+		mList.setEmptyView(findViewById(android.R.id.empty));
 
 		setProgressBarIndeterminate(true);
 		setProgressBarVisibility(true);
@@ -115,11 +127,9 @@ public class AxelValidatorActivity extends Activity implements
 	@Override
 	public void onCompleted(final Exception e, final String response) {
 		if (e == null) {
-
 			InputStream input = new ByteArrayInputStream(response.getBytes());
 			ValidatorResult result = null;
 			try {
-				Log.v("PARSER", response);
 				result = ValidatorParser.parseValidatorResponse(input);
 				displayResult(result);
 			} catch (Exception e1) {
@@ -137,13 +147,35 @@ public class AxelValidatorActivity extends Activity implements
 		setProgress(progress);
 	}
 
+	/**
+	 * Displays the result
+	 * 
+	 * @param result
+	 */
 	private void displayResult(final ValidatorResult result) {
 		setProgressBarVisibility(false);
 
-		ExpandableListView list = (ExpandableListView) findViewById(android.R.id.list);
+		// Filter unwanted entries
+		List<ValidatorEntry> entries = result.getEntries();
+		List<ValidatorEntry> unwanted = new LinkedList<ValidatorEntry>();
+		for (ValidatorEntry entry : entries) {
+			String id = entry.getMessageId();
+			if (ValidatorError.NO_DOCTYPE.equals(id)) {
+				unwanted.add(entry);
+			} else if (ValidatorError.SHORT_TAGS.equals(id)) {
+				unwanted.add(entry);
+			}
 
-		ValidatorEntryAdapter adapter = new ValidatorEntryAdapter(this,
-				result.getEntries());
-		list.setAdapter(adapter);
+		}
+		entries.removeAll(unwanted);
+
+
+		ValidatorEntryAdapter adapter = new ValidatorEntryAdapter(this, entries);
+		mList.setAdapter(adapter);
+		
+		if (entries.size() == 0) {
+			mList.setEmptyView(findViewById(android.R.id.message));
+			findViewById(android.R.id.empty).setVisibility(View.GONE);
+		}
 	}
 }

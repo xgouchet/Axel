@@ -137,7 +137,9 @@ public class AxelNodeEditorActivity extends Activity {
 	private void onApply() {
 		if (validateModifications()) {
 			applyModifications();
-			setResult(RESULT_OK, new Intent());
+			Intent intent = new Intent();
+			intent.putExtra("EDIT", true);
+			setResult(RESULT_OK, intent);
 			finish();
 		}
 	}

@@ -1,7 +1,6 @@
 package fr.xgouchet.xmleditor.parser.validator;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ValidatorResult {
@@ -35,6 +34,6 @@ public class ValidatorResult {
 	}
 
 	public List<ValidatorEntry> getEntries() {
-		return Collections.unmodifiableList(mEntries);
+		return mEntries;
 	}
 }

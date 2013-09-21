@@ -5,6 +5,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import android.util.Log;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.data.xml.XmlValidator;
 
@@ -32,7 +35,7 @@ public abstract class XmlTreeParser {
 	 * @param uri
 	 *            the namespace uri
 	 */
-	protected void declareNamespace(String prefix, String uri) {
+	protected void declareNamespace(final String prefix, final String uri) {
 		// TODO more checks if overwriting prefix or URI
 		if (!mNamespacePrefixes.containsKey(prefix)) {
 			mNamespaceURIs.put(uri, prefix);
@@ -56,7 +59,7 @@ public abstract class XmlTreeParser {
 	 * @param node
 	 *            the node to push
 	 */
-	protected void onCreateElement(XmlNode node) {
+	protected void onCreateElement(final XmlNode node) {
 		String prefix;
 		for (String newUri : mNewNamespaces) {
 			prefix = mNamespaceURIs.get(newUri);
@@ -81,10 +84,34 @@ public abstract class XmlTreeParser {
 	 * @param node
 	 *            the create node (must node be an element node ! )
 	 */
-	protected void onCreateNode(XmlNode node) {
+	protected void onCreateNode(final XmlNode node) {
 		mStack.peek().addChildNode(node);
 
 		sLastNode = node.toString().trim();
+	}
+
+	/**
+	 * @param version
+	 *            the version of the xml document
+	 * @param encoding
+	 *            the encoding charset
+	 * @param standalone
+	 *            is the file standalone
+	 * @return an XML Document Declaration node
+	 * @throws XmlPullParserException
+	 */
+	protected void onCreateDocDecl(final String version, final String encoding,
+			final Boolean standalone) throws XmlPullParserException {
+		XmlNode docDecl = XmlNode.createDocumentDeclaration(version, encoding,
+				standalone);
+
+		if (mStack.size() > 1) {
+			Log.w("Parser",
+					"Trying to add doc decl to non root node ! something is quite wrong here ");
+			throw new XmlPullParserException("Unclosed Root element");
+		}
+		
+		onCreateNode(docDecl);
 	}
 
 	/**
@@ -92,7 +119,7 @@ public abstract class XmlTreeParser {
 	 *            a namespace URI
 	 * @return the prefix for the given uri or null if URI is unknown
 	 */
-	protected String getPrefixForUri(String uri) {
+	protected String getPrefixForUri(final String uri) {
 		String prefix = null;
 		if (mNamespaceURIs.containsKey(uri)) {
 			prefix = mNamespaceURIs.get(uri);

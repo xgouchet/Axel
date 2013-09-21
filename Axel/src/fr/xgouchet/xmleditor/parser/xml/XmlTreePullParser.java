@@ -21,6 +21,9 @@ public class XmlTreePullParser extends XmlTreeParser {
 	 */
 	public static class XmlPullParserInstantiationException extends
 			XmlPullParserException {
+		
+		/** */
+		private static final long serialVersionUID = 1L;
 
 		public XmlPullParserInstantiationException(final String message) {
 			super(message);
@@ -37,6 +40,9 @@ public class XmlTreePullParser extends XmlTreeParser {
 	 */
 	public static class XmlPullParserUnavailableFeatureException extends
 			XmlPullParserException {
+
+		/** */
+		private static final long serialVersionUID = 1L;
 
 		public XmlPullParserUnavailableFeatureException(final String message) {
 			super(message);
@@ -265,11 +271,11 @@ public class XmlTreePullParser extends XmlTreeParser {
 	/**
 	 * @param xpp
 	 *            the parser
+	 * @throws XmlPullParserException
 	 */
-	protected void pullDocumentDeclaration(final XmlPullParser xpp) {
+	protected void pullDocumentDeclaration(final XmlPullParser xpp) throws XmlPullParserException {
 		String version, enc;
 		Boolean standalone;
-		XmlNode decl;
 
 		version = (String) xpp.getProperty(PROPERTY_XML_VERSION);
 		if (version == null) {
@@ -280,9 +286,7 @@ public class XmlTreePullParser extends XmlTreeParser {
 
 		standalone = (Boolean) xpp.getProperty(PROPERTY_XML_STANDALONE);
 
-		decl = XmlNode.createDocumentDeclaration(version, enc, standalone);
-
-		onCreateNode(decl);
+		onCreateDocDecl(version, enc, standalone);
 	}
 
 }

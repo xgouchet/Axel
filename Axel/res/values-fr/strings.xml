@@ -104,6 +104,7 @@ Toute modification non sauvée sera perdue."</string>
     <string name="ui_check_errors">Verifier le document</string>
     <string name="ui_send_file">Envoyer le fichier</string>
     <string name="ui_convert_html">Lire comme HTML</string>
+    <string name="ui_valid">Ce document est valide</string>
 
     <!--  -->
     <string name="ui_licence_dragsortlistview">"Axel utilise la bibliothèque <b>DragSortListView</b>, écrite par Carl Bauer (carl.a.bauer@gmail.com), sous licence Apache (version 2.0)."</string>

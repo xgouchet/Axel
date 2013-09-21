@@ -7,18 +7,9 @@
         android:id="@id/frameEditor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/includeButtons"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" />
-
-    <include
-        android:id="@id/includeButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        layout="@layout/buttons_ok_cancel" />
+        android:layout_alignParentTop="true" />
 
 </RelativeLayout>

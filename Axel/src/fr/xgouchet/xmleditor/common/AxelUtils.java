@@ -174,17 +174,19 @@ public class AxelUtils {
 
 		try {
 			final InputStream input = new FileInputStream(file.getPath());
-			final byte[] header = new byte[5];
-			input.read(header, 0, 5);
+			final byte[] header = new byte[32];
+			input.read(header, 0, 32);
 
-			result = true;
-			result &= (header[0] == '<');
-			result &= (header[1] == '?');
-			result &= (header[2] == 'x');
-			result &= (header[3] == 'm');
-			result &= (header[4] == 'l');
+			String headerStr = new String(header, "ASCII");
+			String XML_REGEX = "^\\s*<(\\?|!(--)?)?\\s*\\w+.*";
+			
+			result = headerStr.matches(XML_REGEX);
 
-			input.close();
+			try{
+				input.close();
+			} catch (Exception e){
+				// ignore this exception
+			}
 		} catch (Exception e) {
 			result = false;
 		}

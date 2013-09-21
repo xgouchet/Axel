@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dslv="http://schemas.android.com/apk/lib/com.mobeta.android.demodslv"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    tools:ignore="MissingRegistered" >
 
     <com.mobeta.android.dslv.DragSortListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/includeButtons"
         android:divider="@color/xml_divider"
         android:dividerHeight="1dp"
         dslv:collapsed_height="8dp"
@@ -19,14 +20,5 @@
         dslv:remove_mode="slideLeft"
         dslv:slide_shuffle_speed="0.3"
         dslv:track_drag_sort="false" />
-
-    <include
-        android:id="@id/includeButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        layout="@layout/buttons_ok_cancel" />
 
 </RelativeLayout>
