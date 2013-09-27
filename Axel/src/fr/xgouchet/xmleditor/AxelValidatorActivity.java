@@ -12,7 +12,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.view.Window;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -56,7 +55,14 @@ public class AxelValidatorActivity extends Activity implements
 		setContentView(R.layout.layout_validator);
 
 		mList = (ExpandableListView) findViewById(android.R.id.list);
-		mList.setEmptyView(findViewById(android.R.id.empty));
+
+		mMessage = (TextView) findViewById(android.R.id.message);
+
+		mMessage.setText(R.string.ui_validating);
+		mMessage.setCompoundDrawablesWithIntrinsicBounds(0,
+				R.drawable.ic_loading, 0, 0);
+
+		mList.setEmptyView(mMessage);
 
 		setProgressBarIndeterminate(true);
 		setProgressBarVisibility(true);
@@ -73,7 +79,6 @@ public class AxelValidatorActivity extends Activity implements
 	private void readIntent() {
 		Intent intent;
 		String action;
-		File file;
 
 		intent = getIntent();
 		if (intent == null) {
@@ -137,6 +142,10 @@ public class AxelValidatorActivity extends Activity implements
 			}
 
 		} else {
+			mMessage.setText(e.getMessage());
+			mMessage.setCompoundDrawablesWithIntrinsicBounds(0,
+					R.drawable.ic_error, 0, 0);
+
 			Log.e("RESPONSE", "REQUEST ERROR", e);
 		}
 	}
@@ -169,13 +178,13 @@ public class AxelValidatorActivity extends Activity implements
 		}
 		entries.removeAll(unwanted);
 
-
 		ValidatorEntryAdapter adapter = new ValidatorEntryAdapter(this, entries);
 		mList.setAdapter(adapter);
-		
+
 		if (entries.size() == 0) {
-			mList.setEmptyView(findViewById(android.R.id.message));
-			findViewById(android.R.id.empty).setVisibility(View.GONE);
+			mMessage.setText(R.string.ui_validated);
+			mMessage.setCompoundDrawablesWithIntrinsicBounds(0,
+					R.drawable.ic_validated, 0, 0);
 		}
 	}
 }

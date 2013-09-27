@@ -8,22 +8,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <ProgressBar
-        android:id="@android:id/empty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:indeterminate="true" />
-
     <TextView
-        android:drawableTop="@drawable/ic_validated"
-        android:visibility="gone"
-        android:padding="16dp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@android:id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="@string/ui_valid" />
+        android:drawableTop="@drawable/ic_validated"
+        android:padding="16dp"
+        android:text="@string/ui_valid"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -93,14 +93,26 @@ public class ValidatorEntryAdapter extends BaseExpandableListAdapter {
 	public View getChildView(final int groupPosition, final int childPosition,
 			final boolean isLastChild, final View convertView,
 			final ViewGroup parent) {
-		// TODO Auto-generated method stub
-		return null;
+
+		View v = convertView;
+		if (v == null) {
+			v = mInflater.inflate(R.layout.item_validator_full, parent, false);
+		}
+
+		ValidatorEntry entry = getGroup(groupPosition);
+		TextView lineCols = (TextView) v.findViewById(android.R.id.text1);
+		TextView message = (TextView) v.findViewById(android.R.id.message);
+
+		lineCols.setText(mContext.getString(R.string.ui_validator_line_columns,
+				entry.getLine(), entry.getColumn()));
+		message.setText(entry.getMessage());
+
+		return v;
 	}
 
 	@Override
 	public int getChildrenCount(final int groupPosition) {
-		// TODO Auto-generated method stub
-		return 0;
+		return 1;
 	}
 
 	@Override

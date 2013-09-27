@@ -103,7 +103,9 @@ Any unsaved change will be lost."</string>
     <string name="ui_check_errors">Check errors</string>
     <string name="ui_send_file">Send file</string>
     <string name="ui_convert_html">Read as HTML</string>
-    <string name="ui_valid">This document is valid</string>
+    <string name="ui_validating">Validating document</string>
+    <string name="ui_validated">This document is valid</string>
+    <string name="ui_validator_line_columns">"Line : %1$d / Column : %2$d"</string>
 
     <!--  -->
     <string name="ui_licence_dragsortlistview">"Axel uses the <b>DragSortListView</b> library, made by Carl Bauer (carl.a.bauer@gmail.com), under the Apache License (version 2.0)."</string>
