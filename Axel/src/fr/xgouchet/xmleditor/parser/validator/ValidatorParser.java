@@ -92,7 +92,7 @@ public class ValidatorParser {
 	private static final String TAG_COL = "col";
 	private static final String TAG_MESSAGE = "message";
 	private static final String TAG_MESSAGE_ID = "messageid";
-	private static final String TAG_EXPLANATION = "explanation";
+//	private static final String TAG_EXPLANATION = "explanation";
 
 	private void pullElement(final XmlPullParser xpp)
 			throws XmlPullParserException, IOException {

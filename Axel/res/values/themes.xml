@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- THEMES FROYO / GINGERBREAD -->
+	<!-- THEMES ICS / JB + -->
 
-    <style name="Axel" parent="@android:style/Theme.Light"></style>
+	<style name="Axel" parent="@android:style/Theme.Holo.Light.DarkActionBar"></style>
 
-    <style name="Axel.Dark" parent="@android:style/Theme.Black"></style>
+	<style name="Axel.Dark" parent="@android:style/Theme.Holo"></style>
 
 </resources>

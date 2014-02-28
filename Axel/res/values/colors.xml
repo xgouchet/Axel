@@ -13,5 +13,8 @@
     <color name="xml_doctype">#C02020</color>
     <color name="xml_document">#D0D0D0</color>
     <color name="xml_cdata">#D0D0D0</color>
+    
+    <!-- UI -->
+    <color name="breadcrumb_divider">#4333</color>
 
 </resources>

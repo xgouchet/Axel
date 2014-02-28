@@ -37,7 +37,8 @@ public class NodeAdapter<T> extends ArrayAdapter<TreeNode<T>> {
 	 * @see android.widget.ArrayAdapter#getView(int, android.view.View,
 	 *      android.view.ViewGroup)
 	 */
-	public View getView(final int position, final View convertView,
+	@Override
+    public View getView(final int position, final View convertView,
 			final ViewGroup parent) {
 
 		View view = convertView;
@@ -85,6 +86,6 @@ public class NodeAdapter<T> extends ArrayAdapter<TreeNode<T>> {
 		mNodeStyler = nodeStyler;
 	}
 
-	private AbstractTreeNodeStyler<T> mNodeStyler;
+    private AbstractTreeNodeStyler<T> mNodeStyler;
 	private final LayoutInflater mInflater;
 }

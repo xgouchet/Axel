@@ -30,7 +30,7 @@ import fr.xgouchet.xmleditor.data.tree.TreeNode;
  * @param <T>
  *            the content type of the {@link TreeNode}
  */
-public class TreeAdapter<T> extends BaseAdapter {
+public class NodeTreeAdapter<T> extends BaseAdapter {
 
 	public interface TreeNodeEventListener<T> {
 		/**
@@ -207,7 +207,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 	 * @param treeRoot
 	 *            the root of the tree to display
 	 */
-	public TreeAdapter(final Context context, final TreeNode<T> treeRoot) {
+	public NodeTreeAdapter(final Context context, final TreeNode<T> treeRoot) {
 		super();
 		mContext = context;
 		mInflater = (LayoutInflater) getContext().getSystemService(
@@ -289,7 +289,7 @@ public class TreeAdapter<T> extends BaseAdapter {
 			view.setTag(handle);
 		} else {
 			final Object tag = view.getTag();
-			if (tag instanceof TreeAdapter.TreeNodeHandle) {
+			if (tag instanceof NodeTreeAdapter.TreeNodeHandle) {
 				handle = (TreeNodeHandle) tag;
 			} else {
 				handle = new TreeNodeHandle(view);

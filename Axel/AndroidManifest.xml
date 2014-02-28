@@ -1,410 +1,409 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="fr.xgouchet.xmleditor"
-    android:versionCode="13"
-    android:versionName="2.4" >
+	package="fr.xgouchet.xmleditor"
+	android:versionCode="13"
+	android:versionName="2.4" >
 
-    <uses-sdk
-        android:minSdkVersion="11"
-        android:targetSdkVersion="18" />
+	<uses-sdk
+		android:minSdkVersion="14"
+		android:targetSdkVersion="19" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-permission android:name="android.permission.INTERNET" />
 
-    <application
-        android:name="fr.xgouchet.xmleditor.AxelApplication"
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name_full"
-        android:theme="@style/Axel" >
+	<application
+		android:name="fr.xgouchet.xmleditor.AxelApplication"
+		android:allowBackup="true"
+		android:icon="@drawable/ic_launcher"
+		android:label="@string/app_name_full"
+		android:theme="@style/Axel" >
 
-        <!-- Axel main activity -->
-        <activity
-            android:name="fr.xgouchet.xmleditor.AxelActivity"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
-            android:label="@string/app_name"
-            android:uiOptions="splitActionBarWhenNarrow"
-            android:windowSoftInputMode="adjustResize" >
+		<!-- Axel main activity -->
+		<activity
+			android:name="fr.xgouchet.xmleditor.ui.activity.AxelActivity"
+			android:label="@string/app_name"
+			android:uiOptions="splitActionBarWhenNarrow"
+			android:windowSoftInputMode="adjustResize" >
 
-            <!-- Launcher Intent -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+			<!-- Launcher Intent -->
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
 
-            <!-- Mime Type filters -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.EDIT" />
+			<!-- Mime Type filters -->
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<action android:name="android.intent.action.EDIT" />
 
-                <category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="text/xml" />
-                <data android:mimeType="text/html" />
-                <data android:mimeType="application/xml" />
-            </intent-filter>
+				<data android:mimeType="text/xml" />
+				<data android:mimeType="text/html" />
+				<data android:mimeType="application/xml" />
+			</intent-filter>
 
-            <!-- File extensions filters -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.EDIT" />
+			<!-- File extensions filters -->
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<action android:name="android.intent.action.EDIT" />
 
-                <category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.DEFAULT" />
 
-                <!-- Ignore Mimetype -->
-                <data
-                    android:host="*"
-                    android:mimeType="*/*" />
+				<!-- Ignore Mimetype -->
+				<data
+					android:host="*"
+					android:mimeType="*/*" />
 
-                <!-- Standard XML extension -->
-                <data
-                    android:pathPattern=".*\\.xml"
-                    android:scheme="file" />
+				<!-- Standard XML extension -->
+				<data
+					android:pathPattern=".*\\.xml"
+					android:scheme="file" />
 
-                <!-- HTML extensions -->
-                <data
-                    android:pathPattern=".*\\.htm"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.html"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xhtml"
-                    android:scheme="file" />
+				<!-- HTML extensions -->
+				<data
+					android:pathPattern=".*\\.htm"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.html"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xhtml"
+					android:scheme="file" />
 
-                <!-- XML APIs -->
-                <data
-                    android:pathPattern=".*\\.xsd"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xslt"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.rng"
-                    android:scheme="file" />
+				<!-- XML APIs -->
+				<data
+					android:pathPattern=".*\\.xsd"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xslt"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.rng"
+					android:scheme="file" />
 
-                <!-- RSS feeds -->
-                <data
-                    android:pathPattern=".*\\.atom"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.rss"
-                    android:scheme="file" />
+				<!-- RSS feeds -->
+				<data
+					android:pathPattern=".*\\.atom"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.rss"
+					android:scheme="file" />
 
-                <!-- Specific Markup Language -->
-                <data
-                    android:pathPattern=".*\\.aiml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.cml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.ficml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.gml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.kml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.opml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.sbml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.scxml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.wml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xaml"
-                    android:scheme="file" />
+				<!-- Specific Markup Language -->
+				<data
+					android:pathPattern=".*\\.aiml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.cml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.ficml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.gml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.kml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.opml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.sbml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.scxml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.wml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xaml"
+					android:scheme="file" />
 
-                <!-- Graphic  Formats -->
-                <data
-                    android:pathPattern=".*\\.dae"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.svg"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.x3d"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xmp"
-                    android:scheme="file" />
+				<!-- Graphic  Formats -->
+				<data
+					android:pathPattern=".*\\.dae"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.svg"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.x3d"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xmp"
+					android:scheme="file" />
 
-                <!-- Other formats -->
-                <data
-                    android:pathPattern=".*\\.dbk"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.ofx"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.plist"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.rnd"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.smil"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.wsdl"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xbrl"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xpl"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xrc"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xspf"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xul"
-                    android:scheme="file" />
-            </intent-filter>
-        </activity>
+				<!-- Other formats -->
+				<data
+					android:pathPattern=".*\\.dbk"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.ofx"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.plist"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.rnd"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.smil"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.wsdl"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xbrl"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xpl"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xrc"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xspf"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xul"
+					android:scheme="file" />
+			</intent-filter>
+		</activity>
 
-        <!-- Axel main activity -->
-        <activity
-            android:name="fr.xgouchet.xmleditor.AxelValidatorActivity"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
-            android:icon="@drawable/ic_launcher_validator"
-            android:label="@string/app_name_validator"
-            android:windowSoftInputMode="stateHidden" >
+		<!-- Axel main activity -->
+		<activity
+			android:name="fr.xgouchet.xmleditor.AxelValidatorActivity"
+			android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
+			android:icon="@drawable/ic_launcher_validator"
+			android:label="@string/app_name_validator"
+			android:windowSoftInputMode="stateHidden" >
 
-            <!-- Mime Type filters -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.EDIT" />
+			<!-- Mime Type filters -->
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<action android:name="android.intent.action.EDIT" />
 
-                <category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.DEFAULT" />
 
-                <data android:mimeType="text/xml" />
-                <data android:mimeType="text/html" />
-                <data android:mimeType="application/xml" />
-            </intent-filter>
+				<data android:mimeType="text/xml" />
+				<data android:mimeType="text/html" />
+				<data android:mimeType="application/xml" />
+			</intent-filter>
 
-            <!-- File extensions filters -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <action android:name="android.intent.action.EDIT" />
+			<!-- File extensions filters -->
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<action android:name="android.intent.action.EDIT" />
 
-                <category android:name="android.intent.category.DEFAULT" />
+				<category android:name="android.intent.category.DEFAULT" />
 
-                <!-- Ignore Mimetype -->
-                <data
-                    android:host="*"
-                    android:mimeType="*/*" />
+				<!-- Ignore Mimetype -->
+				<data
+					android:host="*"
+					android:mimeType="*/*" />
 
-                <!-- Standard XML extension -->
-                <data
-                    android:pathPattern=".*\\.xml"
-                    android:scheme="file" />
+				<!-- Standard XML extension -->
+				<data
+					android:pathPattern=".*\\.xml"
+					android:scheme="file" />
 
-                <!-- HTML extensions -->
-                <data
-                    android:pathPattern=".*\\.htm"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.html"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xhtml"
-                    android:scheme="file" />
+				<!-- HTML extensions -->
+				<data
+					android:pathPattern=".*\\.htm"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.html"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xhtml"
+					android:scheme="file" />
 
-                <!-- XML APIs -->
-                <data
-                    android:pathPattern=".*\\.xsd"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xslt"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.rng"
-                    android:scheme="file" />
+				<!-- XML APIs -->
+				<data
+					android:pathPattern=".*\\.xsd"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xslt"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.rng"
+					android:scheme="file" />
 
-                <!-- RSS feeds -->
-                <data
-                    android:pathPattern=".*\\.atom"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.rss"
-                    android:scheme="file" />
+				<!-- RSS feeds -->
+				<data
+					android:pathPattern=".*\\.atom"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.rss"
+					android:scheme="file" />
 
-                <!-- Specific Markup Language -->
-                <data
-                    android:pathPattern=".*\\.aiml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.cml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.ficml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.gml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.kml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.opml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.sbml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.scxml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.wml"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xaml"
-                    android:scheme="file" />
+				<!-- Specific Markup Language -->
+				<data
+					android:pathPattern=".*\\.aiml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.cml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.ficml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.gml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.kml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.opml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.sbml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.scxml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.wml"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xaml"
+					android:scheme="file" />
 
-                <!-- Graphic  Formats -->
-                <data
-                    android:pathPattern=".*\\.dae"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.svg"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.x3d"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xmp"
-                    android:scheme="file" />
+				<!-- Graphic  Formats -->
+				<data
+					android:pathPattern=".*\\.dae"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.svg"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.x3d"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xmp"
+					android:scheme="file" />
 
-                <!-- Other formats -->
-                <data
-                    android:pathPattern=".*\\.dbk"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.ofx"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.plist"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.rnd"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.smil"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.wsdl"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xbrl"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xpl"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xrc"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xspf"
-                    android:scheme="file" />
-                <data
-                    android:pathPattern=".*\\.xul"
-                    android:scheme="file" />
-            </intent-filter>
-        </activity>
+				<!-- Other formats -->
+				<data
+					android:pathPattern=".*\\.dbk"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.ofx"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.plist"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.rnd"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.smil"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.wsdl"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xbrl"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xpl"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xrc"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xspf"
+					android:scheme="file" />
+				<data
+					android:pathPattern=".*\\.xul"
+					android:scheme="file" />
+			</intent-filter>
+		</activity>
 
-        <!-- Axel Edit Node activity -->
-        <activity
-            android:name="fr.xgouchet.xmleditor.AxelNodeEditorActivity"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
-            android:label="@string/title_editor"
-            android:uiOptions="splitActionBarWhenNarrow"
-            android:windowSoftInputMode="adjustResize" >
-        </activity>
+		<!-- Axel Edit Node activity -->
+		<activity
+			android:name="fr.xgouchet.xmleditor.AxelNodeEditorActivity"
+			android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
+			android:label="@string/title_editor"
+			android:uiOptions="splitActionBarWhenNarrow"
+			android:windowSoftInputMode="adjustResize" >
+		</activity>
 
-        <!-- Axel Sort Node Children activity -->
-        <activity
-            android:name="fr.xgouchet.xmleditor.AxelSortActivity"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
-            android:label="@string/title_editor"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
+		<!-- Axel Sort Node Children activity -->
+		<activity
+			android:name="fr.xgouchet.xmleditor.AxelSortActivity"
+			android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
+			android:label="@string/title_editor"
+			android:windowSoftInputMode="stateHidden" >
+		</activity>
 
-        <!-- Axel preview activity -->
-        <activity
-            android:name="fr.xgouchet.xmleditor.AxelPreviewActivity"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
-            android:label="@string/title_preview"
-            android:windowSoftInputMode="adjustResize" >
-        </activity>
+		<!-- Axel preview activity -->
+		<activity
+			android:name="fr.xgouchet.xmleditor.AxelPreviewActivity"
+			android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
+			android:label="@string/title_preview"
+			android:windowSoftInputMode="adjustResize" >
+		</activity>
 
-        <!-- Axel save as activity -->
-        <activity
-            android:name="fr.xgouchet.xmleditor.AxelSaveAsActivity"
-            android:label="@string/title_save_as"
-            android:theme="@style/Axel.Dark"
-            android:windowSoftInputMode="adjustResize" >
-        </activity>
+		<!-- Axel save as activity -->
+		<activity
+			android:name="fr.xgouchet.xmleditor.AxelSaveAsActivity"
+			android:label="@string/title_save_as"
+			android:theme="@style/Axel.Dark"
+			android:windowSoftInputMode="adjustResize" >
+		</activity>
 
-        <!-- Axel open activity -->
-        <activity
-            android:name="fr.xgouchet.xmleditor.AxelOpenActivity"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
-            android:theme="@style/Axel.Dark"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
+		<!-- Axel open activity -->
+		<activity
+			android:name="fr.xgouchet.xmleditor.AxelOpenActivity"
+			android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
+			android:theme="@style/Axel.Dark"
+			android:windowSoftInputMode="stateHidden" >
+		</activity>
 
-        <!-- Axel open recent activity -->
-        <activity
-            android:name="fr.xgouchet.xmleditor.AxelOpenRecentActivity"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
-            android:label="@string/title_open_recent"
-            android:theme="@style/Axel.Dark"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
+		<!-- Axel open recent activity -->
+		<activity
+			android:name="fr.xgouchet.xmleditor.AxelOpenRecentActivity"
+			android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
+			android:label="@string/title_open_recent"
+			android:theme="@style/Axel.Dark"
+			android:windowSoftInputMode="stateHidden" >
+		</activity>
 
-        <!-- Axel open template activity -->
-        <activity
-            android:name="fr.xgouchet.xmleditor.AxelOpenTemplateActivity"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
-            android:label="@string/title_open_template"
-            android:theme="@style/Axel.Dark"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
+		<!-- Axel open template activity -->
+		<activity
+			android:name="fr.xgouchet.xmleditor.AxelOpenTemplateActivity"
+			android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
+			android:label="@string/title_open_template"
+			android:theme="@style/Axel.Dark"
+			android:windowSoftInputMode="stateHidden" >
+		</activity>
 
-        <!-- Axel settings activity -->
-        <activity
-            android:name="fr.xgouchet.xmleditor.AxelHelpActivity"
-            android:label="@string/title_help"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
+		<!-- Axel settings activity -->
+		<activity
+			android:name="fr.xgouchet.xmleditor.AxelHelpActivity"
+			android:label="@string/title_help"
+			android:windowSoftInputMode="stateHidden" >
+		</activity>
 
-        <!-- Axel settings activity -->
-        <activity
-            android:name="fr.xgouchet.xmleditor.AxelSettingsActivity"
-            android:label="@string/title_settings"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
+		<!-- Axel settings activity -->
+		<activity
+			android:name="fr.xgouchet.xmleditor.AxelSettingsActivity"
+			android:label="@string/title_settings"
+			android:windowSoftInputMode="stateHidden" >
+		</activity>
 
-        <!-- Axel about activity -->
-        <activity
-            android:name="fr.xgouchet.xmleditor.AxelAboutActivity"
-            android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
-            android:label="@string/title_about"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
-    </application>
+		<!-- Axel about activity -->
+		<activity
+			android:name="fr.xgouchet.xmleditor.AxelAboutActivity"
+			android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|fontScale|screenSize|smallestScreenSize"
+			android:label="@string/title_about"
+			android:windowSoftInputMode="stateHidden" >
+		</activity>
+	</application>
 
 </manifest>

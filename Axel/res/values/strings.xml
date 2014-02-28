@@ -1,136 +1,138 @@
 <resources>
 
-    <string name="app_name">Axel</string>
-    <string name="app_name_full">Axel (XML Viewer / Editor)</string>
-    <string name="app_name_validator">Axel Validator</string>
+	<string name="app_name">Axel</string>
+	<string name="app_name_full">Axel (XML Viewer / Editor)</string>
+	<string name="app_name_validator">Axel Validator</string>
 
-    <!-- Titles -->
-    <string name="title_editor">Axel - %1$s</string>
-    <string name="title_editor_dirty">Axel - * %1$s</string>
-    <string name="title_editor_readonly">Axel - [%1$s]</string>
-    <string name="title_preview">Axel - [%1$s]</string>
-    <string name="title_save_as">Axel - Save as &#8230; </string>
-    <string name="title_open_recent">Axel - Open Recent</string>
-    <string name="title_open_template">Axel - Open Template</string>
-    <string name="title_settings">Axel - Settings </string>
-    <string name="title_about">Axel - About &#8230; </string>
-    <string name="title_help">Axel - Help</string>
-    <string name="title_validator">Axel Validator - %1$s</string>
+	<!-- Titles -->
+	<string name="title_editor">Axel - %1$s</string>
+	<string name="title_editor_dirty">Axel - * %1$s</string>
+	<string name="title_editor_readonly">Axel - [%1$s]</string>
+	<string name="title_preview">Axel - [%1$s]</string>
+	<string name="title_save_as">Axel - Save as &#8230; </string>
+	<string name="title_open_recent">Axel - Open Recent</string>
+	<string name="title_open_template">Axel - Open Template</string>
+	<string name="title_settings">Axel - Settings </string>
+	<string name="title_about">Axel - About &#8230; </string>
+	<string name="title_help">Axel - Help</string>
+	<string name="title_validator">Axel Validator - %1$s</string>
 
-    <!-- Options Menu -->
-    <string name="action_new">New</string>
-    <string name="action_new_empty">Empty document</string>
-    <string name="action_new_template">From template</string>
-    <string name="action_open">Open</string>
-    <string name="action_open_recent">Recent files</string>
-    <string name="action_save">Save</string>
-    <string name="action_save_as">Save as &#8230;</string>
-    <string name="action_save_as_template">Save as template</string>
-    <string name="action_settings">Settings</string>
-    <string name="action_about">About</string>
-    <string name="action_expand_all">Expand All</string>
-    <string name="action_preview">Preview</string>
-    <string name="action_collapse_all">Collapse All</string>
-    <string name="action_add_attribute">Add attribute</string>
-    <string name="action_add_attribute_custom">Custom attribute</string>
-    <string name="action_add_namespace">Namespace</string>
-    <string name="action_add_default_namespace">Default namespace</string>
-    <string name="action_add_xml_schema_public">XML Schema (public)</string>
-    <string name="action_add_xml_schema_local">XML Schema (local)</string>
-    <string name="action_presets">Presets</string>
-    <string name="action_add_child">Child</string>
-    <string name="action_edit">Edit</string>
-    <string name="action_delete">Delete</string>
-    <string name="action_comment">Comment</string>
-    <string name="action_uncomment">Uncomment</string>
-    <string name="action_cut">Cut</string>
-    <string name="action_copy">Copy</string>
-    <string name="action_paste">Paste</string>
-    <string name="action_add_comment">Comment</string>
-    <string name="action_add_element">Element</string>
-    <string name="action_add_doctype">Doctype</string>
-    <string name="action_add_pi">Processing instruction</string>
-    <string name="action_add_text">Text block</string>
-    <string name="action_add_cdata">CData block</string>
-    <string name="action_sort_children">Order children</string>
-    <string name="action_xsl_link">XSL link</string>
+	<!-- Options Menu -->
+	<string name="action_new">New</string>
+	<string name="action_new_empty">Empty document</string>
+	<string name="action_new_template">From template</string>
+	<string name="action_open">Open</string>
+	<string name="action_open_file">Open File</string>
+	<string name="action_open_recent">Recently opened</string>
+	<string name="action_save">Save</string>
+	<string name="action_save_as">Save as &#8230;</string>
+	<string name="action_save_as_file">Save as document</string>
+	<string name="action_save_as_template">Save as template</string>
+	<string name="action_settings">Settings</string>
+	<string name="action_about">About</string>
+	<string name="action_expand_all">Expand All</string>
+	<string name="action_preview">Preview</string>
+	<string name="action_collapse_all">Collapse All</string>
+	<string name="action_add_attribute">Add attribute</string>
+	<string name="action_add_attribute_custom">Custom attribute</string>
+	<string name="action_add_namespace">Namespace</string>
+	<string name="action_add_default_namespace">Default namespace</string>
+	<string name="action_add_xml_schema_public">XML Schema (public)</string>
+	<string name="action_add_xml_schema_local">XML Schema (local)</string>
+	<string name="action_presets">Presets</string>
+	<string name="action_add_child">Child</string>
+	<string name="action_edit">Edit</string>
+	<string name="action_delete">Delete</string>
+	<string name="action_comment">Comment</string>
+	<string name="action_uncomment">Uncomment</string>
+	<string name="action_cut">Cut</string>
+	<string name="action_copy">Copy</string>
+	<string name="action_paste">Paste</string>
+	<string name="action_add_comment">Comment</string>
+	<string name="action_add_element">Element</string>
+	<string name="action_add_doctype">Doctype</string>
+	<string name="action_add_pi">Processing instruction</string>
+	<string name="action_add_text">Text block</string>
+	<string name="action_add_cdata">CData block</string>
+	<string name="action_sort_children">Order children</string>
+	<string name="action_xsl_link">XSL link</string>
 
-    <!-- Misc UI strings -->
-    <string name="ui_save_text">"Do you want to save your document? \nAny unsaved changes will be lost. "</string>
-    <string name="ui_save">Save</string>
-    <string name="ui_purchase">Purchase</string>
-    <string name="ui_delete">Delete</string>
-    <string name="ui_no_save">"Don't save"</string>
-    <string name="ui_cancel">Cancel</string>
-    <string name="ui_discard">Discard</string>
-    <string name="ui_loading">Loading</string>
-    <string name="ui_saving">Saving</string>
-    <string name="ui_hashing">Hashing file</string>
-    <string name="ui_parsing">Parsing file</string>
-    <string name="ui_generating">Generating Xml tree</string>
-    <string name="ui_writing">Writing Xml to file</string>
-    <string name="ui_wait">Please wait</string>
-    <string name="ui_reset">Reset</string>
-    <string name="ui_help">Help</string>
-    <string name="ui_invalid_syntax">"Invalid syntax"</string>
-    <string name="ui_invalid_namespace_uri">"Invalid namespace uri"</string>
-    <string name="ui_invalid_duplicate">"Another attribute already uses this name"</string>
-    <string name="ui_invalid_namespace">"Namespace doesn't exist at this level"</string>
-    <string name="ui_standalone">"Standalone"</string>
-    <string name="ui_hint_file_name">File name</string>
-    <string name="ui_hint_template_name">Template name</string>
-    <string name="ui_hint_prefix">Prefix</string>
-    <string name="ui_hint_name">Name</string>
-    <string name="ui_hint_value">Value</string>
-    <string name="ui_hint_content">Content</string>
-    <string name="ui_hint_version">Version</string>
-    <string name="ui_hint_encoding">Encoding</string>
-    <string name="ui_prompt_delete_node">"Are you sure you want to delete this node"</string>
-    <string name="ui_open_error">File error</string>
-    <string name="ui_copy_clipboard">The node content (%1$s) has been copied to your clipboard</string>
-    <string name="ui_prompt_open_error">"An error occurred while reading this file : 
+	<!-- Misc UI strings -->
+	<string name="ui_save_text">"Do you want to save your document? \nAny unsaved changes will be lost. "</string>
+	<string name="ui_save">Save</string>
+	<string name="ui_purchase">Purchase</string>
+	<string name="ui_delete">Delete</string>
+	<string name="ui_no_save">"Don't save"</string>
+	<string name="ui_cancel">Cancel</string>
+	<string name="ui_discard">Discard</string>
+	<string name="ui_loading">Loading</string>
+	<string name="ui_saving">Saving</string>
+	<string name="ui_hashing">Hashing file</string>
+	<string name="ui_parsing">Parsing file</string>
+	<string name="ui_generating">Generating Xml tree</string>
+	<string name="ui_writing">Writing Xml to file</string>
+	<string name="ui_wait">Please wait</string>
+	<string name="ui_reset">Reset</string>
+	<string name="ui_help">Help</string>
+	<string name="ui_invalid_syntax">"Invalid syntax"</string>
+	<string name="ui_invalid_namespace_uri">"Invalid namespace uri"</string>
+	<string name="ui_invalid_duplicate">"Another attribute already uses this name"</string>
+	<string name="ui_invalid_namespace">"Namespace doesn't exist at this level"</string>
+	<string name="ui_standalone">"Standalone"</string>
+	<string name="ui_hint_file_name">File name</string>
+	<string name="ui_hint_template_name">Template name</string>
+	<string name="ui_hint_prefix">Prefix</string>
+	<string name="ui_hint_name">Name</string>
+	<string name="ui_hint_value">Value</string>
+	<string name="ui_hint_content">Content</string>
+	<string name="ui_hint_version">Version</string>
+	<string name="ui_hint_encoding">Encoding</string>
+	<string name="ui_prompt_delete_node">"Are you sure you want to delete this node"</string>
+	<string name="ui_open_error">File error</string>
+	<string name="ui_copy_clipboard">The node content (%1$s) has been copied to your clipboard</string>
+	<string name="ui_prompt_open_error">"An error occurred while reading this file : 
 
 %s"</string>
-    <string name="ui_prompt_open_error_html">"An error occurred while reading this file. 
+	<string name="ui_prompt_open_error_html">"An error occurred while reading this file. 
          
 It seems you try to read an HTML document, you can try converting it to a well formed xHTML file. "</string>
-    <string name="ui_prompt_file_changed">"The current file has been modified outside of this app. Do you want to reload it ? 
+	<string name="ui_prompt_file_changed">"The current file has been modified outside of this app. Do you want to reload it ? 
          
 Any unsaved change will be lost."</string>
-    <string name="ui_prompt_file_deleted">"The current file has been deleted from the disk. Do you want to save it ? 
+	<string name="ui_prompt_file_deleted">"The current file has been deleted from the disk. Do you want to save it ? 
          
 Any unsaved change will be lost."</string>
-    <string name="ui_check_errors">Check errors</string>
-    <string name="ui_send_file">Send file</string>
-    <string name="ui_convert_html">Read as HTML</string>
-    <string name="ui_validating">Validating document</string>
-    <string name="ui_validated">This document is valid</string>
-    <string name="ui_validator_line_columns">"Line : %1$d / Column : %2$d"</string>
+	<string name="ui_check_errors">Check errors</string>
+	<string name="ui_send_file">Send file</string>
+	<string name="ui_convert_html">Read as HTML</string>
+	<string name="ui_validating">Validating document</string>
+	<string name="ui_validated">This document is valid</string>
+	<string name="ui_validator_line_columns">"Line : %1$d / Column : %2$d"</string>
 
-    <!--  -->
-    <string name="ui_licence_dragsortlistview">"Axel uses the <b>DragSortListView</b> library, made by Carl Bauer (carl.a.bauer@gmail.com), under the Apache License (version 2.0)."</string>
-    <string name="ui_licence_crouton">"Axel uses the <b>Crouton</b> library, made by Benjamin Weiss (based on an idea by Cyril Mottier), under the Apache License (version 2.0)."</string>
-    <string name="ui_licence_htmlcleaner">"Axel uses the <b>HTML Cleaner</b> library, made by Vladimir Nikic (nikic_vladimir@yahoo.com), under the BSD License."</string>
-    <string name="ui_licence_juniversalchardet">"Axel uses the <b>JUniversalCharDet</b> library, made by Takscape (takscape@gmail.com), under the Mozilla Public License (version 1.1)."</string>
+	<!--  -->
+	<string name="ui_licence_dragsortlistview">"Axel uses the <b>DragSortListView</b> library, made by Carl Bauer (carl.a.bauer@gmail.com), under the Apache License (version 2.0)."</string>
+	<string name="ui_licence_crouton">"Axel uses the <b>Crouton</b> library, made by Benjamin Weiss (based on an idea by Cyril Mottier), under the Apache License (version 2.0)."</string>
+	<string name="ui_licence_htmlcleaner">"Axel uses the <b>HTML Cleaner</b> library, made by Vladimir Nikic (nikic_vladimir@yahoo.com), under the BSD License."</string>
+	<string name="ui_licence_juniversalchardet">"Axel uses the <b>JUniversalCharDet</b> library, made by Takscape (takscape@gmail.com), under the Mozilla Public License (version 1.1)."</string>
 
-    <!--  -->
-    <string name="config_cat_editor">Editor</string>
-    <string name="config_cat_display">Display</string>
-    <string name="config_title_indentation_size">Indentation size</string>
-    <string name="config_title_single_tap_quick_action">Action on tap</string>
-    <string name="config_title_double_tap_quick_action">Action on double tap</string>
-    <string name="config_title_long_press_quick_action">Action on long press</string>
-    <string name="config_title_escape_text_content">Escape Text content</string>
-    <string name="config_title_escape_attr_value">Escape Attribute value</string>
-    <string name="config_summary_on_escape">Special characters (&amp; , &lt; and \") will be escaped (&amp;amp;, &amp;lt; and &amp;quot;)</string>
-    <string name="config_summary_off_escape">Special characters will generated error if not escaped manually</string>
-    <string name="config_title_keep_text_exact">Keep text node exact content</string>
-    <string name="config_title_max_recent">Maximum recent files</string>
-    <string name="config_summary_on_keep_text_exact">Text node content will be kept exactly as it appears in the source file</string>
-    <string name="config_summary_off_keep_text_exact">Leading and trailing whitespace will be removed when reading Text nodes, indentation will be added when saving</string>
-    <string name="config_title_attributes_inline">Display attributes inline</string>
-    <string name="config_summary_on_attributes_inline">Attributes will be displayed in a single line</string>
-    <string name="config_summary_off_attributes_inline">Each attributes will be displayed in a new line. Source file attributes will still be written inline.</string>
-    <string name="config_title_edit_on_create">Open editor when a new node / attribute is created</string>
+	<!--  -->
+	<string name="config_cat_editor">Editor</string>
+	<string name="config_cat_display">Display</string>
+	<string name="config_title_indentation_size">Indentation size</string>
+	<string name="config_title_single_tap_quick_action">Action on tap</string>
+	<string name="config_title_double_tap_quick_action">Action on double tap</string>
+	<string name="config_title_long_press_quick_action">Action on long press</string>
+	<string name="config_title_escape_text_content">Escape Text content</string>
+	<string name="config_title_escape_attr_value">Escape Attribute value</string>
+	<string name="config_summary_on_escape">Special characters (&amp; , &lt; and \") will be escaped (&amp;amp;, &amp;lt; and &amp;quot;)</string>
+	<string name="config_summary_off_escape">Special characters will generated error if not escaped manually</string>
+	<string name="config_title_keep_text_exact">Keep text node exact content</string>
+	<string name="config_title_max_recent">Maximum recent files</string>
+	<string name="config_summary_on_keep_text_exact">Text node content will be kept exactly as it appears in the source file</string>
+	<string name="config_summary_off_keep_text_exact">Leading and trailing whitespace will be removed when reading Text nodes, indentation will be added when saving</string>
+	<string name="config_title_attributes_inline">Display attributes inline</string>
+	<string name="config_summary_on_attributes_inline">Attributes will be displayed in a single line</string>
+	<string name="config_summary_off_attributes_inline">Each attributes will be displayed in a new line. Source file attributes will still be written inline.</string>
+	<string name="config_title_edit_on_create">Open editor when a new node / attribute is created</string>
 
 </resources>

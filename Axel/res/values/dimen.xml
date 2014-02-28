@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
-    <dimen name="editor_margin">4dp</dimen>
 
-    <dimen name="padding_unit_large">30dp</dimen>
-    <dimen name="padding_unit">18dp</dimen>
-    <dimen name="padding_unit_small">6dp</dimen>
+	<!-- Default screen margins, per the Android Design guidelines. -->
+	<dimen name="activity_horizontal_margin">16dp</dimen>
+	<dimen name="activity_vertical_margin">16dp</dimen>
+
+	<!-- Editor -->
+	<dimen name="editor_margin">8dp</dimen>
+	<dimen name="padding_unit_large">30dp</dimen>
+	<dimen name="padding_unit">18dp</dimen>
+	<dimen name="padding_unit_small">6dp</dimen>
 
 </resources>
