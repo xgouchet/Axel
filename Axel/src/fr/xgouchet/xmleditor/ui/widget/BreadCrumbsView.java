@@ -8,12 +8,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 
-public class BreadCrumbsView extends ScrollView {
+public class BreadCrumbsView extends HorizontalScrollView {
+    
     
     private final LinearLayout mBreadCrumbsContainer;
     private final Stack<BreadCrumb> mBreadCrumbs = new Stack<BreadCrumb>();
@@ -102,7 +104,7 @@ public class BreadCrumbsView extends ScrollView {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         bc.view = (TextView) inflater.inflate(R.layout.item_breadcrumb, mBreadCrumbsContainer,
                 false);
-        bc.view.setText(title);
+        bc.view.setText(bc.title);
         bc.view.setOnClickListener(new OnClickListener() {
             
             @Override

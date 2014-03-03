@@ -277,48 +277,7 @@ public class XmlData {
         return mName;
     }
     
-    /**
-     * @return a short representation of this node
-     */
-    public String getShortName() {
-        String result;
-        
-        switch (mDataType) {
-            case XML_DOCUMENT:
-                result = " * ";
-                break;
-            case XML_TEXT:
-                result = AxelUtils.ellipsize(mText, 16);
-                break;
-            case XML_COMMENT:
-                result = "<!-- " + AxelUtils.ellipsize(mText, 8) + " -->";
-                break;
-            case XML_ELEMENT:
-                if (hasFlag(FLAG_EMPTY)) {
-                    result = "<" + mName + "/>";
-                } else {
-                    result = "<" + mName + ">";
-                }
-                break;
-            case XML_CDATA:
-                result = "<![CDATA[" + AxelUtils.ellipsize(mText, 8) + "]]>";
-                break;
-            case XML_DOCTYPE:
-                result = "<!DOCTYPE " + AxelUtils.ellipsize(mText, 8) + ">";
-                break;
-            case XML_PROCESSING_INSTRUCTION:
-                result = "<?" + mName + "?>";
-                break;
-            case XML_DOCUMENT_DECLARATION:
-                result = "<?xml?>";
-                break;
-            default:
-                result = "***";
-                break;
-        }
-        
-        return result;
-    }
+    
     
     /**
      * @return the text content

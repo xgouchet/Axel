@@ -657,8 +657,8 @@ public class AxelActivity extends Activity implements
             public void run() {
                 Intent open;
                 
-                open = new Intent(getApplicationContext(),
-                        AxelOpenActivity.class);
+//                open = new Intent(getApplicationContext(),
+//                        AxelOpenActivity.class);
                 
 //                startActivityForResult(open, Constants.REQUEST_OPEN);
             }
@@ -682,8 +682,8 @@ public class AxelActivity extends Activity implements
                 public void run() {
                     Intent open;
                     
-                    open = new Intent(getApplicationContext(),
-                            AxelOpenRecentActivity.class);
+//                    open = new Intent(getApplicationContext(),
+//                            AxelOpenRecentActivity.class);
                     
 //                    startActivityForResult(open, Constants.REQUEST_OPEN);
                     

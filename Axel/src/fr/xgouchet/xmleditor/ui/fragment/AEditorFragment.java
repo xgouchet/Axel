@@ -1,7 +1,6 @@
 package fr.xgouchet.xmleditor.ui.fragment;
 
 import android.app.Fragment;
-import android.os.Bundle;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 
 

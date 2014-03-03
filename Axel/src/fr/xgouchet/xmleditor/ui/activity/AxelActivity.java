@@ -31,7 +31,7 @@ import fr.xgouchet.xmleditor.data.XmlEditor;
 import fr.xgouchet.xmleditor.data.XmlEditorListener;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.ui.fragment.AEditorFragment;
-import fr.xgouchet.xmleditor.ui.fragment.BreadCrumbsEditorFragment;
+import fr.xgouchet.xmleditor.ui.fragment.SimpleEditorFragment;
 
 /**
  * 
@@ -66,7 +66,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 		setContentView(R.layout.activity_editor);
 
 		// Set fragment (TODO read from prefs)
-		mEditorFragment = new BreadCrumbsEditorFragment();
+		mEditorFragment = new SimpleEditorFragment();
 		getFragmentManager().beginTransaction()
 				.add(android.R.id.content, mEditorFragment).commit();
 

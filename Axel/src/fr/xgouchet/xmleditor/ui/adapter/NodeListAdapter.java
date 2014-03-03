@@ -27,6 +27,7 @@ public class NodeListAdapter<T> extends ArrayAdapter<TreeNode<T>> {
     
     private AbstractTreeNodeStyler<T> mNodeStyler;
     private final LayoutInflater mInflater;
+    private final NodeViewListener<T> mListener;
     
     /**
      * @param context
@@ -34,10 +35,12 @@ public class NodeListAdapter<T> extends ArrayAdapter<TreeNode<T>> {
      * @param nodes
      *            the nodes to display
      */
-    public NodeListAdapter(final Context context, final List<TreeNode<T>> nodes) {
+    public NodeListAdapter(final Context context, final List<TreeNode<T>> nodes,
+            final NodeViewListener<T> listener) {
         super(context, R.layout.item_node_sort, nodes);
         
         mInflater = LayoutInflater.from(context);
+        mListener = listener;
     }
     
     
@@ -55,11 +58,10 @@ public class NodeListAdapter<T> extends ArrayAdapter<TreeNode<T>> {
         if (view == null) {
             // inflate view
             view = mInflater.inflate(R.layout.item_node, parent, false);
+            view.setLongClickable(true);
             
             // create Holder
-            holder = new NodeViewHolder<T>();
-            holder.content = (TextView) view.findViewById(R.id.textNode);
-            holder.decorator = (ImageView) view.findViewById(R.id.imageDecorator);
+            holder = new NodeViewHolder<T>(view, getContext(), mListener);
             
             view.setTag(holder);
         } else {
@@ -69,6 +71,8 @@ public class NodeListAdapter<T> extends ArrayAdapter<TreeNode<T>> {
         // get node to display
         TreeNode<T> node;
         node = getItem(position);
+        
+        holder.update(position, node);
         
         if (node != null) {
             displayNode(holder, node, mNodeStyler, getContext());
