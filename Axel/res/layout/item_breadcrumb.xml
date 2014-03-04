@@ -6,6 +6,5 @@
 	android:layout_height="wrap_content"
 	android:background="@android:drawable/list_selector_background"
 	android:gravity="center_vertical"
-	android:padding="4dip"
 	android:singleLine="true"
 	android:textAppearance="?android:attr/textAppearanceMedium" />

@@ -25,9 +25,19 @@
 		android:layout_alignParentRight="true"
 		android:layout_below="@id/bread_crumbs"
 		android:clipToPadding="false"
+		android:fastScrollEnabled="true"
 		android:padding="@dimen/editor_margin"
 		android:scrollbarStyle="outsideOverlay"
-		tools:listitem="@layout/item_node" >
-	</ListView>
+		tools:listitem="@layout/item_node" />
+
+	<FrameLayout
+		android:id="@+id/frame_sub_fragment"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentRight="true"
+		android:layout_below="@id/bread_crumbs" >
+	</FrameLayout>
 
 </RelativeLayout>

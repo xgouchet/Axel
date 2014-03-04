@@ -2,18 +2,23 @@ package fr.xgouchet.xmleditor.ui.widget;
 
 import java.util.Stack;
 
-import fr.xgouchet.xmleditor.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
+import fr.xgouchet.xmleditor.R;
 
 
+/**
+ * A view displaying a breadcrumb stack
+ * 
+ * @author Xavier Gouchet
+ * 
+ */
 public class BreadCrumbsView extends HorizontalScrollView {
     
     
@@ -80,30 +85,38 @@ public class BreadCrumbsView extends HorizontalScrollView {
         mBreadCrumbsContainer = new LinearLayout(context);
         mBreadCrumbsContainer.setOrientation(LinearLayout.HORIZONTAL);
         
+        // add the linear layout container
         addView(mBreadCrumbsContainer);
         
-        if (isInEditMode()) {
-            addBreadCrumb("Root", 0, null);
-            addBreadCrumb("child", 1, null);
-            addBreadCrumb("child", 2, null);
-        }
     }
     
     //////////////////////////////////////////////////////////////////////////////////////
-    // Bread Crumbs
+    // BREAD CRUMBS ACTIONS
     //////////////////////////////////////////////////////////////////////////////////////
     
-    
-    public void addBreadCrumb(final String title, final int id, final Object tag) {
+    /**
+     * Pushes a new breadcrumb on the stack
+     * 
+     * @param title
+     *            the title to display
+     * @param item
+     *            the underlying content
+     */
+    public void push(final String title, final Object item) {
+        
+        // create the bread crumb
         final BreadCrumb bc = new BreadCrumb();
         
+        // set the metadata
         bc.title = title;
-        bc.id = id;
-        bc.tag = tag;
+        bc.item = item;
         
+        // inflate the layout
         LayoutInflater inflater = LayoutInflater.from(getContext());
         bc.view = (TextView) inflater.inflate(R.layout.item_breadcrumb, mBreadCrumbsContainer,
                 false);
+        
+        // configure the view
         bc.view.setText(bc.title);
         bc.view.setOnClickListener(new OnClickListener() {
             
@@ -113,29 +126,78 @@ public class BreadCrumbsView extends HorizontalScrollView {
             }
         });
         
+        // add the bread crumb and view to their respective containers
         mBreadCrumbs.push(bc);
         mBreadCrumbsContainer.addView(bc.view);
     }
     
+    /**
+     * Clear all views in the bread crumb
+     */
     public void clearBreadCrumbs() {
         mBreadCrumbs.clear();
         mBreadCrumbsContainer.removeAllViews();
+    }
+    
+    /**
+     * @return if we can still go up one level
+     */
+    public boolean canPop() {
+        return mBreadCrumbs.size() > 1;
+    }
+    
+    /**
+     * Pops the current breadcrumb
+     */
+    public Object pop() {
+        
+        // check 
+        if (mBreadCrumbs.isEmpty()) {
+            throw new IllegalStateException();
+        }
+        
+        // pop the first item
+        BreadCrumb popped = mBreadCrumbs.pop();
+        
+        int count = mBreadCrumbsContainer.getChildCount();
+        mBreadCrumbsContainer.removeViews(mBreadCrumbs.size(), 1);
+        invalidate();
+        
+        Log.i("BCV", "Had " + count + " views, now has " + mBreadCrumbsContainer.getChildCount());
+        
+        return popped.item;
+    }
+    /**
+     * @return the item displayed by the top of the stack breadcrumb
+     */
+    public Object peek() {
+        if (mBreadCrumbs.isEmpty()) {
+            return null;
+        }
+        return mBreadCrumbs.peek().item;
     }
     
     //////////////////////////////////////////////////////////////////////////////////////
     // BREAD CRUMBS EVENTS
     //////////////////////////////////////////////////////////////////////////////////////
     
+    /**
+     * Called when a bread crumb is clicked
+     * 
+     * @param bc
+     */
     protected void onBreadCrumbClicked(final BreadCrumb bc) {
         
     }
     
     
+    /**
+     * A simple POJO representation of a breadcrumb data
+     */
     private class BreadCrumb {
         
         public String title;
-        public int id;
-        public Object tag;
+        public Object item;
         public TextView view;
     }
     

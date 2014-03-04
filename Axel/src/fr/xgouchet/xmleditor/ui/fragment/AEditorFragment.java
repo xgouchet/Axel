@@ -21,7 +21,7 @@ public abstract class AEditorFragment extends Fragment {
     
     
     //////////////////////////////////////////////////////////////////////////////////////
-    // Xml Editor events
+    // XML EDITOR EVENTS
     //////////////////////////////////////////////////////////////////////////////////////
     
     public void onXmlDocumentChanged(final XmlNode root) {
@@ -33,6 +33,14 @@ public abstract class AEditorFragment extends Fragment {
     public void onXmlContentChanged() {
         
     }
+    
+    /**
+     * Callback called when the back button is pressed.
+     * 
+     * @return true if the action has been handled, false to let the default implementation handle
+     *         this (usually finishes the activity)
+     */
+    public abstract boolean onBackPressed();
     
     protected abstract void displayXmlRoot();
     

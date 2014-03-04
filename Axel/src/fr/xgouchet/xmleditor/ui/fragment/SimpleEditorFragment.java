@@ -1,6 +1,12 @@
 package fr.xgouchet.xmleditor.ui.fragment;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,7 +37,6 @@ public class SimpleEditorFragment extends AEditorFragment {
     private ListView mListView;
     private NodeListAdapter<XmlData> mAdapter;
     
-    private XmlNode mCurrentNode;
     
     //////////////////////////////////////////////////////////////////////////////////////
     // FRAGMENT LIFECYCLE
@@ -72,7 +77,33 @@ public class SimpleEditorFragment extends AEditorFragment {
     public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         
+        // TODO add options for the current node (add children, ...)
+    }
+    
+    //////////////////////////////////////////////////////////////////////////////////////
+    // USER INTERACTIONS
+    //////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public boolean onBackPressed() {
         
+        // check if the bread crumb can be popped
+        if (mBreadCrumbsView.canPop()) {
+            
+            // pop the bread crumbs
+            mBreadCrumbsView.pop();
+            
+            // update the display
+            XmlNode current = (XmlNode) mBreadCrumbsView.peek();
+            if (current != null) {
+                displayNodeChildren(current, false);
+            }
+            
+            return true;
+        }
+        
+        
+        return false;
     }
     
     
@@ -88,23 +119,67 @@ public class SimpleEditorFragment extends AEditorFragment {
             mBreadCrumbsView.clearBreadCrumbs();
             
             // display root
-            displayNode(mXmlRoot);
+            displayNodeChildren(mXmlRoot, true);
         }
     }
     
-    protected void displayNode(final XmlNode node) {
+    
+    /**
+     * Displays the content of a node to be edited
+     * 
+     * @param node
+     *            the node to display
+     * @param
+     */
+    private void displayNode(XmlNode node, boolean addBreadCrumb) {
+        Fragment fragment;
+        
+        // select next fragment
+        switch (node.getContent().getType()) {
+            case XmlData.XML_ELEMENT:
+                fragment = new ElementEditorFragment();
+                break;
+            
+            default:
+                Log.w("SimpleEditor", "Unknown editor for node " + node);
+                return;
+        }
+        
+        if (addBreadCrumb) {
+            // add node to bread crumb
+            mBreadCrumbsView.push(node.getXPathName(), node);
+        }
+        
+        // display fragment
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.add(R.id.frame_sub_fragment, fragment);
+        transaction.commit();
+        
+        // hide node list 
+        mListView.setVisibility(View.GONE);
+    }
+    
+    protected void displayNodeChildren(final XmlNode node, boolean addBreadCrumb) {
         if (getView() != null) {
             
-            mCurrentNode = node;
+            if (addBreadCrumb) {
+                // add node to bread crumb
+                mBreadCrumbsView.push(node.getXPathName(), node);
+            }
             
-            // add node to bread crumb
-            mBreadCrumbsView.addBreadCrumb(node.getXPathName(), 0, node);
+            // create the node list 
+            List<TreeNode<XmlData>> list = new LinkedList<TreeNode<XmlData>>();
+            if (!node.isDocument()) {
+                list.add(node);
+            }
+            list.addAll(node.getChildren());
             
             // Display the tree 
-            mAdapter = new NodeListAdapter<XmlData>(getActivity(), node.getChildren(),
-                    mNodeListener);
+            mAdapter = new NodeListAdapter<XmlData>(getActivity(), list, mNodeListener);
             mAdapter.setNodeStyler(new XmlNodeStyler());
+            mAdapter.setHasRoot(!node.isDocument());
             mListView.setAdapter(mAdapter);
+            mListView.setVisibility(View.VISIBLE);
         }
     }
     
@@ -119,7 +194,13 @@ public class SimpleEditorFragment extends AEditorFragment {
         @Override
         public void onNodeTapped(final TreeNode<XmlData> node, final View view, final int position) {
             if (node.hasChildren()) {
-                displayNode((XmlNode) node);
+                if (node == mBreadCrumbsView.peek()) {
+                    displayNode((XmlNode) node, false);
+                } else {
+                    displayNodeChildren((XmlNode) node, true);
+                }
+            } else {
+                displayNode((XmlNode) node, true);
             }
         }
         

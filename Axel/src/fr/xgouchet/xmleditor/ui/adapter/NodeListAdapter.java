@@ -8,8 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.TextView.BufferType;
 import fr.xgouchet.xmleditor.R;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
@@ -29,6 +28,9 @@ public class NodeListAdapter<T> extends ArrayAdapter<TreeNode<T>> {
     private final LayoutInflater mInflater;
     private final NodeViewListener<T> mListener;
     
+    private final int mIndentSize;
+    private boolean mHasRoot;
+    
     /**
      * @param context
      *            the current application context
@@ -41,6 +43,8 @@ public class NodeListAdapter<T> extends ArrayAdapter<TreeNode<T>> {
         
         mInflater = LayoutInflater.from(context);
         mListener = listener;
+        
+        mIndentSize = context.getResources().getDimensionPixelOffset(R.dimen.padding_unit);
     }
     
     
@@ -72,10 +76,17 @@ public class NodeListAdapter<T> extends ArrayAdapter<TreeNode<T>> {
         TreeNode<T> node;
         node = getItem(position);
         
-        holder.update(position, node);
+        holder.position = position;
+        holder.node = node;
         
         if (node != null) {
-            displayNode(holder, node, mNodeStyler, getContext());
+            int indent;
+            if (mHasRoot) {
+                indent = ((position == 0) ? 0 : mIndentSize);
+            } else {
+                indent = 0;
+            }
+            displayNode(holder, node, mNodeStyler, getContext(), indent);
         }
         
         return view;
@@ -93,8 +104,7 @@ public class NodeListAdapter<T> extends ArrayAdapter<TreeNode<T>> {
     
     
     private void displayNode(final NodeViewHolder<T> holder, final TreeNode<T> node,
-            final AbstractTreeNodeStyler<T> styler,
-            final Context context) {
+            final AbstractTreeNodeStyler<T> styler, final Context context, final int indent) {
         
         // setup the content text
         holder.content.setVisibility(View.VISIBLE);
@@ -102,7 +112,7 @@ public class NodeListAdapter<T> extends ArrayAdapter<TreeNode<T>> {
         holder.content.setMovementMethod(new ScrollingMovementMethod());
         holder.content.scrollTo(0, 0);
         
-        
+        // set text with syntax highlight
         if (styler == null) {
             holder.content.setText(node.toString());
         } else {
@@ -110,10 +120,27 @@ public class NodeListAdapter<T> extends ArrayAdapter<TreeNode<T>> {
                     node.getContent(), context), BufferType.SPANNABLE);
         }
         
+        // set node indentation
+        LinearLayout.LayoutParams params;
+        params = (LinearLayout.LayoutParams) holder.decorator
+                .getLayoutParams();
+        params.leftMargin = indent;
+        holder.decorator.setLayoutParams(params);
+        
+        // set node decorator icon ( + or . )
         if (node.getChildrenCount() == 0) {
             holder.decorator.setImageResource(R.drawable.expander_ignore);
         } else {
-            holder.decorator.setImageResource(R.drawable.expander_haschild);
+            if (holder.position == 0) {
+                holder.decorator.setImageResource(R.drawable.expander_open);
+            } else {
+                holder.decorator.setImageResource(R.drawable.expander_haschild);
+            }
         }
+    }
+    
+    
+    public void setHasRoot(boolean hasRoot) {
+        mHasRoot = hasRoot;
     }
 }

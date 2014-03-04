@@ -1,8 +1,6 @@
 package fr.xgouchet.xmleditor.ui.activity;
 
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 
 import android.annotation.TargetApi;
@@ -149,6 +147,20 @@ public class AxelActivity extends Activity implements XmlEditorListener {
         
     }
     
+    //////////////////////////////////////////////////////////////////////////////////////
+    // USER INTERACTIONS
+    //////////////////////////////////////////////////////////////////////////////////////
+    
+    @Override
+    public void onBackPressed() {
+        
+        if (mEditorFragment.onBackPressed()) {
+            return;
+        }
+        
+        super.onBackPressed();
+    }
+    
     // ////////////////////////////////////////////////////////////////////////////////////
     // OPTIONS MENU
     // ////////////////////////////////////////////////////////////////////////////////////
@@ -278,18 +290,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
             mXmlEditor.doClearContents();
         } else if ((action.equals(Intent.ACTION_VIEW))
                 || (action.equals(Intent.ACTION_EDIT))) {
-            try {
-                file = new File(new URI(intent.getData().toString()));
-                mXmlEditor.doOpenFile(file, false);
-            }
-            catch (URISyntaxException e) {
-                Crouton.makeText(this, R.string.toast_intent_invalid_uri,
-                        Style.ALERT).show();
-            }
-            catch (IllegalArgumentException e) {
-                Crouton.makeText(this, R.string.toast_intent_illegal,
-                        Style.ALERT).show();
-            }
+            mXmlEditor.loadDocument(intent.getData(), false);
         } else {
             mXmlEditor.doClearContents();
         }

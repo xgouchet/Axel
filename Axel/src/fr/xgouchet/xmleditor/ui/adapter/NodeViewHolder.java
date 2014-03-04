@@ -29,8 +29,8 @@ public class NodeViewHolder<T> implements OnTouchListener,
     public final ImageView decorator;
     private final NodeViewListener<T> mListener;
     
-    private TreeNode<T> mNode;
-    private int mPosition;
+    public TreeNode<T> node;
+    public int position;
     
     
     /**
@@ -52,15 +52,7 @@ public class NodeViewHolder<T> implements OnTouchListener,
         mDetector.setOnDoubleTapListener(this);
     }
     
-    /**
-     * 
-     * @param position
-     * @param node
-     */
-    public void update(final int position, final TreeNode<T> node) {
-        mNode = node;
-        mPosition = position;
-    }
+    
     
     //////////////////////////////////////////////////////////////////////////////////////
     // GESTURE DETECTOR
@@ -86,7 +78,7 @@ public class NodeViewHolder<T> implements OnTouchListener,
     @Override
     public void onLongPress(final MotionEvent e) {
         if (mListener != null) {
-            mListener.onNodeLongPressed(mNode, mRootView, mPosition);
+            mListener.onNodeLongPressed(node, mRootView, position);
         }
     }
     
@@ -114,7 +106,7 @@ public class NodeViewHolder<T> implements OnTouchListener,
     @Override
     public boolean onDoubleTap(final MotionEvent e) {
         if (mListener != null) {
-            mListener.onNodeDoubleTapped(mNode, mRootView, mPosition);
+            mListener.onNodeDoubleTapped(node, mRootView, position);
         }
         return true;
     }
@@ -122,7 +114,7 @@ public class NodeViewHolder<T> implements OnTouchListener,
     @Override
     public boolean onSingleTapConfirmed(final MotionEvent e) {
         if (mListener != null) {
-            mListener.onNodeTapped(mNode, mRootView, mPosition);
+            mListener.onNodeTapped(node, mRootView, position);
         }
         return true;
     }
