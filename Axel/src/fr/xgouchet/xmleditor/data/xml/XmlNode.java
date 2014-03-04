@@ -504,6 +504,23 @@ public final class XmlNode extends TreeNode<XmlData> {
     }
     
     
+    /**
+     * @return the canonical XPath to this element
+     */
+    public String getXPath() {
+        String path;
+        if (getParent() != null) {
+            path = ((XmlNode) getParent()).getXPath() + getXPathName();
+        } else {
+            path = getXPathName();
+        }
+        
+        return path;
+    }
+    
+    /**
+     * @return the XPath name of this element from its parent point of view
+     */
     public String getXPathName() {
         String name;
         
