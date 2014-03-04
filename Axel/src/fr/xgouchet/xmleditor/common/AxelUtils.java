@@ -1,13 +1,11 @@
 package fr.xgouchet.xmleditor.common;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -21,7 +19,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
-import fr.xgouchet.androidlib.data.FileUtils;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.parser.xml.XmlTreePullParser;
 import fr.xgouchet.xmleditor.parser.xml.XmlTreePullParser.XmlPullParserInstantiationException;
@@ -30,6 +27,82 @@ import fr.xgouchet.xmleditor.parser.xml.XmlTreePullParser.XmlPullParserUnavailab
 
 @SuppressWarnings("serial")
 public class AxelUtils {
+    
+    public static final String[] XML_MIME_TYPE = new String[] {
+            /** default */
+            "text/xml",
+            "application/xml",
+            
+            /** application/*+xml */
+            "application/atom+xml",
+            "application/rdf+xml",
+            "application/rss+xml",
+            "application/vnd.google-earth.kml+xml",
+            "application/vnd.mozilla.xul+xml",
+            "application/xhtml+xml",
+            "application/xslt+xml",
+            "application/xspf+xml",
+            "application/x-webarchive-xml",
+            
+            /** application/? */
+            "application/smil",
+            
+            /** image */
+            "image/svg+xml",
+            
+            /** text */
+            "text/html",
+            "text/x-opml+xml",
+            "text/vnd.wap.wml",
+    
+    };
+    
+    /** A list of known HTML extensions */
+    public static final List<String> HTML_EXT = new LinkedList<String>() {
+        
+        {
+            add("htm");
+            add("html");
+            add("xhtml");
+        }
+    };
+    
+    /** A list of known XML extensions */
+    public static final List<String> XML_EXT = new LinkedList<String>() {
+        
+        {
+            add("xml");
+            add("xsd");
+            add("xslt");
+            add("rng");
+            add("atom");
+            add("rss");
+            add("aiml");
+            add("cml");
+            add("ficml");
+            add("gml");
+            add("kml");
+            add("opml");
+            add("sbml");
+            add("scxml");
+            add("wml");
+            add("xaml");
+            add("dae");
+            add("svg");
+            add("x3d");
+            add("xmp");
+            add("dbk");
+            add("ofx");
+            add("rnd");
+            add("smil");
+            add("wsdl");
+            add("xbrl");
+            add("xpl");
+            add("xrc");
+            add("xspf");
+            add("xul");
+        }
+    };
     
     private static final boolean PROMPT_PREFIX = true;
     
@@ -163,53 +236,6 @@ public class AxelUtils {
         
         return result;
     }
-    
-    public static final List<String> HTML_EXT = new LinkedList<String>() {
-        
-        {
-            add("htm");
-            add("html");
-            add("xhtml");
-        }
-    };
-    
-    public static final List<String> XML_EXT = new LinkedList<String>() {
-        
-        {
-            add("xml");
-            add("xsd");
-            add("xslt");
-            add("rng");
-            add("atom");
-            add("rss");
-            add("aiml");
-            add("cml");
-            add("ficml");
-            add("gml");
-            add("kml");
-            add("opml");
-            add("sbml");
-            add("scxml");
-            add("wml");
-            add("xaml");
-            add("dae");
-            add("svg");
-            add("x3d");
-            add("xmp");
-            add("dbk");
-            add("ofx");
-            add("rnd");
-            add("smil");
-            add("wsdl");
-            add("xbrl");
-            add("xpl");
-            add("xrc");
-            add("xspf");
-            add("xul");
-            add("xml");
-            add("xml");
-        }
-    };
     
     public static boolean isHtmlDocument(final Uri uri) {
         // get uri extension 
