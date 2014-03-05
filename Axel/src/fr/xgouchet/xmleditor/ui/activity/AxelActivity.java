@@ -29,7 +29,7 @@ import fr.xgouchet.xmleditor.common.TemplateFiles;
 import fr.xgouchet.xmleditor.data.XmlEditor;
 import fr.xgouchet.xmleditor.data.XmlEditorListener;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
-import fr.xgouchet.xmleditor.ui.fragment.AEditorFragment;
+import fr.xgouchet.xmleditor.ui.fragment.ADocumentEditorFragment;
 import fr.xgouchet.xmleditor.ui.fragment.SimpleEditorFragment;
 
 
@@ -45,7 +45,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
     private final XmlEditor mXmlEditor;
     
     /** the fragment displaying the current document */
-    private AEditorFragment mEditorFragment;
+    private ADocumentEditorFragment mEditorFragment;
     
     /** the runable to run after a save */
     private Runnable mAfterSave; // Mennen ? Axe ?
@@ -277,7 +277,6 @@ public class AxelActivity extends Activity implements XmlEditorListener {
     private void readIntent() {
         Intent intent;
         String action;
-        File file;
         
         intent = getIntent();
         if (intent == null) {

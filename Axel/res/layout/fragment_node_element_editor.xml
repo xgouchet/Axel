@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical" >
+
+	<fr.xgouchet.xmleditor.ui.widget.ClearableEditText
+		android:id="@+id/edit_text_prefix"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentTop="true"
+		android:alpha="0.75"
+		android:ems="10"
+		android:hint="@string/ui_hint_prefix"
+		android:inputType="textNoSuggestions"
+		android:singleLine="true"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:textSize="16sp" />
+
+	<fr.xgouchet.xmleditor.ui.widget.ClearableEditText
+		android:id="@+id/edit_text_name"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/edit_text_prefix"
+		android:ems="10"
+		android:hint="@string/ui_hint_name"
+		android:inputType="textNoSuggestions"
+		android:singleLine="true"
+		android:textAppearance="?android:attr/textAppearanceMedium"
+		android:textSize="20sp" >
+
+		<requestFocus />
+	</fr.xgouchet.xmleditor.ui.widget.ClearableEditText>
+
+	<ListView
+		android:id="@android:id/list"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/edit_text_name"
+		android:clipToPadding="false"
+		android:scrollbarStyle="outsideOverlay"
+		tools:listitem="@layout/item_attribute" />
+
+</RelativeLayout>

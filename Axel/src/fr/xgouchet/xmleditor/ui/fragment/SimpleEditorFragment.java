@@ -3,7 +3,6 @@ package fr.xgouchet.xmleditor.ui.fragment;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,7 +29,7 @@ import fr.xgouchet.xmleditor.ui.widget.BreadCrumbsView;
  * @author Xavier Gouchet
  * 
  */
-public class SimpleEditorFragment extends AEditorFragment {
+public class SimpleEditorFragment extends ADocumentEditorFragment {
     
     
     private BreadCrumbsView mBreadCrumbsView;
@@ -60,6 +59,7 @@ public class SimpleEditorFragment extends AEditorFragment {
         
         return root;
     }
+    
     @Override
     public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -91,13 +91,16 @@ public class SimpleEditorFragment extends AEditorFragment {
         if (mBreadCrumbsView.canPop()) {
             
             // pop the bread crumbs
-            mBreadCrumbsView.pop();
+            XmlNode popped = (XmlNode) mBreadCrumbsView.pop();
             
             // update the display
             XmlNode current = (XmlNode) mBreadCrumbsView.peek();
+            
             if (current != null) {
                 displayNodeChildren(current, false);
             }
+            
+            getFragmentManager().popBackStack();
             
             return true;
         }
@@ -105,8 +108,6 @@ public class SimpleEditorFragment extends AEditorFragment {
         
         return false;
     }
-    
-    
     //////////////////////////////////////////////////////////////////////////////////////
     // XML EDITOR EVENTS
     //////////////////////////////////////////////////////////////////////////////////////
@@ -131,8 +132,8 @@ public class SimpleEditorFragment extends AEditorFragment {
      *            the node to display
      * @param
      */
-    private void displayNode(XmlNode node, boolean addBreadCrumb) {
-        Fragment fragment;
+    private void displayNodeEditor(final XmlNode node, final boolean addBreadCrumb) {
+        ANodeEditorFragment fragment;
         
         // select next fragment
         switch (node.getContent().getType()) {
@@ -145,21 +146,25 @@ public class SimpleEditorFragment extends AEditorFragment {
                 return;
         }
         
+        // set the node
+        fragment.setXmlNode(node);
+        
+        // add node to bread crumb
         if (addBreadCrumb) {
-            // add node to bread crumb
             mBreadCrumbsView.push(node.getXPathName(), node);
         }
         
         // display fragment
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         transaction.add(R.id.frame_sub_fragment, fragment);
+        transaction.addToBackStack(node.getXPath());
         transaction.commit();
         
         // hide node list 
         mListView.setVisibility(View.GONE);
     }
     
-    protected void displayNodeChildren(final XmlNode node, boolean addBreadCrumb) {
+    protected void displayNodeChildren(final XmlNode node, final boolean addBreadCrumb) {
         if (getView() != null) {
             
             if (addBreadCrumb) {
@@ -195,12 +200,12 @@ public class SimpleEditorFragment extends AEditorFragment {
         public void onNodeTapped(final TreeNode<XmlData> node, final View view, final int position) {
             if (node.hasChildren()) {
                 if (node == mBreadCrumbsView.peek()) {
-                    displayNode((XmlNode) node, false);
+                    displayNodeEditor((XmlNode) node, false);
                 } else {
                     displayNodeChildren((XmlNode) node, true);
                 }
             } else {
-                displayNode((XmlNode) node, true);
+                displayNodeEditor((XmlNode) node, true);
             }
         }
         
