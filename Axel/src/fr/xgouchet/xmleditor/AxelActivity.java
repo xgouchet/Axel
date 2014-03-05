@@ -510,7 +510,7 @@ public class AxelActivity extends Activity implements
     }
     
     @Override
-    public void onHtmlParseError() {
+    public void onHtmlParseError(final Uri uri, final String message) {
         // TODO Auto-generated method stub
         
     }

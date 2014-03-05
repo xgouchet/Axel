@@ -20,6 +20,7 @@ import de.neofonie.mobile.app.android.widget.crouton.Style;
 import fr.xgouchet.xmleditor.AxelAboutActivity;
 import fr.xgouchet.xmleditor.AxelHelpActivity;
 import fr.xgouchet.xmleditor.AxelSettingsActivity;
+import fr.xgouchet.xmleditor.AxelValidatorActivity;
 import fr.xgouchet.xmleditor.R;
 import fr.xgouchet.xmleditor.common.AxelChangeLog;
 import fr.xgouchet.xmleditor.common.AxelUtils;
@@ -29,6 +30,8 @@ import fr.xgouchet.xmleditor.common.TemplateFiles;
 import fr.xgouchet.xmleditor.data.XmlEditor;
 import fr.xgouchet.xmleditor.data.XmlEditorListener;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
+import fr.xgouchet.xmleditor.ui.dialog.PromptDialogHelper;
+import fr.xgouchet.xmleditor.ui.dialog.PromptDialogHelper.PromptListener;
 import fr.xgouchet.xmleditor.ui.fragment.ADocumentEditorFragment;
 import fr.xgouchet.xmleditor.ui.fragment.SimpleEditorFragment;
 
@@ -374,6 +377,19 @@ public class AxelActivity extends Activity implements XmlEditorListener {
         // TODO promptSaveDirty();
     }
     
+    /**
+     * TODO add an option to validate from action bar
+     * Validates a file with the W3C validator API
+     * 
+     * @param file
+     *            the file to validate
+     */
+    private void validateDocument(final Uri uri) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        intent.setClass(getBaseContext(), AxelValidatorActivity.class);
+        startActivity(intent);
+    }
+    
     // ////////////////////////////////////////////////////////////////////////////////////
     // XmlEditorListener Implementation
     // ////////////////////////////////////////////////////////////////////////////////////
@@ -405,11 +421,24 @@ public class AxelActivity extends Activity implements XmlEditorListener {
     }
     
     @Override
-    public void onHtmlParseError() {
-        // TODO Auto-generated method stub
-        
+    public void onHtmlParseError(final Uri uri, final String message) {
+        PromptDialogHelper.promptHtmlParseErrorAction(this, new PromptListener() {
+            
+            @Override
+            public void onPromptEvent(int id, int choice, Object result) {
+                switch (choice) {
+                    case PromptDialogHelper.CHOICE_PARSE_HTML_SOUP:
+                        mXmlEditor.loadHtmlDocument(uri);
+                        break;
+                    case PromptDialogHelper.CHOICE_W3C_VALIDATION:
+                        validateDocument(uri);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
-    
     @Override
     public void onConfirmNotification(final String message) {
         Crouton.makeText(this, message, Style.CONFIRM).show();

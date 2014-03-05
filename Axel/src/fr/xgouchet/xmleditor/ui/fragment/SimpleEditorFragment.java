@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.app.FragmentTransaction;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import fr.xgouchet.xmleditor.data.xml.XmlNodeStyler;
 import fr.xgouchet.xmleditor.ui.adapter.NodeListAdapter;
 import fr.xgouchet.xmleditor.ui.adapter.NodeViewListener;
 import fr.xgouchet.xmleditor.ui.widget.BreadCrumbsView;
+import fr.xgouchet.xmleditor.ui.widget.FastScrollTrickListener;
 
 
 /**
@@ -55,7 +58,12 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
         View root = inflater.inflate(R.layout.fragment_breadcrumb_editor, container, false);
         
         mBreadCrumbsView = (BreadCrumbsView) root.findViewById(R.id.bread_crumbs);
+        
         mListView = (ListView) root.findViewById(android.R.id.list);
+        
+        // enable fast scroll
+        mListView.setFastScrollEnabled(true);
+        mListView.setOnScrollListener(new FastScrollTrickListener(mListView));
         
         return root;
     }

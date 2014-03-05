@@ -66,7 +66,12 @@ public interface XmlEditorListener {
     
     /**
      * Called when a parse error occured on a file detected as html
+     * 
+     * @param uri
+     *            the source file uri
+     * @param message
+     *            the error message
      */
-    void onHtmlParseError();
+    void onHtmlParseError(Uri uri, String message);
     
 }

@@ -1,11 +1,13 @@
 package fr.xgouchet.xmleditor.data;
 
 import java.io.File;
+import java.io.IOException;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import fr.xgouchet.androidlib.data.ClipboardUtils;
 import fr.xgouchet.androidlib.data.ClipboardUtils.ClipboardProxy;
@@ -20,8 +22,8 @@ import fr.xgouchet.xmleditor.data.xml.UnknownFileFormatException;
 import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
-import fr.xgouchet.xmleditor.tasks.AsyncXmlFileLoader;
-import fr.xgouchet.xmleditor.tasks.AsyncXmlFileLoader.XmlFileLoaderListener;
+import fr.xgouchet.xmleditor.tasks.AsyncHtmlFileLoader;
+import fr.xgouchet.xmleditor.tasks.AsyncHtmlLoader;
 import fr.xgouchet.xmleditor.tasks.AsyncXmlFileWriter;
 import fr.xgouchet.xmleditor.tasks.AsyncXmlFileWriter.XmlFileWriterListener;
 import fr.xgouchet.xmleditor.tasks.AsyncXmlLoader;
@@ -117,12 +119,14 @@ public class XmlEditor {
      * 
      * @param uri
      *            the Uri of a source document to read
+     * @param ignore
+     *            should the source uri be ignored in the loaded document
      */
     public void loadDocument(final Uri uri, final boolean ignore) {
         if (mLoader == null) {
             int flags = 0;
             if (ignore) {
-                flags |= AsyncXmlFileLoader.FLAG_IGNORE_FILE;
+                flags |= AsyncXmlLoader.FLAG_IGNORE_FILE;
             }
             
             mLoader = new AsyncXmlLoader(mContext, uri, mXmlLoaderListener, flags);
@@ -130,11 +134,29 @@ public class XmlEditor {
         }
     }
     
+    /**
+     * Loads a HTML document with a tag soup library
+     * 
+     * 
+     * @param uri
+     *            the Uri of a source document to read
+     * @param ignore
+     *            should the source uri be ignored in the loaded document
+     */
+    public void loadHtmlDocument(Uri uri) {
+        if (mLoader == null) {
+            int flags = AsyncXmlLoader.FLAG_HTML_SOUP | AsyncXmlLoader.FLAG_FORCE_READ_ONLY;
+            
+            mLoader = new AsyncHtmlLoader(mContext, uri, mXmlLoaderListener, flags);
+            mLoader.execute();
+        }
+    }
     
     
     //////////////////////////////////////////////////////////////////////////////////////
     // MISC
     //////////////////////////////////////////////////////////////////////////////////////
+    
     
     
     /**
@@ -569,6 +591,10 @@ public class XmlEditor {
         mListener.onXmlContentChanged();
     }
     
+    
+    /**
+     * The listener for the AsyncXmlLoader events
+     */
     private XmlLoaderListener mXmlLoaderListener = new XmlLoaderListener() {
         
         @Override
@@ -618,25 +644,49 @@ public class XmlEditor {
         public void onXmlFileLoadError(final Uri uri, final Throwable throwable,
                 final String message) {
             
+            mLoader = null;
+            
+            // DEBUG
+            throwable.printStackTrace();
+            
+            // Check for parsing error 
+            if (throwable instanceof XmlPullParserException) {
+                if (AxelUtils.isHtmlDocument(uri)) {
+                    mListener.onHtmlParseError(uri, message);
+                } else {
+                    mListener.onXmlParseError(uri, message);
+                }
+                return;
+            }
+            
+            // Check for Memory error
             if (throwable instanceof OutOfMemoryError) {
                 mListener.onErrorNotification(mContext
                         .getString(R.string.toast_open_memory_error));
-            } else if (throwable instanceof UnknownFileFormatException) {
-                if (uri == null) {
-                    mListener.onErrorNotification(mContext
-                            .getString(R.string.toast_xml_unknown_format));
-                } else if (AxelUtils.isHtmlDocument(uri)) {
-                    mListener.onHtmlParseError();
-                } else {
-                    mListener.onXmlParseError(uri, mContext
-                            .getString(R.string.toast_xml_unknown_format));
-                }
+                return;
+            }
+            
+            // Check for file format error
+            if (throwable instanceof UnknownFileFormatException) {
+                mListener.onErrorNotification(mContext
+                        .getString(R.string.toast_xml_unknown_format));
+                return;
+            }
+            
+            // Check for plain old IOException
+            if (throwable instanceof IOException) {
+                mListener.onErrorNotification(mContext.getString(R.string.toast_xml_io_exception));
+                return;
             }
             
             // TODO handle other errors
             
-            mLoader = null;
+            // Default, lets just print the error and hope for the best
+            mListener.onErrorNotification(throwable.getMessage());
+            
         }
+        
+        
     };
     
     /** the fiel writer listener for this editor */

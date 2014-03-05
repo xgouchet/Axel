@@ -533,6 +533,10 @@ public final class XmlNode extends TreeNode<XmlData> {
             
             // iterate on siblings
             for (TreeNode<XmlData> sibling : getParent().getChildren()) {
+                if (!sibling.getContent().isElement()) {
+                    continue;
+                }
+                
                 if (sibling.getContent().getName().equals(nodeName)) {
                     count++;
                 }
