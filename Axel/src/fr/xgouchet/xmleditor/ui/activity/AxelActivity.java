@@ -150,19 +150,6 @@ public class AxelActivity extends Activity implements XmlEditorListener {
         
     }
     
-    //////////////////////////////////////////////////////////////////////////////////////
-    // USER INTERACTIONS
-    //////////////////////////////////////////////////////////////////////////////////////
-    
-    @Override
-    public void onBackPressed() {
-        
-        if (mEditorFragment.onBackPressed()) {
-            return;
-        }
-        
-        super.onBackPressed();
-    }
     
     // ////////////////////////////////////////////////////////////////////////////////////
     // OPTIONS MENU
@@ -425,7 +412,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
         PromptDialogHelper.promptHtmlParseErrorAction(this, new PromptListener() {
             
             @Override
-            public void onPromptEvent(int id, int choice, Object result) {
+            public void onPromptEvent(final int id, final int choice, final Object result) {
                 switch (choice) {
                     case PromptDialogHelper.CHOICE_PARSE_HTML_SOUP:
                         mXmlEditor.loadHtmlDocument(uri);

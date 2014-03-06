@@ -1,26 +1,20 @@
 package fr.xgouchet.xmleditor.ui.fragment;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import fr.xgouchet.xmleditor.R;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
-import fr.xgouchet.xmleditor.data.xml.XmlNodeStyler;
-import fr.xgouchet.xmleditor.ui.adapter.NodeListAdapter;
 import fr.xgouchet.xmleditor.ui.adapter.NodeViewListener;
 import fr.xgouchet.xmleditor.ui.widget.BreadCrumbsView;
-import fr.xgouchet.xmleditor.ui.widget.FastScrollTrickListener;
 
 
 /**
@@ -33,10 +27,8 @@ import fr.xgouchet.xmleditor.ui.widget.FastScrollTrickListener;
 public class SimpleEditorFragment extends ADocumentEditorFragment {
     
     
-    private ANodeEditorFragment mNodeEditorFragment;
     private BreadCrumbsView mBreadCrumbsView;
-    private ListView mListView;
-    private NodeListAdapter<XmlData> mAdapter;
+    
     
     
     //////////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +39,6 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        setHasOptionsMenu(true);
     }
     
     @Override
@@ -57,12 +48,6 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
         View root = inflater.inflate(R.layout.fragment_breadcrumb_editor, container, false);
         
         mBreadCrumbsView = (BreadCrumbsView) root.findViewById(R.id.bread_crumbs);
-        
-        mListView = (ListView) root.findViewById(android.R.id.list);
-        
-        // enable fast scroll
-        mListView.setFastScrollEnabled(true);
-        mListView.setOnScrollListener(new FastScrollTrickListener(mListView));
         
         return root;
     }
@@ -87,53 +72,7 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
         // TODO add options for the current node (add children, ...)
     }
     
-    //////////////////////////////////////////////////////////////////////////////////////
-    // USER INTERACTIONS
-    //////////////////////////////////////////////////////////////////////////////////////
     
-    @Override
-    public boolean onBackPressed() {
-        
-        // check if the bread crumb can be popped
-        if (mBreadCrumbsView.canPop()) {
-            
-            XmlNode popped = null;
-            
-            if (mNodeEditorFragment != null) {
-                // get the edited node 
-                popped = mNodeEditorFragment.getXmlNode();
-                // pop the sub fragment  
-                getFragmentManager().popBackStack();
-                
-                mNodeEditorFragment = null;
-            }
-            
-            if ((popped == null) || (popped != mBreadCrumbsView.peek()) || (!popped.hasChildren())) {
-                // pop the bread crumbs
-                popped = (XmlNode) mBreadCrumbsView.pop();
-            }
-            
-            // update the display
-            XmlNode current = (XmlNode) mBreadCrumbsView.peek();
-            
-            // check for null 
-            if (current == null) {
-                return true;
-            }
-            
-            // Update the display
-            if (current.isElement() || current.isDocument()) {
-                displayNodeChildren(current, false);
-            } else {
-                displayNodeEditor(current, false);
-            }
-            
-            return true;
-        }
-        
-        
-        return false;
-    }
     //////////////////////////////////////////////////////////////////////////////////////
     // XML EDITOR EVENTS
     //////////////////////////////////////////////////////////////////////////////////////
@@ -150,6 +89,29 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
         }
     }
     
+    /**
+     * Displays the children of the given node
+     * 
+     * @param node
+     * @param addBreadCrumb
+     */
+    private void displayNodeChildren(final XmlNode node, final boolean addBreadCrumb) {
+        
+        // create the fragment node
+        NodeChildrenEditorFragment fragment = new NodeChildrenEditorFragment();
+        fragment.setXmlNode(node);
+        fragment.setNodeListener(mNodeListener);
+        
+        
+        // add node to bread crumb
+        if (addBreadCrumb) {
+            mBreadCrumbsView.push(node.getXPathName(), node);
+        }
+        
+        displayNodeFragment(fragment, node.getXPathName(), node.getXPath());
+        
+    }
+    
     
     /**
      * Displays the content of a node to be edited
@@ -160,7 +122,6 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
      */
     private void displayNodeEditor(final XmlNode node, final boolean addBreadCrumb) {
         
-        // TODO maybe check  if mNodeEditorFragment is not null ? 
         ANodeEditorFragment fragment;
         
         // select next fragment
@@ -182,44 +143,31 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
             mBreadCrumbsView.push(node.getXPathName(), node);
         }
         
-        // display fragment
+        displayNodeFragment(fragment, node.getXPathName(), node.getXPath());
+        
+    }
+    
+    /**
+     * Displays the given fragment and add it to the backstack
+     * 
+     * @param fragment
+     *            the fragment
+     * @param name
+     *            the fragment name (for backstack use)
+     */
+    private void displayNodeFragment(final ANodeEditorFragment fragment, final String name,
+            final String tag) {
+        
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.add(R.id.frame_sub_fragment, fragment);
-        transaction.addToBackStack(node.getXPath());
+        
+        transaction.replace(R.id.frame_sub_fragment, fragment, tag);
+        
+        if (!TextUtils.isEmpty(name)) {
+            transaction.addToBackStack(name);
+        }
         transaction.commit();
         
-        // hide node list 
-        mListView.setVisibility(View.GONE);
-        
-        // save the fragment
-        mNodeEditorFragment = fragment;
     }
-    
-    protected void displayNodeChildren(final XmlNode node, final boolean addBreadCrumb) {
-        if (getView() != null) {
-            
-            if (addBreadCrumb) {
-                // add node to bread crumb
-                mBreadCrumbsView.push(node.getXPathName(), node);
-            }
-            
-            // create the node list 
-            List<TreeNode<XmlData>> list = new LinkedList<TreeNode<XmlData>>();
-            if (!node.isDocument()) {
-                list.add(node);
-            }
-            list.addAll(node.getChildren());
-            
-            // Display the tree 
-            mAdapter = new NodeListAdapter<XmlData>(getActivity(), list, mNodeListener);
-            mAdapter.setNodeStyler(new XmlNodeStyler());
-            mAdapter.setHasRoot(!node.isDocument());
-            mListView.setAdapter(mAdapter);
-            mListView.setVisibility(View.VISIBLE);
-        }
-    }
-    
-    
     
     //////////////////////////////////////////////////////////////////////////////////////
     // UI EVENT
@@ -254,4 +202,5 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
             
         }
     };
+    
 }

@@ -34,13 +34,6 @@ public abstract class ADocumentEditorFragment extends Fragment {
         
     }
     
-    /**
-     * Callback called when the back button is pressed.
-     * 
-     * @return true if the action has been handled, false to let the default implementation handle
-     *         this (usually finishes the activity)
-     */
-    public abstract boolean onBackPressed();
     
     protected abstract void displayXmlRoot();
     
