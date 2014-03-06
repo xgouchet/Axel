@@ -578,7 +578,7 @@ public class XmlEditor {
      * this editor's listener
      */
     private void onXmlDocumentChanged() {
-        mListener.onXmlDocumentChanged(mRoot, mCurrentFileName,
+        mListener.onXmlDocumentChanged(mRoot, mCurrentDocumentName,
                 mCurrentFilePath);
     }
     

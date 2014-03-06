@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.regex.Pattern;
 
 import org.mozilla.universalchardet.UniversalDetector;
 
@@ -16,7 +15,6 @@ import fr.xgouchet.androidlib.data.TextFileUtils;
 public class FileUtils {
     
     private static final String XML_HEADER_REGEX = "(?s)^\\s*<(\\?|!(--)?)?\\s*\\w+.*";
-    private static final Pattern XML_HEADER_PATTERN = Pattern.compile(XML_HEADER_REGEX);
     private static final int XML_HEADER_LENGTH = 64;
     
     

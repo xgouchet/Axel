@@ -1,5 +1,6 @@
 package fr.xgouchet.xmleditor.ui.fragment;
 
+import android.app.FragmentManager.OnBackStackChangedListener;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -39,6 +40,7 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        getFragmentManager().addOnBackStackChangedListener(mBackStackChangedListener);
     }
     
     @Override
@@ -85,7 +87,7 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
             mBreadCrumbsView.clearBreadCrumbs();
             
             // display root
-            displayNodeChildren(mXmlRoot, true);
+            displayNodeChildren(mXmlRoot, false);
         }
     }
     
@@ -203,4 +205,18 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
         }
     };
     
+    //////////////////////////////////////////////////////////////////////////////////////
+    // FRAGMENT BACKSTACK LISTENER
+    //////////////////////////////////////////////////////////////////////////////////////
+    
+    private OnBackStackChangedListener mBackStackChangedListener = new OnBackStackChangedListener() {
+        
+        @Override
+        public void onBackStackChanged() {
+            int count = getFragmentManager().getBackStackEntryCount();
+            while (count < mBreadCrumbsView.getBreadCrumbsCount()) {
+                mBreadCrumbsView.pop();
+            }
+        }
+    };
 }

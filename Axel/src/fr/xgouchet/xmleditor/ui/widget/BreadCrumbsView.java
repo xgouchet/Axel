@@ -177,6 +177,10 @@ public class BreadCrumbsView extends HorizontalScrollView {
         return mBreadCrumbs.peek().item;
     }
     
+    public int getBreadCrumbsCount() {
+        return mBreadCrumbs.size();
+    }
+    
     //////////////////////////////////////////////////////////////////////////////////////
     // BREAD CRUMBS EVENTS
     //////////////////////////////////////////////////////////////////////////////////////
