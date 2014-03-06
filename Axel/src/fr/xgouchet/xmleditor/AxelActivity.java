@@ -360,7 +360,7 @@ public class AxelActivity extends Activity implements
                 promptDeleteNode();
                 break;
             case R.id.action_add_child:
-                promptNodeAddChild();
+//                promptNodeAddChild();
                 break;
             case R.id.action_add_attr:
                 promptElementAddAttribute();
@@ -480,33 +480,7 @@ public class AxelActivity extends Activity implements
     
     @Override
     public void onXmlParseError(final Uri uri, final String message) {
-        final AlertDialog.Builder builder;
         
-        builder = new AlertDialog.Builder(this);
-        builder.setIcon(R.drawable.ic_dialog_alert);
-        builder.setTitle(R.string.ui_open_error);
-        builder.setCancelable(true);
-        builder.setMessage(getString(R.string.ui_prompt_open_error, message));
-        
-        builder.setPositiveButton(R.string.ui_check_errors,
-                new DialogInterface.OnClickListener() {
-                    
-                    @Override
-                    public void onClick(final DialogInterface dialog,
-                            final int which) {
-//                        doValidateFile(file);
-                    }
-                });
-        builder.setNegativeButton(R.string.ui_cancel,
-                new DialogInterface.OnClickListener() {
-                    
-                    @Override
-                    public void onClick(final DialogInterface dialog,
-                            final int which) {
-                    }
-                });
-        
-        builder.create().show();
     }
     
     @Override
@@ -564,9 +538,9 @@ public class AxelActivity extends Activity implements
             mEditor.setSelection(xmlNode);
             
             if (Constants.QUICK_ACTION_ADD_CHILD.equals(action)) {
-                if (xmlNode.isElement() || xmlNode.isDocument()) {
-                    promptNodeAddChild();
-                }
+//                if (xmlNode.isElement() || xmlNode.isDocument()) {
+//                    promptNodeAddChild();
+//                }
             } else if (Constants.QUICK_ACTION_COMMENT_TOGGLE.equals(action)) {
                 if ((!xmlNode.isDocument())
                         && (!xmlNode.isDocumentDeclaration())) {
@@ -847,89 +821,7 @@ public class AxelActivity extends Activity implements
         builder.create().show();
     }
     
-    /**
-     * Prompts the user what to do when an error occurs parsing the file
-     * 
-     * @param file
-     *            the file to open
-     */
-    private void promptOpenError(final File file) {
-        final AlertDialog.Builder builder;
-        
-        builder = new AlertDialog.Builder(this);
-        builder.setIcon(R.drawable.ic_dialog_alert);
-        builder.setTitle(R.string.ui_open_error);
-        builder.setCancelable(true);
-        builder.setMessage(R.string.ui_prompt_open_error);
-        
-        builder.setPositiveButton(R.string.ui_send_file,
-                new DialogInterface.OnClickListener() {
-                    
-                    @Override
-                    public void onClick(final DialogInterface dialog,
-                            final int which) {
-                        doSendFile(file);
-                    }
-                });
-        builder.setNegativeButton(R.string.ui_cancel,
-                new DialogInterface.OnClickListener() {
-                    
-                    @Override
-                    public void onClick(final DialogInterface dialog,
-                            final int which) {
-                    }
-                });
-        
-        builder.create().show();
-    }
     
-    /**
-     * Prompts the user what to do when an error occurs parsing an HTML file
-     * 
-     * @param file
-     *            the file to open
-     * @param forceReadOnly
-     *            force the file as read only
-     */
-    private void promptOpenHtmlError(final File file,
-            final boolean forceReadOnly) {
-        final AlertDialog.Builder builder;
-        
-        builder = new AlertDialog.Builder(this);
-        builder.setIcon(R.drawable.ic_dialog_alert);
-        builder.setTitle(R.string.ui_open_error);
-        builder.setCancelable(true);
-        builder.setMessage(R.string.ui_prompt_open_error_html);
-        
-        builder.setPositiveButton(R.string.ui_send_file,
-                new DialogInterface.OnClickListener() {
-                    
-                    @Override
-                    public void onClick(final DialogInterface dialog,
-                            final int which) {
-                        doSendFile(file);
-                    }
-                });
-        builder.setNeutralButton(R.string.ui_convert_html,
-                new DialogInterface.OnClickListener() {
-                    
-                    @Override
-                    public void onClick(final DialogInterface dialog,
-                            final int which) {
-                        mEditor.doOpenFileAsHtml(file, forceReadOnly);
-                    }
-                });
-        builder.setNegativeButton(R.string.ui_cancel,
-                new DialogInterface.OnClickListener() {
-                    
-                    @Override
-                    public void onClick(final DialogInterface dialog,
-                            final int which) {
-                    }
-                });
-        
-        builder.create().show();
-    }
     
     /**
      * Prompt the user to save the current file before doing something else
@@ -1033,70 +925,6 @@ public class AxelActivity extends Activity implements
         dlg.show();
     }
     
-    /**
-	 * 
-	 */
-    private void promptNodeAddChild() {
-        Builder builder = new Builder(this);
-        
-        final String[] options;
-        if (mEditor.getSelection().isElement()) {
-            options = new String[] {
-                    getString(R.string.action_add_element),
-                    getString(R.string.action_add_text),
-                    getString(R.string.action_add_cdata),
-                    getString(R.string.action_add_pi),
-                    getString(R.string.action_add_comment)
-            };
-        } else if (mEditor.getSelection().isDocument()) {
-            if (mEditor.getSelection().hasDoctype()) {
-                if (mEditor.getSelection().hasRootChild()) {
-                    options = new String[] {
-                            getString(R.string.action_add_pi),
-                            getString(R.string.action_add_comment)
-                    };
-                } else {
-                    options = new String[] {
-                            getString(R.string.action_add_element),
-                            getString(R.string.action_add_pi),
-                            getString(R.string.action_add_comment)
-                    };
-                }
-            } else {
-                if (mEditor.getSelection().hasRootChild()) {
-                    options = new String[] {
-                            getString(R.string.action_add_doctype),
-                            getString(R.string.action_add_pi),
-                            getString(R.string.action_add_comment)
-                    };
-                } else {
-                    options = new String[] {
-                            getString(R.string.action_add_element),
-                            getString(R.string.action_add_doctype),
-                            getString(R.string.action_add_pi),
-                            getString(R.string.action_add_comment)
-                    };
-                }
-            }
-        } else {
-            return;
-        }
-        
-        builder.setTitle(R.string.action_add_child);
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            
-            @Override
-            public void onClick(final DialogInterface dialog, final int which) {
-                XmlNode node = getXmlNode(options[which]);
-                if (node != null) {
-                    mEditor.doAddChildToNode(node, true);
-                }
-            }
-        });
-        builder.setCancelable(true);
-        
-        builder.create().show();
-    }
     
     /**
      * Opens a Web view to preview the current file
@@ -1327,7 +1155,7 @@ public class AxelActivity extends Activity implements
                     promptDeleteNode();
                     break;
                 case R.id.action_add_child:
-                    promptNodeAddChild();
+//                    promptNodeAddChild();
                     break;
                 case R.id.action_add_attr:
                     promptElementAddAttribute();

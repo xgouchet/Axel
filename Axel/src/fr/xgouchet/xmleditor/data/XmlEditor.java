@@ -22,7 +22,6 @@ import fr.xgouchet.xmleditor.data.xml.UnknownFileFormatException;
 import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
-import fr.xgouchet.xmleditor.tasks.AsyncHtmlFileLoader;
 import fr.xgouchet.xmleditor.tasks.AsyncHtmlLoader;
 import fr.xgouchet.xmleditor.tasks.AsyncXmlFileWriter;
 import fr.xgouchet.xmleditor.tasks.AsyncXmlFileWriter.XmlFileWriterListener;
@@ -230,10 +229,17 @@ public class XmlEditor {
     /**
      * @return the current document's file name
      */
+    @Deprecated
     public String getCurrentFileName() {
         return mCurrentFileName;
     }
     
+    /**
+     * @return the current document's name
+     */
+    public String getCurrentDocumentName() {
+        return mCurrentDocumentName;
+    }
     
     
     /**
@@ -241,8 +247,8 @@ public class XmlEditor {
      * previous data was saved
      */
     public void doClearContents() {
-        mCurrentFilePath = null;
-        mCurrentFileName = null;
+        mCurrentDocumentUri = null;
+        mCurrentDocumentName = null;
         mCurrentEncoding = null;
         
         mDirty = false;
@@ -280,26 +286,7 @@ public class XmlEditor {
 //        }
     }
     
-    /**
-     * Opens the given file as an HTML file (parsing the soup) and replace the
-     * editors content with the file. Assumes that user was prompted and
-     * previous data was saved
-     * 
-     * @param file
-     *            the file to load
-     * @param forceReadOnly
-     *            force the file to be used as read only
-     * @return if the file was loaded successfully
-     */
-    @Deprecated
-    public void doOpenFileAsHtml(final File file, final boolean forceReadOnly) {
-//        if (mLoader == null) {
-//            
-//            mLoader = new AsyncHtmlFileLoader(mContext, mXmlFileLoaderListener,
-//                    AsyncXmlFileLoader.FLAG_HTML_SOUP);
-//            mLoader.execute(file);
-//        }
-    }
+    
     
     /**
      * Reloads the current file
@@ -370,6 +357,28 @@ public class XmlEditor {
         
         if ((mSelection != null) && (mSelection.isElement())) {
             mSelection.getContent().addAttribute(attribute);
+            setDirty();
+        }
+    }
+    
+    
+    public void addChildToNode(XmlNode node, XmlNode child, boolean edit) {
+        if (node.addChildNode(child)) {
+            if (node.isDocument()) {
+                node.reorderDocumentChildren();
+            }
+            
+            child.updateChildViewCount(false);
+            node.updateChildViewCount(false);
+            node.setExpanded(true, false);
+            
+            if (edit && Settings.sEditOnCreate) {
+//                mSelection = child;
+//             TODO   doEditNode();
+            } else {
+//                mSelection = null;
+            }
+            
             setDirty();
         }
     }

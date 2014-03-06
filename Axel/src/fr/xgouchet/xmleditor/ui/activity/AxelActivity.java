@@ -249,6 +249,10 @@ public class AxelActivity extends Activity implements XmlEditorListener {
     // EDITOR ACTIONS
     // ////////////////////////////////////////////////////////////////////////////////////
     
+    public void addChildToNode(XmlNode node, XmlNode child) {
+        mXmlEditor.addChildToNode(node, child, true);
+    }
+    
     /**
      * Runs the after save to complete
      */
@@ -403,8 +407,19 @@ public class AxelActivity extends Activity implements XmlEditorListener {
     
     @Override
     public void onXmlParseError(final Uri uri, final String message) {
-        // TODO Auto-generated method stub
-        
+        PromptDialogHelper.promptXmlParseErrorAction(this, new PromptListener() {
+            
+            @Override
+            public void onPromptEvent(final int id, final int choice, final Object result) {
+                switch (choice) {
+                    case PromptDialogHelper.CHOICE_W3C_VALIDATION:
+                        validateDocument(uri);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
     
     @Override
@@ -426,6 +441,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
             }
         });
     }
+    
     @Override
     public void onConfirmNotification(final String message) {
         Crouton.makeText(this, message, Style.CONFIRM).show();

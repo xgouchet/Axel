@@ -90,12 +90,8 @@
 	<string name="ui_prompt_delete_node">"Are you sure you want to delete this node"</string>
 	<string name="ui_open_error">File error</string>
 	<string name="ui_copy_clipboard">The node content (%1$s) has been copied to your clipboard</string>
-	<string name="ui_prompt_open_error">"An error occurred while reading this file : 
-
-%s"</string>
-	<string name="ui_prompt_open_error_html">"An error occurred while reading this file. 
-         
-It seems you try to read an HTML document, you can try converting it to a well formed xHTML file. "</string>
+	<string name="ui_prompt_open_error_xml">"We were unable to read your XML document, probably because it is not formatted correctly. You can try verifying it against the official W3C XML validator."</string>
+	<string name="ui_prompt_open_error_html">"We were unable to read your HTML document, probably because it is not formatted correctly. You can try converting it to a well formed xHTML file, or verify it against the official W3C XML validator. "</string>
 	<string name="ui_prompt_file_changed">"The current file has been modified outside of this app. Do you want to reload it ? 
          
 Any unsaved change will be lost."</string>

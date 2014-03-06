@@ -5,11 +5,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.NotSerializableException;
+import java.util.concurrent.CancellationException;
 
 import org.xmlpull.v1.XmlPullParserException;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.TextUtils;
@@ -87,13 +90,6 @@ public class AsyncXmlLoader extends AsyncTask<Void, String, Void> {
     // ASYNC TASK LIFECYCLE
     //////////////////////////////////////////////////////////////////////////////////////
     
-    @Override
-    protected void onCancelled(final Void result) {
-        
-        if (mDialog != null) {
-            mDialog.dismiss();
-        }
-    }
     
     @Override
     protected void onPreExecute() {
@@ -108,7 +104,14 @@ public class AsyncXmlLoader extends AsyncTask<Void, String, Void> {
         
         // show the progress dialog
         mDialog.show();
-        mDialog.setCancelable(false);
+        mDialog.setCancelable(true);
+        mDialog.setOnCancelListener(new OnCancelListener() {
+            
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                cancel(true);
+            }
+        });
     }
     
     @Override
@@ -139,11 +142,17 @@ public class AsyncXmlLoader extends AsyncTask<Void, String, Void> {
         super.onPostExecute(result);
         
         // dismiss the dialog
-        mDialog.dismiss();
+        if (mDialog.isShowing()) {
+            mDialog.dismiss();
+        }
         mDialog = null;
         
         // callback uri
         Uri uri = (mIgnoreFile ? null : mUri);
+        
+        if (isCancelled()) {
+            mListener.onXmlFileLoadError(uri, new CancellationException(), null);
+        }
         
         if (mThrowable == null) {
             mListener.onXmlFileLoaded(mRoot, uri, mHash, mEncoding,

@@ -72,4 +72,41 @@ public class PromptDialogHelper {
         
         builder.create().show();
     }
+    
+    
+    public static void promptXmlParseErrorAction(final Context context,
+            final PromptListener promptListener) {
+        final AlertDialog.Builder builder;
+        
+        builder = new AlertDialog.Builder(context);
+        builder.setIcon(R.drawable.ic_dialog_alert);
+        builder.setTitle(R.string.ui_open_error);
+        builder.setCancelable(true);
+        builder.setMessage(context.getString(R.string.ui_prompt_open_error_xml));
+        
+        OnClickListener listener = new OnClickListener() {
+            
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                int choice;
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        choice = CHOICE_W3C_VALIDATION;
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+                    default:
+                        choice = CHOICE_CANCEL_IGNORE;
+                        break;
+                }
+                
+                promptListener.onPromptEvent(PROMPT_HTML_PARSE_ERROR, choice, null);
+            }
+        };
+        
+        // setup buttons
+        builder.setPositiveButton(R.string.ui_check_errors, listener);
+        builder.setNegativeButton(R.string.ui_cancel, listener);
+        
+        builder.create().show();
+    }
 }

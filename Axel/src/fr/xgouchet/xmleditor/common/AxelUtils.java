@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.widget.EditText;
+import fr.xgouchet.xmleditor.R;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.parser.xml.XmlTreePullParser;
 import fr.xgouchet.xmleditor.parser.xml.XmlTreePullParser.XmlPullParserInstantiationException;
@@ -265,6 +266,42 @@ public class AxelUtils {
     
     public static boolean canOpenCompressedFiles() {
         return false;
+    }
+    
+    /**
+     * Create an xml node based on action ids
+     * 
+     * @param itemId
+     *            the action item id (R.id.action_add_XXX)
+     * @return the created node or null
+     */
+    public static XmlNode createXmlNode(int itemId) {
+        XmlNode node;
+        switch (itemId) {
+            case R.id.action_add_child_element:
+                node = XmlNode.createElement("element");
+                break;
+            case R.id.action_add_child_doctype:
+                node = XmlNode.createDoctypeDeclaration("root SYSTEM \"DTD location\"");
+                break;
+            case R.id.action_add_child_pi:
+                node = XmlNode.createProcessingInstruction("target", "instruction");
+                break;
+            case R.id.action_add_child_comment:
+                node = XmlNode.createComment("comment");
+                break;
+            case R.id.action_add_child_text:
+                node = XmlNode.createText("text");
+                break;
+            case R.id.action_add_child_cdata:
+                node = XmlNode.createCDataSection("unparsed data");
+                break;
+            default:
+                node = null;
+                break;
+        }
+        
+        return node;
     }
     
     

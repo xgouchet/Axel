@@ -91,12 +91,8 @@
 	<string name="ui_prompt_delete_node">"Voulez vous réellement supprimer ce noeud?"</string>
 	<string name="ui_open_error">Erreur de lecture</string>
 	<string name="ui_copy_clipboard">Le contenu du noeud (%1$s) a été copié dans le presse-papier</string>
-	<string name="ui_prompt_open_error">"Une erreur est survenue lors de la lecture de ce fichier : 
-        
-%s"</string>
-	<string name="ui_prompt_open_error_html">"Une erreur est survenue lors de la lecture de ce fichier. 
-        
-Il semble que vous essayez de lire un fichier HTML, vous pouvez essayer de le convertir en document xHTML valide. "</string>
+	<string name="ui_prompt_open_error_xml">"Nous n'avons pas réussi à lire votre document XML, probablement parce qu'il n'est pas formatté correctement. Vous pouvez vérifier sa syntaxe avec le validateur XML officiel du W3C."</string>
+	<string name="ui_prompt_open_error_html">"Nous n'avons pas réussi à lire votre document HTML, probablement parce qu'il n'est pas formatté correctement. Vous pouvez tenter de le convertir en fichier xHTML valide, ou vérifier sa syntaxe avec le validateur XML officiel du W3C. "</string>
 	<string name="ui_prompt_file_changed">"Le document actuel a été modifié en dehors de l'application. Voulez vous recharger le document ? 
          
 Toute modification non sauvée sera perdue."</string>

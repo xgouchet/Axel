@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+	<item
+		android:id="@id/action_add_child"
+		android:icon="@drawable/ic_action_add_child"
+		android:showAsAction="ifRoom"
+		android:title="@string/action_add_child">
+		<menu>
+			<group android:id="@+id/action_group_common_add_child" >
+				<item
+					android:id="@+id/action_add_child_element"
+					android:title="@string/action_add_element"/>
+				<item
+					android:id="@+id/action_add_child_pi"
+					android:title="@string/action_add_pi"/>
+				<item
+					android:id="@+id/action_add_child_comment"
+					android:title="@string/action_add_comment"/>
+			</group>
+			<group android:id="@+id/action_group_document_add_child" >
+				<item
+					android:id="@+id/action_add_child_doctype"
+					android:title="@string/action_add_doctype"/>
+			</group>
+			<group android:id="@+id/action_group_element_add_child" >
+				<item
+					android:id="@+id/action_add_child_text"
+					android:title="@string/action_add_text"/>
+				<item
+					android:id="@+id/action_add_child_cdata"
+					android:title="@string/action_add_cdata"/>
+			</group>
+		</menu>
+	</item>
+
+</menu>
