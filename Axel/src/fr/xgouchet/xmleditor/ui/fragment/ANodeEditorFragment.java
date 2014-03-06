@@ -19,4 +19,9 @@ public class ANodeEditorFragment extends Fragment {
     public void setXmlNode(final XmlNode node) {
         mNode = node;
     }
+    
+    
+    public XmlNode getXmlNode() {
+        return mNode;
+    }
 }

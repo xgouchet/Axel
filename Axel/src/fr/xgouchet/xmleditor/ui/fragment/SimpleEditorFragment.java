@@ -4,8 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.app.FragmentTransaction;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,6 +33,7 @@ import fr.xgouchet.xmleditor.ui.widget.FastScrollTrickListener;
 public class SimpleEditorFragment extends ADocumentEditorFragment {
     
     
+    private ANodeEditorFragment mNodeEditorFragment;
     private BreadCrumbsView mBreadCrumbsView;
     private ListView mListView;
     private NodeListAdapter<XmlData> mAdapter;
@@ -98,17 +97,36 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
         // check if the bread crumb can be popped
         if (mBreadCrumbsView.canPop()) {
             
-            // pop the bread crumbs
-            XmlNode popped = (XmlNode) mBreadCrumbsView.pop();
+            XmlNode popped = null;
+            
+            if (mNodeEditorFragment != null) {
+                // get the edited node 
+                popped = mNodeEditorFragment.getXmlNode();
+                // pop the sub fragment  
+                getFragmentManager().popBackStack();
+                
+                mNodeEditorFragment = null;
+            }
+            
+            if ((popped == null) || (popped != mBreadCrumbsView.peek()) || (!popped.hasChildren())) {
+                // pop the bread crumbs
+                popped = (XmlNode) mBreadCrumbsView.pop();
+            }
             
             // update the display
             XmlNode current = (XmlNode) mBreadCrumbsView.peek();
             
-            if (current != null) {
-                displayNodeChildren(current, false);
+            // check for null 
+            if (current == null) {
+                return true;
             }
             
-            getFragmentManager().popBackStack();
+            // Update the display
+            if (current.isElement() || current.isDocument()) {
+                displayNodeChildren(current, false);
+            } else {
+                displayNodeEditor(current, false);
+            }
             
             return true;
         }
@@ -141,6 +159,8 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
      * @param
      */
     private void displayNodeEditor(final XmlNode node, final boolean addBreadCrumb) {
+        
+        // TODO maybe check  if mNodeEditorFragment is not null ? 
         ANodeEditorFragment fragment;
         
         // select next fragment
@@ -170,6 +190,9 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
         
         // hide node list 
         mListView.setVisibility(View.GONE);
+        
+        // save the fragment
+        mNodeEditorFragment = fragment;
     }
     
     protected void displayNodeChildren(final XmlNode node, final boolean addBreadCrumb) {

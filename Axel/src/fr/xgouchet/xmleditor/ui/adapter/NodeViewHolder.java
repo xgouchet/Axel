@@ -46,8 +46,9 @@ public class NodeViewHolder<T> implements OnTouchListener,
         content = (TextView) view.findViewById(R.id.textNode);
         decorator = (ImageView) view.findViewById(R.id.imageDecorator);
         
-        // Set ui options
+        // Set touch interactions
         content.setOnTouchListener(this);
+        mRootView.setOnTouchListener(this);
         mDetector = new GestureDetector(context, this);
         mDetector.setOnDoubleTapListener(this);
     }
