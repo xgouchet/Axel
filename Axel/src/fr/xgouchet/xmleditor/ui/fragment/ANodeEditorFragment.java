@@ -1,6 +1,7 @@
 package fr.xgouchet.xmleditor.ui.fragment;
 
 import android.app.Fragment;
+import fr.xgouchet.xmleditor.data.XmlEditor;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 
 
@@ -13,15 +14,29 @@ import fr.xgouchet.xmleditor.data.xml.XmlNode;
 public class ANodeEditorFragment extends Fragment {
     
     
-    protected XmlNode mNode;
+    protected XmlNode mXmlNode;
+    protected XmlEditor mXmlEditor;
     
+    
+    //////////////////////////////////////////////////////////////////////////////////////
+    // GETTERS / SETTERS
+    //////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    public void setXmlEditor(XmlEditor xmlEditor) {
+        mXmlEditor = xmlEditor;
+    }
     
     public void setXmlNode(final XmlNode node) {
-        mNode = node;
+        mXmlNode = node;
     }
     
     
+    public XmlEditor getXmlEditor() {
+        return mXmlEditor;
+    }
+    
     public XmlNode getXmlNode() {
-        return mNode;
+        return mXmlNode;
     }
 }

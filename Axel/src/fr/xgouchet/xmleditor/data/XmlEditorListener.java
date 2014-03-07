@@ -17,11 +17,11 @@ public interface XmlEditorListener {
      * @param root
      *            the root element of the document
      * @param name
-     *            the file name
-     * @param path
-     *            the file path
+     *            the document name
+     * @param uri
+     *            the document uri
      */
-    void onXmlDocumentChanged(XmlNode root, String name, String path);
+    void onXmlDocumentChanged(XmlNode root, String name, Uri uri);
     
     /**
      * Call when something in the xml tree changed

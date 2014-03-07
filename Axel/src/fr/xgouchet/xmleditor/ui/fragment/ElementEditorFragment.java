@@ -48,12 +48,12 @@ public class ElementEditorFragment extends ANodeEditorFragment {
         
         View root = inflater.inflate(R.layout.fragment_node_element_editor, container, false);
         
-        XmlData data = mNode.getContent();
+        XmlData data = mXmlNode.getContent();
         
         // Setup Prefix input
         mEditPrefix = (EditText) root.findViewById(R.id.edit_text_prefix);
         mEditPrefix.setText(data.getPrefix());
-        AxelUtils.setupPrefixEditText(mEditPrefix, mNode, false);
+        AxelUtils.setupPrefixEditText(mEditPrefix, mXmlNode, false);
         
         // Setup Tag Name input
         mEditName = (EditText) root.findViewById(R.id.edit_text_name);
@@ -67,7 +67,7 @@ public class ElementEditorFragment extends ANodeEditorFragment {
         
         // Setup the list
         mAttributeListView = (ListView) root.findViewById(android.R.id.list);
-        mAttributeAdapter = new XmlAttributeAdapter(getActivity(), mAttributes, mNode);
+        mAttributeAdapter = new XmlAttributeAdapter(getActivity(), mAttributes, mXmlNode);
         mAttributeListView.setAdapter(mAttributeAdapter);
         
         return root;

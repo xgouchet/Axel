@@ -103,6 +103,7 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
         NodeChildrenEditorFragment fragment = new NodeChildrenEditorFragment();
         fragment.setXmlNode(node);
         fragment.setNodeListener(mNodeListener);
+        fragment.setXmlEditor(mXmlEditor);
         
         
         // add node to bread crumb
@@ -139,6 +140,7 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
         
         // set the node
         fragment.setXmlNode(node);
+        fragment.setXmlEditor(mXmlEditor);
         
         // add node to bread crumb
         if (addBreadCrumb) {
@@ -179,12 +181,8 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
         
         @Override
         public void onNodeTapped(final TreeNode<XmlData> node, final View view, final int position) {
-            if (node.hasChildren()) {
-                if (node == mBreadCrumbsView.peek()) {
-                    displayNodeEditor((XmlNode) node, false);
-                } else {
-                    displayNodeChildren((XmlNode) node, true);
-                }
+            if (node.getContent().isElement()) {
+                displayNodeChildren((XmlNode) node, true);
             } else {
                 displayNodeEditor((XmlNode) node, true);
             }

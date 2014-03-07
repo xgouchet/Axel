@@ -1,6 +1,9 @@
 package fr.xgouchet.xmleditor.ui.fragment;
 
 import android.app.Fragment;
+import android.net.Uri;
+import fr.xgouchet.xmleditor.data.XmlEditor;
+import fr.xgouchet.xmleditor.data.XmlEditorListener;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 
 
@@ -10,9 +13,10 @@ import fr.xgouchet.xmleditor.data.xml.XmlNode;
  * @author Xavier Gouchet
  * 
  */
-public abstract class ADocumentEditorFragment extends Fragment {
+public abstract class ADocumentEditorFragment extends Fragment implements XmlEditorListener {
     
     protected XmlNode mXmlRoot;
+    protected XmlEditor mXmlEditor;
     
     //////////////////////////////////////////////////////////////////////////////////////
     // FRAGMENT LIFECYCLE
@@ -24,15 +28,54 @@ public abstract class ADocumentEditorFragment extends Fragment {
     // XML EDITOR EVENTS
     //////////////////////////////////////////////////////////////////////////////////////
     
-    public void onXmlDocumentChanged(final XmlNode root) {
+    public void setXmlEditor(final XmlEditor xmlEditor) {
+        mXmlEditor = xmlEditor;
+        mXmlEditor.addListener(this);
+    }
+    
+    
+    @Override
+    public void onXmlDocumentChanged(final XmlNode root, final String name, final Uri uri) {
         mXmlRoot = root;
         
         displayXmlRoot();
     }
     
+    @Override
     public void onXmlContentChanged() {
         
     }
+    
+    @Override
+    public void onXmlDocumentSaved() {
+        
+    }
+    
+    @Override
+    public void onXmlParseError(final Uri uri, final String message) {
+    }
+    
+    @Override
+    public void onHtmlParseError(final Uri uri, final String message) {
+    }
+    
+    @Override
+    public void onErrorNotification(final String message) {
+    }
+    
+    @Override
+    public void onInfoNotification(final String message) {
+    }
+    
+    @Override
+    public void onConfirmNotification(final String message) {
+    }
+    
+    
+    
+    //////////////////////////////////////////////////////////////////////////////////////
+    // ABSTRACT METHODS
+    //////////////////////////////////////////////////////////////////////////////////////
     
     
     protected abstract void displayXmlRoot();

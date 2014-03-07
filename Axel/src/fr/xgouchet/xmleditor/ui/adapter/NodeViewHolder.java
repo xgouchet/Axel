@@ -1,6 +1,7 @@
 package fr.xgouchet.xmleditor.ui.adapter;
 
 import android.content.Context;
+import android.text.method.ScrollingMovementMethod;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnDoubleTapListener;
 import android.view.GestureDetector.OnGestureListener;
@@ -8,7 +9,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TextView.BufferType;
 import fr.xgouchet.xmleditor.R;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
 
@@ -54,6 +57,46 @@ public class NodeViewHolder<T> implements OnTouchListener,
     }
     
     
+    /**
+     * Displays the current node
+     * 
+     * @param styler
+     *            the styler to use (can be null)
+     * @param context
+     *            the current context
+     * @param indent
+     *            the indent to use
+     */
+    public void displayNode(final AbstractTreeNodeStyler<T> styler, final Context context,
+            final int indent) {
+        
+        // setup the content text
+        content.setVisibility(View.VISIBLE);
+        content.setHorizontallyScrolling(true);
+        content.setMovementMethod(new ScrollingMovementMethod());
+        content.scrollTo(0, 0);
+        
+        // set text with syntax highlight
+        if (styler == null) {
+            content.setText(node.toString());
+        } else {
+            content.setText(styler.getSpannableForContent(
+                    node.getContent(), context), BufferType.SPANNABLE);
+        }
+        
+        // set node indentation
+        LinearLayout.LayoutParams params;
+        params = (LinearLayout.LayoutParams) decorator.getLayoutParams();
+        params.leftMargin = indent;
+        decorator.setLayoutParams(params);
+        
+        // set node decorator icon ( + or . )
+        if (node.getChildrenCount() == 0) {
+            decorator.setImageResource(R.drawable.expander_ignore);
+        } else {
+            decorator.setImageResource(R.drawable.expander_haschild);
+        }
+    }
     
     //////////////////////////////////////////////////////////////////////////////////////
     // GESTURE DETECTOR

@@ -73,7 +73,7 @@ public class AxelActivity extends Activity implements
 	 */
     public AxelActivity() {
         mCurrentSelectedViews = new LinkedList<View>();
-        mEditor = new XmlEditor(this, this);
+        mEditor = new XmlEditor(this);
     }
     
     /**
@@ -445,8 +445,8 @@ public class AxelActivity extends Activity implements
      */
     @Override
     public void onXmlDocumentChanged(final XmlNode root, final String name,
-            final String path) {
-        getAxelApplication().setCurrentDocument(root, name, path);
+            final Uri path) {
+//        getAxelApplication().setCurrentDocument(root, name, path);
         
         mAdapter = new NodeTreeAdapter<XmlData>(this, root);
         mAdapter.setNodeStyler(new XmlNodeStyler());

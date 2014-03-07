@@ -1,6 +1,7 @@
 package fr.xgouchet.xmleditor.ui.activity;
 
 import java.io.File;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import android.annotation.TargetApi;
@@ -54,7 +55,8 @@ public class AxelActivity extends Activity implements XmlEditorListener {
     private Runnable mAfterSave; // Mennen ? Axe ?
     
     public AxelActivity() {
-        mXmlEditor = new XmlEditor(this, this);
+        mXmlEditor = new XmlEditor(this);
+        mXmlEditor.addListener(this);
     }
     
     // ////////////////////////////////////////////////////////////////////////////////////
@@ -68,8 +70,9 @@ public class AxelActivity extends Activity implements XmlEditorListener {
         // Set content view
         setContentView(R.layout.activity_editor);
         
-        // Set fragment (TODO read from prefs)
+        // Set fragment (TODO read type from prefs)
         mEditorFragment = new SimpleEditorFragment();
+        mEditorFragment.setXmlEditor(mXmlEditor);
         getFragmentManager().beginTransaction()
                 .add(android.R.id.content, mEditorFragment).commit();
         
@@ -79,7 +82,6 @@ public class AxelActivity extends Activity implements XmlEditorListener {
         
         // Activity
         readIntent();
-        
     }
     
     @Override
@@ -249,10 +251,6 @@ public class AxelActivity extends Activity implements XmlEditorListener {
     // EDITOR ACTIONS
     // ////////////////////////////////////////////////////////////////////////////////////
     
-    public void addChildToNode(XmlNode node, XmlNode child) {
-        mXmlEditor.addChildToNode(node, child, true);
-    }
-    
     /**
      * Runs the after save to complete
      */
@@ -301,7 +299,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
             }
         };
         
-        // TODO promptSaveDirty();
+        promptSaveIfDirty();
     }
     
     /**
@@ -344,8 +342,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
             }
         };
         
-        runAfterSave();
-        // TODO promptSaveDirty();
+        promptSaveIfDirty();
     }
     
     /**
@@ -365,7 +362,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
             }
         };
         
-        // TODO promptSaveDirty();
+        promptSaveIfDirty();
     }
     
     /**
@@ -381,28 +378,53 @@ public class AxelActivity extends Activity implements XmlEditorListener {
         startActivity(intent);
     }
     
+    /**
+     * If the current document is dirty, prompts the user to save it. Then runs the After Save
+     * Action
+     */
+    private void promptSaveIfDirty() {
+        if (!mXmlEditor.isDirty()) {
+            runAfterSave();
+            return;
+        }
+        
+        PromptDialogHelper.promptDirtyDocumentAction(this, new PromptListener() {
+            
+            @Override
+            public void onPromptEvent(final int id, final int choice, final Object result) {
+                switch (choice) {
+                    case PromptDialogHelper.CHOICE_SAVE:
+                        // TODO saveContent();
+                        break;
+                    case PromptDialogHelper.CHOICE_DONT_SAVE:
+                        runAfterSave();
+                        break;
+                    case PromptDialogHelper.CHOICE_CANCEL_IGNORE:
+                        mAfterSave = null;
+                        break;
+                }
+            }
+        });
+    }
+    
     // ////////////////////////////////////////////////////////////////////////////////////
     // XmlEditorListener Implementation
     // ////////////////////////////////////////////////////////////////////////////////////
     
     @Override
     public void onXmlDocumentChanged(final XmlNode root, final String name,
-            final String path) {
-        
-        // notify fragment
-        mEditorFragment.onXmlDocumentChanged(root);
+            final Uri uri) {
+        // Nothing to do at this level
     }
     
     @Override
     public void onXmlContentChanged() {
-        // TODO Auto-generated method stub
-        
+        // Nothing to do at this level
     }
     
     @Override
     public void onXmlDocumentSaved() {
-        // TODO Auto-generated method stub
-        
+        // Nothing to do at this level
     }
     
     @Override

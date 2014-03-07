@@ -2,6 +2,9 @@ package fr.xgouchet.xmleditor.data;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.ref.SoftReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -65,9 +68,9 @@ public class XmlEditor {
     private ClipboardProxy mClipboardManager;
     
     
+    /** the listeners for events on this editor */
+    private final List<SoftReference<XmlEditorListener>> mListeners;
     
-    /** The listener for events on this editor */
-    private final XmlEditorListener mListener;
     /** the current application context */
     private final Context mContext;
     
@@ -77,12 +80,18 @@ public class XmlEditor {
      * @param listener
      *            the listener for events on this editor
      */
-    public XmlEditor(final XmlEditorListener listener, final Context context) {
-        if (listener == null) {
-            throw new IllegalArgumentException(new NullPointerException());
-        }
-        mListener = listener;
+    public XmlEditor(final Context context) {
+        mListeners = new ArrayList<SoftReference<XmlEditorListener>>();
         mContext = context;
+    }
+    
+    /**
+     * Adds a listener for xml events
+     * 
+     * @param listener
+     */
+    public void addListener(final XmlEditorListener listener) {
+        mListeners.add(new SoftReference<XmlEditorListener>(listener));
     }
     
     //////////////////////////////////////////////////////////////////////////////////////
@@ -110,8 +119,6 @@ public class XmlEditor {
     //////////////////////////////////////////////////////////////////////////////////////
     // EDITOR INPUT/OUTPUT
     //////////////////////////////////////////////////////////////////////////////////////
-    
-    
     
     /**
      * Loads a document located at the given Uri
@@ -142,7 +149,7 @@ public class XmlEditor {
      * @param ignore
      *            should the source uri be ignored in the loaded document
      */
-    public void loadHtmlDocument(Uri uri) {
+    public void loadHtmlDocument(final Uri uri) {
         if (mLoader == null) {
             int flags = AsyncXmlLoader.FLAG_HTML_SOUP | AsyncXmlLoader.FLAG_FORCE_READ_ONLY;
             
@@ -155,7 +162,6 @@ public class XmlEditor {
     //////////////////////////////////////////////////////////////////////////////////////
     // MISC
     //////////////////////////////////////////////////////////////////////////////////////
-    
     
     
     /**
@@ -329,8 +335,7 @@ public class XmlEditor {
      */
     public void doSaveFile(final String path, final boolean keepPath) {
         if (path == null) {
-            mListener.onErrorNotification(mContext
-                    .getString(R.string.toast_save_null));
+            fireOnErrorNotification(mContext.getString(R.string.toast_save_null));
             return;
         }
         
@@ -362,7 +367,7 @@ public class XmlEditor {
     }
     
     
-    public void addChildToNode(XmlNode node, XmlNode child, boolean edit) {
+    public void addChildToNode(final XmlNode node, final XmlNode child, final boolean edit) {
         if (node.addChildNode(child)) {
             if (node.isDocument()) {
                 node.reorderDocumentChildren();
@@ -423,15 +428,15 @@ public class XmlEditor {
         StringBuilder builder = new StringBuilder();
         mSelection.buildXmlString(builder);
         
-        String text, label, crouton;
+        String text, label, message;
         
         text = builder.toString().trim();
         label = mSelection.getContent().toString();
         mClipboardManager.setText(text, label);
         
-        crouton = mContext.getString(R.string.ui_copy_clipboard,
+        message = mContext.getString(R.string.ui_copy_clipboard,
                 AxelUtils.ellipsize(text, 64));
-        mListener.onConfirmNotification(crouton);
+        fireOnConfirmNotification(message);
     }
     
     /**
@@ -441,7 +446,7 @@ public class XmlEditor {
         StringBuilder builder = new StringBuilder();
         mSelection.buildXmlString(builder);
         
-        String text, label, crouton;
+        String text, label, message;
         
         // copy to clipboard
         text = builder.toString().trim();
@@ -455,9 +460,9 @@ public class XmlEditor {
         
         setDirty();
         
-        crouton = mContext.getString(R.string.ui_copy_clipboard,
+        message = mContext.getString(R.string.ui_copy_clipboard,
                 AxelUtils.ellipsize(text, 64));
-        mListener.onConfirmNotification(crouton);
+        fireOnConfirmNotification(message);
     }
     
     /**
@@ -496,7 +501,7 @@ public class XmlEditor {
                 node = AxelUtils.contentAsXml(clip);
             }
             catch (Exception e) {
-                mListener.onErrorNotification(e.getMessage());
+                fireOnErrorNotification(e.getMessage());
                 node = null;
             }
             
@@ -560,7 +565,7 @@ public class XmlEditor {
                 
                 setDirty();
             } else {
-                mListener.onErrorNotification(mContext
+                fireOnErrorNotification(mContext
                         .getString(R.string.toast_xml_uncomment));
             }
         }
@@ -575,7 +580,7 @@ public class XmlEditor {
             return AxelUtils.contentAsXml(mSelection.getContent().getText());
         }
         catch (Exception e) {
-            mListener.onErrorNotification(e.getMessage());
+            fireOnErrorNotification(e.getMessage());
             return null;
         }
         
@@ -587,8 +592,7 @@ public class XmlEditor {
      * this editor's listener
      */
     private void onXmlDocumentChanged() {
-        mListener.onXmlDocumentChanged(mRoot, mCurrentDocumentName,
-                mCurrentFilePath);
+        fireOnXmlDocumentChanged(mRoot, mCurrentDocumentName, mCurrentDocumentUri);
     }
     
     /**
@@ -597,7 +601,7 @@ public class XmlEditor {
      */
     private void onXmlContentChanged() {
         mDirty = true;
-        mListener.onXmlContentChanged();
+        fireOnXmlContentChanged();
     }
     
     
@@ -640,7 +644,7 @@ public class XmlEditor {
             }
             
             if (mReadOnly) {
-                mListener.onInfoNotification(mContext.getString(R.string.toast_open_read_only));
+                fireOnInfoNotification(mContext.getString(R.string.toast_open_read_only));
             }
             
             onXmlDocumentChanged();
@@ -661,37 +665,35 @@ public class XmlEditor {
             // Check for parsing error 
             if (throwable instanceof XmlPullParserException) {
                 if (AxelUtils.isHtmlDocument(uri)) {
-                    mListener.onHtmlParseError(uri, message);
+                    fireOnHtmlParseError(uri, message);
                 } else {
-                    mListener.onXmlParseError(uri, message);
+                    fireOnXmlParseError(uri, message);
                 }
                 return;
             }
             
             // Check for Memory error
             if (throwable instanceof OutOfMemoryError) {
-                mListener.onErrorNotification(mContext
-                        .getString(R.string.toast_open_memory_error));
+                fireOnErrorNotification(mContext.getString(R.string.toast_open_memory_error));
                 return;
             }
             
             // Check for file format error
             if (throwable instanceof UnknownFileFormatException) {
-                mListener.onErrorNotification(mContext
-                        .getString(R.string.toast_xml_unknown_format));
+                fireOnErrorNotification(mContext.getString(R.string.toast_xml_unknown_format));
                 return;
             }
             
             // Check for plain old IOException
             if (throwable instanceof IOException) {
-                mListener.onErrorNotification(mContext.getString(R.string.toast_xml_io_exception));
+                fireOnErrorNotification(mContext.getString(R.string.toast_xml_io_exception));
                 return;
             }
             
             // TODO handle other errors
             
             // Default, lets just print the error and hope for the best
-            mListener.onErrorNotification(throwable.getMessage());
+            fireOnErrorNotification(throwable.getMessage());
             
         }
         
@@ -705,6 +707,7 @@ public class XmlEditor {
         @Override
         public void onXmlFileWritten(final String filePath,
                 final boolean keepPath) {
+            
             if (keepPath) {
                 File file = new File(filePath);
                 mCurrentFilePath = FileUtils.getCanonizePath(file);
@@ -719,9 +722,9 @@ public class XmlEditor {
                 
                 onXmlDocumentChanged();
             }
-            mListener.onConfirmNotification(mContext
-                    .getString(R.string.toast_save_success));
-            mListener.onXmlDocumentSaved();
+            
+            fireOnConfirmNotification(mContext.getString(R.string.toast_save_success));
+            fireOnXmlDocumentSaved();
             
             mWriter = null;
         }
@@ -735,4 +738,84 @@ public class XmlEditor {
             mWriter = null;
         }
     };
+    
+    //////////////////////////////////////////////////////////////////////////////////////
+    // FIRE EVENTS 
+    //////////////////////////////////////////////////////////////////////////////////////
+    
+    private void fireOnXmlDocumentChanged(final XmlNode root, final String name, final Uri uri) {
+        for (SoftReference<XmlEditorListener> ref : mListeners) {
+            if (ref.get() == null) {
+                continue;
+            }
+            
+            ref.get().onXmlDocumentChanged(root, name, uri);
+        }
+    }
+    
+    private void fireOnXmlContentChanged() {
+        for (SoftReference<XmlEditorListener> ref : mListeners) {
+            if (ref.get() == null) {
+                continue;
+            }
+            
+            ref.get().onXmlContentChanged();
+        }
+    }
+    private void fireOnXmlDocumentSaved() {
+        for (SoftReference<XmlEditorListener> ref : mListeners) {
+            if (ref.get() == null) {
+                continue;
+            }
+            
+            ref.get().onXmlDocumentSaved();
+        }
+    }
+    
+    private void fireOnHtmlParseError(final Uri uri, final String message) {
+        for (SoftReference<XmlEditorListener> ref : mListeners) {
+            if (ref.get() == null) {
+                continue;
+            }
+            
+            ref.get().onHtmlParseError(uri, message);
+        }
+    }
+    
+    private void fireOnXmlParseError(final Uri uri, final String message) {
+        for (SoftReference<XmlEditorListener> ref : mListeners) {
+            if (ref.get() == null) {
+                continue;
+            }
+            
+            ref.get().onXmlParseError(uri, message);
+        }
+    }
+    
+    private void fireOnErrorNotification(final String message) {
+        for (SoftReference<XmlEditorListener> ref : mListeners) {
+            if (ref.get() == null) {
+                continue;
+            }
+            
+            ref.get().onErrorNotification(message);
+        }
+    }
+    private void fireOnInfoNotification(final String message) {
+        for (SoftReference<XmlEditorListener> ref : mListeners) {
+            if (ref.get() == null) {
+                continue;
+            }
+            
+            ref.get().onInfoNotification(message);
+        }
+    }
+    private void fireOnConfirmNotification(final String message) {
+        for (SoftReference<XmlEditorListener> ref : mListeners) {
+            if (ref.get() == null) {
+                continue;
+            }
+            ref.get().onConfirmNotification(message);
+        }
+    }
 }
