@@ -100,7 +100,7 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
     private void displayNodeChildren(final XmlNode node, final boolean addBreadCrumb) {
         
         // create the fragment node
-        NodeChildrenEditorFragment fragment = new NodeChildrenEditorFragment();
+        ElementChildrenEditorFragment fragment = new ElementChildrenEditorFragment();
         fragment.setXmlNode(node);
         fragment.setNodeListener(mNodeListener);
         fragment.setXmlEditor(mXmlEditor);
@@ -130,9 +130,11 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
         // select next fragment
         switch (node.getContent().getType()) {
             case XmlData.XML_ELEMENT:
-                fragment = new ElementEditorFragment();
+                fragment = new ElementNodeEditorFragment();
                 break;
-            
+            case XmlData.XML_TEXT:
+                fragment = new TextNodeEditorFragment();
+                break;
             default:
                 Log.w("SimpleEditor", "Unknown editor for node " + node);
                 return;
@@ -144,7 +146,7 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
         
         // add node to bread crumb
         if (addBreadCrumb) {
-            mBreadCrumbsView.push(node.getXPathName(), node);
+            mBreadCrumbsView.push("/?", node);
         }
         
         displayNodeFragment(fragment, node.getXPathName(), node.getXPath());
