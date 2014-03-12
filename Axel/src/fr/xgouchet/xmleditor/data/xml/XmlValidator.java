@@ -41,29 +41,62 @@ public class XmlValidator {
 	 */
 	public static class InvalidRegion {
 		public final int start, end;
-		public final String reason;
 
-		public InvalidRegion(final int start, final int end, final String reason) {
+		public InvalidRegion(final int start, final int end) {
 			this.start = start;
 			this.end = end;
-			this.reason = reason;
 		}
 	}
 
+	/**
+	 * Check for invalid content in the input for a Text Node
+	 * 
+	 * @param input
+	 *            the input text
+	 * @return the region of the first invalid input found or null if the input
+	 *         is valid
+	 */
 	public static InvalidRegion getTextInvalidRange(final String input) {
 
 		// Ampersand check
 		Matcher ampMatcher = AMPERSAND_PATTERN.matcher(input);
 		if (ampMatcher.find()) {
-			return new InvalidRegion(ampMatcher.start(),
-					ampMatcher.start() + 1, "Unescaped & (replace with &amp;)");
+			return new InvalidRegion(ampMatcher.start(), ampMatcher.start() + 1);
 		}
 
 		// less-than check
-		int ltIndex = input.indexOf('<');
-		if (ltIndex >= 0) {
-			return new InvalidRegion(ltIndex, ltIndex + 1,
-					"Unescaped < (replace with &lt;)");
+		return getSimpleMatchInvalidRegion(input, "<");
+	}
+
+	/**
+	 * Check for invalid content in the input for a CData Node
+	 * 
+	 * @param input
+	 *            the input text
+	 * @return the region of the first invalid input found or null if the input
+	 *         is valid
+	 */
+	public static InvalidRegion getCDataInvalidRange(final String input) {
+
+		return getSimpleMatchInvalidRegion(input, "]]>");
+	}
+
+	/**
+	 * Search for a simple string match in the input and return the
+	 * corresponding region
+	 * 
+	 * @param input
+	 *            the input string
+	 * @param match
+	 *            the match to find
+	 * @return the invalid region or null
+	 */
+	private static InvalidRegion getSimpleMatchInvalidRegion(
+			final String input, final String match) {
+
+		int index = input.indexOf(match);
+		if (index >= 0) {
+			return new InvalidRegion(index, index + match.length());
 		}
 
 		return null;
@@ -226,6 +259,7 @@ public class XmlValidator {
 	 *            the content to test
 	 * @return if the content is valid
 	 */
+	@Deprecated
 	public static boolean isValidCDataContent(final String content) {
 		boolean result;
 

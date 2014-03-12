@@ -6,11 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import fr.xgouchet.xmleditor.R;
-import fr.xgouchet.xmleditor.common.Settings;
 import fr.xgouchet.xmleditor.data.xml.XmlValidator;
 import fr.xgouchet.xmleditor.data.xml.XmlValidator.InvalidRegion;
 
-public class TextNodeEditorFragment extends ASingleNodeEditorFragment {
+public class CDataNodeEditorFragment extends ASingleNodeEditorFragment {
 
 	private EditText mEditText;
 
@@ -38,12 +37,7 @@ public class TextNodeEditorFragment extends ASingleNodeEditorFragment {
 		// get the text to validate
 		String text = mEditText.getText().toString();
 
-		// automatically escape special characters (&, < , ...)
-		if (Settings.sEscapeTextContent) {
-			text = XmlValidator.escapeTextContent(text);
-		}
-
-		InvalidRegion region = XmlValidator.getTextInvalidRange(text);
+		InvalidRegion region = XmlValidator.getCDataInvalidRange(text);
 		if (region != null) {
 			mEditText.setSelection(region.start, region.end);
 
