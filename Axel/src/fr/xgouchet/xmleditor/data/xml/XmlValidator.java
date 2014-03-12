@@ -36,6 +36,46 @@ public class XmlValidator {
 	/** XML namespace */
 	public static final String XML_NS = "xmlns";
 
+	/**
+	 * Describes an invalid region in some text
+	 */
+	public static class InvalidRegion {
+		public final int start, end;
+		public final String reason;
+
+		public InvalidRegion(final int start, final int end, final String reason) {
+			this.start = start;
+			this.end = end;
+			this.reason = reason;
+		}
+	}
+
+	public static InvalidRegion getTextInvalidRange(final String input) {
+
+		// Ampersand check
+		Matcher ampMatcher = AMPERSAND_PATTERN.matcher(input);
+		if (ampMatcher.find()) {
+			return new InvalidRegion(ampMatcher.start(),
+					ampMatcher.start() + 1, "Unescaped & (replace with &amp;)");
+		}
+
+		// less-than check
+		int ltIndex = input.indexOf('<');
+		if (ltIndex >= 0) {
+			return new InvalidRegion(ltIndex, ltIndex + 1,
+					"Unescaped < (replace with &lt;)");
+		}
+
+		return null;
+	}
+
+	/**
+	 * Escapes any illegal character in the input
+	 * 
+	 * @param input
+	 *            the input string
+	 * @return the valid escaped output
+	 */
 	public static String escapeAttributeValue(final String input) {
 		String output;
 
@@ -63,6 +103,13 @@ public class XmlValidator {
 		return output;
 	}
 
+	/**
+	 * Escapes any unescaped and lonely ampersand found in the given document
+	 * 
+	 * @param input
+	 *            the input string
+	 * @return the escaped output
+	 */
 	public static String escapeAmpersand(final String input) {
 		final Matcher matcher = AMPERSAND_PATTERN.matcher(input);
 		final StringBuilder builder = new StringBuilder(input.length());
@@ -206,6 +253,7 @@ public class XmlValidator {
 	 *            the text to test
 	 * @return if the text is valid
 	 */
+	@Deprecated
 	public static boolean isValidText(final String text) {
 
 		boolean result;
