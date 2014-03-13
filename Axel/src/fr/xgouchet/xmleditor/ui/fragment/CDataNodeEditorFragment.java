@@ -37,7 +37,7 @@ public class CDataNodeEditorFragment extends ASingleNodeEditorFragment {
 		// get the text to validate
 		String text = mEditText.getText().toString();
 
-		InvalidRegion region = XmlValidator.getCDataInvalidRange(text);
+		InvalidRegion region = XmlValidator.getCDataInvalidRegion(text);
 		if (region != null) {
 			mEditText.setSelection(region.start, region.end);
 

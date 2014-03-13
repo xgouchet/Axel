@@ -49,6 +49,24 @@ public class XmlValidator {
 	}
 
 	/**
+	 * Check for invalid content in the input for a Comment Node
+	 * 
+	 * @param input
+	 *            the input text
+	 * @return the region of the first invalid input found or null if the input
+	 *         is valid
+	 */
+	public static InvalidRegion getCommentInvalidRegion(final String input) {
+
+		if (input.endsWith("-")) {
+			return new InvalidRegion(input.length() - 1, input.length());
+		}
+
+		// less-than check
+		return getSimpleMatchInvalidRegion(input, "--");
+	}
+
+	/**
 	 * Check for invalid content in the input for a Text Node
 	 * 
 	 * @param input
@@ -56,7 +74,7 @@ public class XmlValidator {
 	 * @return the region of the first invalid input found or null if the input
 	 *         is valid
 	 */
-	public static InvalidRegion getTextInvalidRange(final String input) {
+	public static InvalidRegion getTextInvalidRegion(final String input) {
 
 		// Ampersand check
 		Matcher ampMatcher = AMPERSAND_PATTERN.matcher(input);
@@ -76,9 +94,28 @@ public class XmlValidator {
 	 * @return the region of the first invalid input found or null if the input
 	 *         is valid
 	 */
-	public static InvalidRegion getCDataInvalidRange(final String input) {
+	public static InvalidRegion getCDataInvalidRegion(final String input) {
 
 		return getSimpleMatchInvalidRegion(input, "]]>");
+	}
+
+	public static InvalidRegion getPITargetInvalidRegion(final String input) {
+
+		// Target cannot be exactly xml
+		if (input.equalsIgnoreCase("xml")) {
+			return new InvalidRegion(0, input.length());
+		}
+
+		// target must match the name pattern
+		if (!NAME_PATTERN.matcher(input).matches()) {
+			return new InvalidRegion(0, input.length());
+		}
+
+		return null;
+	}
+
+	public static InvalidRegion getPIContentInvalidRegion(final String input) {
+		return getSimpleMatchInvalidRegion(input, "?>");
 	}
 
 	/**
@@ -232,6 +269,7 @@ public class XmlValidator {
 	 *            the name to test
 	 * @return if the name is valid
 	 */
+	@Deprecated
 	public static boolean isValidPITargetName(final String name) {
 		boolean result;
 
@@ -246,6 +284,7 @@ public class XmlValidator {
 	 *            the content to test
 	 * @return if the content is valid
 	 */
+	@Deprecated
 	public static boolean isValidPIContent(final String content) {
 		boolean result;
 
@@ -273,6 +312,7 @@ public class XmlValidator {
 	 *            the comment to test
 	 * @return if the comment is valid
 	 */
+	@Deprecated
 	public static boolean isValidComment(final String comment) {
 
 		boolean result;
