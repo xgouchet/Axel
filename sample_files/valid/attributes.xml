@@ -1,0 +1,5 @@
+﻿<?xml version="1.0"?>
+<root>
+	<test truc="foo"/>
+	<user id="5" name="jack"/>
+</root>

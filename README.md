@@ -1,4 +1,6 @@
 
+![MuzeiDeezer icon](https://github.com/xgouchet/Axel/raw/master/Axel/res/drawable-xxhdpi/ic_launcher.png)
+
 # ABOUT
 
 Axel is an Open Source, Ad-free, lightweight xml editor for Android. 
