@@ -401,7 +401,7 @@ public class AxelNodeEditorActivity extends Activity {
 
 		result = true;
 
-		if (!XmlValidator.isValidVersionNum(mEditVersion.getText().toString())) {
+		if (!XmlValidator.isValidVersionNumber(mEditVersion.getText().toString())) {
 			mEditVersion.setError(getString(R.string.ui_invalid_syntax));
 			result = false;
 		} else {

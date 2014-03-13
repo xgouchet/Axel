@@ -87,6 +87,26 @@ public class XmlValidator {
 	}
 
 	/**
+	 * Check for invalid content in the input for a Doctype Node
+	 * 
+	 * @param input
+	 *            the input text
+	 * @return the region of the first invalid input found or null if the input
+	 *         is valid
+	 */
+	public static InvalidRegion getDoctypeInvalidRegion(final String input) {
+
+		// Ampersand check
+		Matcher ampMatcher = AMPERSAND_PATTERN.matcher(input);
+		if (ampMatcher.find()) {
+			return new InvalidRegion(ampMatcher.start(), ampMatcher.start() + 1);
+		}
+
+		// less-than check
+		return getSimpleMatchInvalidRegion(input, "<");
+	}
+
+	/**
 	 * Check for invalid content in the input for a CData Node
 	 * 
 	 * @param input
@@ -99,6 +119,15 @@ public class XmlValidator {
 		return getSimpleMatchInvalidRegion(input, "]]>");
 	}
 
+	/**
+	 * Check for invalid content in the input for a Processing Instruction
+	 * Node's Target
+	 * 
+	 * @param input
+	 *            the input text
+	 * @return the region of the first invalid input found or null if the input
+	 *         is valid
+	 */
 	public static InvalidRegion getPITargetInvalidRegion(final String input) {
 
 		// Target cannot be exactly xml
@@ -114,6 +143,15 @@ public class XmlValidator {
 		return null;
 	}
 
+	/**
+	 * Check for invalid content in the input for a Processing Instruction
+	 * Node's content
+	 * 
+	 * @param input
+	 *            the input text
+	 * @return the region of the first invalid input found or null if the input
+	 *         is valid
+	 */
 	public static InvalidRegion getPIContentInvalidRegion(final String input) {
 		return getSimpleMatchInvalidRegion(input, "?>");
 	}
@@ -210,17 +248,17 @@ public class XmlValidator {
 	 *            the version num in the xml document declaration
 	 * @return if the version is valid
 	 */
-	public static boolean isValidVersionNum(final String version) {
+	public static boolean isValidVersionNumber(final String version) {
 		return VERSION_PATTERN.matcher(version).matches();
 	}
 
 	/**
-	 * @param enconding
+	 * @param encoding
 	 *            the encoding in the xml document declaration
 	 * @return if the encoding is valid
 	 */
-	public static boolean isValidEncoding(final String enconding) {
-		return ENCODING_PATTERN.matcher(enconding).matches();
+	public static boolean isValidEncoding(final String encoding) {
+		return ENCODING_PATTERN.matcher(encoding).matches();
 	}
 
 	/**

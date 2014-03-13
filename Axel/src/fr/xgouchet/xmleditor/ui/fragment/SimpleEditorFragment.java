@@ -140,7 +140,13 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
 			fragment = new CommentNodeEditorFragment();
 			break;
 		case XmlData.XML_PROCESSING_INSTRUCTION:
-			fragment  = new ProcessingInstructionNodeEditorFragment();
+			fragment = new ProcessingInstructionNodeEditorFragment();
+			break;
+		case XmlData.XML_DOCTYPE:
+			fragment = new DoctypeNodeEditorFragment();
+			break;
+		case XmlData.XML_DOCUMENT_DECLARATION:
+			fragment = new DocumentDeclarationNodeEditorFragment();
 			break;
 		default:
 			Log.w("SimpleEditor", "Unknown editor for node " + node);
