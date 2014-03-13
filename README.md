@@ -7,6 +7,14 @@ Axel is an Open Source, Ad-free, lightweight xml editor for Android.
 
 The official Axel app is available on the [Google Play Store](https://play.google.com/store/apps/details?id=fr.xgouchet.xmleditor).
 
+# WHAT'S NEW ?
+
+In version 3.0, Axel will be refactored for efficiency, and add many usefull features 
+- Easy access to the W3C validators
+- New navigation system
+- Integration with Android Storage Framework
+- Many bug fixes
+
 
 # LICENCE
 
