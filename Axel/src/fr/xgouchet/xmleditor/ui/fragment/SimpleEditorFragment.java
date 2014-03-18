@@ -1,7 +1,6 @@
 package fr.xgouchet.xmleditor.ui.fragment;
 
 import android.app.FragmentManager;
-import android.app.FragmentManager.OnBackStackChangedListener;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,7 +15,6 @@ import fr.xgouchet.xmleditor.data.tree.TreeNode;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 import fr.xgouchet.xmleditor.ui.adapter.NodeViewListener;
-import fr.xgouchet.xmleditor.ui.widget.BreadCrumbsView;
 
 /**
  * 
@@ -28,19 +26,9 @@ import fr.xgouchet.xmleditor.ui.widget.BreadCrumbsView;
  */
 public class SimpleEditorFragment extends ADocumentEditorFragment {
 
-	private BreadCrumbsView mBreadCrumbsView;
-
 	// ////////////////////////////////////////////////////////////////////////////////////
 	// FRAGMENT LIFECYCLE
 	// ////////////////////////////////////////////////////////////////////////////////////
-
-	@Override
-	public void onCreate(final Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		getFragmentManager().addOnBackStackChangedListener(
-				mBackStackChangedListener);
-	}
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
@@ -48,9 +36,6 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
 
 		View root = inflater.inflate(R.layout.fragment_breadcrumb_editor,
 				container, false);
-
-		mBreadCrumbsView = (BreadCrumbsView) root
-				.findViewById(R.id.bread_crumbs);
 
 		return root;
 	}
@@ -82,8 +67,6 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
 	@Override
 	protected void displayXmlRoot() {
 		if (getView() != null) {
-			// Reset bread crumbs
-			mBreadCrumbsView.clearBreadCrumbs();
 
 			// Clear fragment backstack
 			FragmentManager fm = getFragmentManager();
@@ -92,7 +75,7 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
 			}
 
 			// display root
-			displayNodeChildren(mXmlRoot, false);
+			displayNodeChildren(mXmlRoot);
 		}
 	}
 
@@ -100,21 +83,15 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
 	 * Displays the children of the given node
 	 * 
 	 * @param node
-	 * @param addBreadCrumb
 	 */
-	private void displayNodeChildren(final XmlNode node,
-			final boolean addBreadCrumb) {
+	private void displayNodeChildren(final XmlNode node) {
 
 		// create the fragment node
 		ElementChildrenEditorFragment fragment = new ElementChildrenEditorFragment();
 		fragment.setXmlNode(node);
 		fragment.setNodeListener(mNodeListener);
+		fragment.setParentNodeListener(mParentNodeListener);
 		fragment.setXmlEditor(mXmlEditor);
-
-		// add node to bread crumb
-		if (addBreadCrumb) {
-			mBreadCrumbsView.push(node.getXPathName(), node);
-		}
 
 		displayNodeFragment(fragment, node.getXPathName(), node.getXPath());
 
@@ -125,10 +102,8 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
 	 * 
 	 * @param node
 	 *            the node to display
-	 * @param
 	 */
-	private void displayNodeEditor(final XmlNode node,
-			final boolean addBreadCrumb) {
+	private void displayNodeEditor(final XmlNode node) {
 
 		ANodeEditorFragment fragment;
 
@@ -163,11 +138,6 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
 		// set the node
 		fragment.setXmlNode(node);
 		fragment.setXmlEditor(mXmlEditor);
-
-		// add node to bread crumb
-		if (addBreadCrumb) {
-			mBreadCrumbsView.push("/?", node);
-		}
 
 		displayNodeFragment(fragment, node.getXPathName(), node.getXPath());
 
@@ -206,39 +176,44 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
 		public void onNodeTapped(final TreeNode<XmlData> node, final View view,
 				final int position) {
 			if (node.getContent().isElement()) {
-				displayNodeChildren((XmlNode) node, true);
+				displayNodeChildren((XmlNode) node);
 			} else {
-				displayNodeEditor((XmlNode) node, true);
+				displayNodeEditor((XmlNode) node);
 			}
 		}
 
 		@Override
 		public void onNodeLongPressed(final TreeNode<XmlData> node,
 				final View view, final int position) {
-			// TODO Auto-generated method stub
+			// TODO onNodeDoubleLongPressed
+		}
+
+		@Override
+		public void onNodeDoubleTapped(final TreeNode<XmlData> node,
+				final View view, final int position) {
+			// TODO onNodeDoubleTapped
+		}
+	};
+
+	private NodeViewListener<XmlData> mParentNodeListener = new NodeViewListener<XmlData>() {
+
+		@Override
+		public void onNodeTapped(final TreeNode<XmlData> node, final View view,
+				final int position) {
+			displayNodeEditor((XmlNode) node);
+		}
+
+		@Override
+		public void onNodeLongPressed(final TreeNode<XmlData> node,
+				final View view, final int position) {
 
 		}
 
 		@Override
 		public void onNodeDoubleTapped(final TreeNode<XmlData> node,
 				final View view, final int position) {
-			// TODO Auto-generated method stub
 
 		}
 	};
 
-	// ////////////////////////////////////////////////////////////////////////////////////
-	// FRAGMENT BACKSTACK LISTENER
-	// ////////////////////////////////////////////////////////////////////////////////////
-
-	private OnBackStackChangedListener mBackStackChangedListener = new OnBackStackChangedListener() {
-
-		@Override
-		public void onBackStackChanged() {
-			int count = getFragmentManager().getBackStackEntryCount();
-			while (count < mBreadCrumbsView.getBreadCrumbsCount()) {
-				mBreadCrumbsView.pop();
-			}
-		}
-	};
 }

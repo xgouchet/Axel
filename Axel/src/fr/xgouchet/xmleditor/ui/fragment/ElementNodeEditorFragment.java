@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import fr.xgouchet.xmleditor.R;
 import fr.xgouchet.xmleditor.common.AxelUtils;
 import fr.xgouchet.xmleditor.data.xml.XmlAttribute;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
+import fr.xgouchet.xmleditor.data.xml.XmlValidator;
 import fr.xgouchet.xmleditor.ui.adapter.XmlAttributeAdapter;
 
 /**
@@ -23,8 +25,8 @@ import fr.xgouchet.xmleditor.ui.adapter.XmlAttributeAdapter;
  */
 public class ElementNodeEditorFragment extends ASingleNodeEditorFragment {
 
-	private EditText mEditPrefix;
-	private EditText mEditName;
+	private EditText mEditTextPrefix;
+	private EditText mEditTextName;
 	private List<XmlAttribute> mAttributes;
 	private XmlAttributeAdapter mAttributeAdapter;
 	private ListView mAttributeListView;
@@ -50,13 +52,13 @@ public class ElementNodeEditorFragment extends ASingleNodeEditorFragment {
 		XmlData data = mXmlNode.getContent();
 
 		// Setup Prefix input
-		mEditPrefix = (EditText) root.findViewById(R.id.edit_text_prefix);
-		mEditPrefix.setText(data.getPrefix());
-		AxelUtils.setupPrefixEditText(mEditPrefix, mXmlNode, false);
+		mEditTextPrefix = (EditText) root.findViewById(R.id.edit_text_prefix);
+		mEditTextPrefix.setText(data.getPrefix());
+		AxelUtils.setupPrefixEditText(mEditTextPrefix, mXmlNode, false);
 
 		// Setup Tag Name input
-		mEditName = (EditText) root.findViewById(R.id.edit_text_name);
-		mEditName.setText(data.getName());
+		mEditTextName = (EditText) root.findViewById(R.id.edit_text_name);
+		mEditTextName.setText(data.getName());
 
 		// Get the list of attributes
 		mAttributes = new LinkedList<XmlAttribute>();
@@ -75,16 +77,49 @@ public class ElementNodeEditorFragment extends ASingleNodeEditorFragment {
 
 	@Override
 	protected boolean onValidate() {
-		return false;
+
+		String name = mEditTextName.getText().toString();
+		String prefix = mEditTextPrefix.getText().toString();
+
+		// check Tag name
+		if (!XmlValidator.isValidName(name)) {
+			mEditTextName.setSelection(0, name.length());
+			mEditTextName.setError(getString(R.string.ui_invalid_syntax));
+			return false;
+		}
+
+		if (!TextUtils.isEmpty(prefix)) {
+			// check tag prefix (syntax)
+			if (!XmlValidator.isValidName(prefix)) {
+				mEditTextPrefix.setSelection(0, prefix.length());
+				mEditTextPrefix.setError(getString(R.string.ui_invalid_syntax));
+				return false;
+			} else if (!XmlValidator.isValidNamespace(prefix, mXmlNode,
+					mAttributes, false)) {
+				mEditTextPrefix.setSelection(0, prefix.length());
+				mEditTextPrefix
+						.setError(getString(R.string.ui_invalid_namespace));
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@Override
 	protected boolean onApply() {
-		return false;
+		XmlData data = mXmlNode.getContent();
+		
+		data.setPrefix(mEditTextPrefix.getText().toString());
+		data.setName(mEditTextName.getText().toString());
+		data.getAttributes().clear();
+		data.getAttributes().addAll(mAttributes);
+		
+		return true;
 	}
 
 	@Override
 	protected boolean onDiscard() {
-		return false;
+		return true;
 	}
 }

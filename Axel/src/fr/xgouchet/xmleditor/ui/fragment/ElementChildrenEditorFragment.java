@@ -27,7 +27,8 @@ public class ElementChildrenEditorFragment extends ANodeEditorFragment {
 	private View mParentNodeView;
 	private ListView mListView;
 	private NodeListAdapter<XmlData> mAdapter;
-	private NodeViewListener<XmlData> mNodeListener;
+	private NodeViewListener<XmlData> mNodeViewListener;
+	private NodeViewListener<XmlData> mParentNodeViewListener;
 
 	// ////////////////////////////////////////////////////////////////////////////////////
 	// FRAGMENT LIFECYCLE
@@ -115,7 +116,12 @@ public class ElementChildrenEditorFragment extends ANodeEditorFragment {
 	// ////////////////////////////////////////////////////////////////////////////////////
 
 	public void setNodeListener(final NodeViewListener<XmlData> nodeListener) {
-		mNodeListener = nodeListener;
+		mNodeViewListener = nodeListener;
+	}
+	
+	public void setParentNodeListener(
+			final NodeViewListener<XmlData> parentNodeViewListener) {
+		mParentNodeViewListener = parentNodeViewListener;
 	}
 
 	// ////////////////////////////////////////////////////////////////////////////////////
@@ -128,11 +134,12 @@ public class ElementChildrenEditorFragment extends ANodeEditorFragment {
 		}
 
 		NodeViewHolder<XmlData> holder = new NodeViewHolder<XmlData>(
-				mParentNodeView, getActivity(), null);
+				mParentNodeView, getActivity(), mParentNodeViewListener);
 
 		holder.position = 0;
 		holder.node = mXmlNode;
 		holder.displayNode(new XmlNodeStyler(), getActivity(), 0);
+		
 	}
 
 	private void setupChildrenListView() {
@@ -143,10 +150,11 @@ public class ElementChildrenEditorFragment extends ANodeEditorFragment {
 
 		// Display the tree
 		mAdapter = new NodeListAdapter<XmlData>(getActivity(), list,
-				mNodeListener);
+				mNodeViewListener);
 		mAdapter.setNodeStyler(new XmlNodeStyler());
 		mListView.setAdapter(mAdapter);
 
 	}
+
 
 }

@@ -189,8 +189,9 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 
 		SortedSet<RecentEntry> recentEntries = RecentUtils.getRecentEntries();
 		for (RecentEntry entry : recentEntries) {
-			MenuItem item = recents.add(R.id.action_group_recents, (int) (entry
-					.getTimestamp() / 1000L), Menu.NONE, entry.getName());
+			MenuItem item = recents.add(R.id.action_group_recents,
+					(int) (entry.getTimestamp() / 1000L), Menu.NONE,
+					entry.getName());
 			item.setTitleCondensed(entry.getUri().toString());
 		}
 
@@ -206,7 +207,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 
 		// Check for template
 		if (item.getGroupId() == R.id.action_group_template) {
-			openTemplate(item.getTitle().toString());
+			loadTemplate(item.getTitle().toString());
 			return true;
 		}
 
@@ -355,23 +356,11 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 	}
 
 	/**
-	 * Loads a recent document
-	 * 
-	 * @param name
-	 *            the name of the recent document
-	 * @param id
-	 *            the id of the recent document
-	 */
-	private void openRecent(final String name, final int id) {
-
-	}
-
-	/**
 	 * Loads a template document
 	 * 
 	 * @param template
 	 */
-	private void openTemplate(final String template) {
+	private void loadTemplate(final String template) {
 		String templatePath = TemplateFiles.getOuputPath(this, template);
 		final File file = new File(templatePath);
 
@@ -379,7 +368,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 
 			@Override
 			public void run() {
-				// TODO mXmlEditor.doOpenFile(file, true);
+				mXmlEditor.loadDocument(Uri.fromFile(file), true);
 			}
 		};
 
