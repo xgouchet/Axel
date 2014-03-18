@@ -21,6 +21,8 @@ public final class RecentUtils {
 
 	private static SortedSet<RecentEntry> sRecentEntries = new TreeSet<RecentUtils.RecentEntry>();
 
+	private static int MAX = 2;
+
 	/**
 	 * Represents a Recent document entry
 	 * 
@@ -32,7 +34,7 @@ public final class RecentUtils {
 		private final String mName;
 
 		public RecentEntry(final JSONObject json) {
-			mUri = Uri.parse(json.optString("url"));
+			mUri = Uri.parse(json.optString("uri"));
 			mTimestamp = json.optLong("timestamp");
 			mName = json.optString("name");
 		}
@@ -161,12 +163,29 @@ public final class RecentUtils {
 			final String name) {
 
 		// Add the entry
-		RecentEntry entry = new RecentEntry(uri, name,
-				System.currentTimeMillis());
-		if (sRecentEntries.contains(entry)) {
-			sRecentEntries.remove(entry);
+		RecentEntry newEntry, existingEntry = null;
+		newEntry = new RecentEntry(uri, name, System.currentTimeMillis());
+
+		// check for an existing entry
+		for (RecentEntry entry : sRecentEntries) {
+			if (entry.mUri.equals(uri)) {
+				existingEntry = entry;
+				break;
+			}
 		}
-		sRecentEntries.add(entry);
+		
+		// remove the existing entry (update the timestamp)
+		if (existingEntry != null) {
+			sRecentEntries.remove(existingEntry);
+		}
+		
+		// save the new entry
+		sRecentEntries.add(newEntry);
+
+		// check for max size
+		if (sRecentEntries.size() > 5) {
+			sRecentEntries.remove(sRecentEntries.first());
+		}
 
 		saveRecentEntries(context);
 	}

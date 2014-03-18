@@ -189,9 +189,13 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 
 		SortedSet<RecentEntry> recentEntries = RecentUtils.getRecentEntries();
 		for (RecentEntry entry : recentEntries) {
-			recents.add(R.id.action_group_recents,
-					(int) (entry.getTimestamp() / 1000L), Menu.NONE,
-					entry.getName());
+			MenuItem item = recents.add(R.id.action_group_recents, (int) (entry
+					.getTimestamp() / 1000L), Menu.NONE, entry.getName());
+			item.setTitleCondensed(entry.getUri().toString());
+		}
+
+		if (recents.size() == 0) {
+			openRecent.setEnabled(false);
 		}
 
 		return true;
@@ -206,30 +210,32 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 			return true;
 		}
 
-		// TODO check for recent file
+		// Check for recent file
+		if (item.getGroupId() == R.id.action_group_recents) {
+			Uri uri = Uri.parse(item.getTitleCondensed().toString());
+			mXmlEditor.loadDocument(uri, false);
+		}
 
+		// Other actions
 		boolean result = true;
 		switch (item.getItemId()) {
 		case R.id.action_new_empty:
-			newContent();
+			newDocument();
 			break;
 		case R.id.action_open_file:
-			openDocument();
-			break;
-		case R.id.action_open_recent:
-			// TODO openRecentFile();
-			break;
-		case R.id.action_preview_in_browser:
-			// TODO previewFile();
+			loadDocument();
 			break;
 		case R.id.action_save:
 			saveDocument();
 			break;
 		case R.id.action_save_as_file:
-			// TODO saveContentAs();
+			saveDocumentAs();
 			break;
 		case R.id.action_save_as_template:
 			// TODO promptTemplateName();
+			break;
+		case R.id.action_preview_in_browser:
+			// TODO previewFile();
 			break;
 		case R.id.action_help:
 			startActivity(new Intent(getApplicationContext(),
@@ -294,7 +300,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 	/**
 	 * Clears the current content to make a new file
 	 */
-	private void newContent() {
+	private void newDocument() {
 		mAfterSave = new Runnable() {
 
 			@Override
@@ -310,7 +316,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 	 * Starts an activity to choose a file to open
 	 */
 	@TargetApi(VERSION_CODES.KITKAT)
-	private void openDocument() {
+	private void loadDocument() {
 		mAfterSave = new Runnable() {
 
 			@Override
@@ -346,6 +352,18 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 		};
 
 		promptSaveIfDirty();
+	}
+
+	/**
+	 * Loads a recent document
+	 * 
+	 * @param name
+	 *            the name of the recent document
+	 * @param id
+	 *            the id of the recent document
+	 */
+	private void openRecent(final String name, final int id) {
+
 	}
 
 	/**

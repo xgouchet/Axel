@@ -1,6 +1,7 @@
 package fr.xgouchet.xmleditor.common;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
@@ -373,6 +374,7 @@ public class AxelUtils {
 		String name = "";
 
 		// Exctract name from provider
+		int index;
 		String[] proj = { MediaColumns.TITLE, MediaColumns.DISPLAY_NAME };
 		Cursor cursor = context.getContentResolver().query(uri, proj, null,
 				null, null);
@@ -381,19 +383,24 @@ public class AxelUtils {
 		if ((cursor != null) && (cursor.getCount() != 0)) {
 			cursor.moveToFirst();
 
-			int columnIndex = cursor.getColumnIndexOrThrow(MediaColumns.TITLE);
-			name = cursor.getString(columnIndex);
+			if (TextUtils.isEmpty(name)) {
+				index = cursor.getColumnIndexOrThrow(MediaColumns.TITLE);
+				name = cursor.getString(index);
+			}
 
 			if (TextUtils.isEmpty(name)) {
-				columnIndex = cursor
-						.getColumnIndexOrThrow(MediaColumns.DISPLAY_NAME);
-				name = cursor.getString(columnIndex);
+				index = cursor.getColumnIndexOrThrow(MediaColumns.DISPLAY_NAME);
+				name = cursor.getString(index);
 			}
 		}
 
 		if (TextUtils.isEmpty(name)) {
 			List<String> segments = uri.getPathSegments();
 			name = segments.get(segments.size() - 1);
+			index = name.lastIndexOf(File.separatorChar);
+			if (index >= 0) {
+				name = name.substring(index);
+			}
 		}
 
 		//
