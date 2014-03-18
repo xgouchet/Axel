@@ -1,88 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-	<!--
+    <!--
     <item
         android:id="@id/action_search"
         android:icon="@drawable/ic_action_search"
         android:showAsAction="always"
         android:title="@android:string/search_go">
-    </item>
-	-->
+    </item>
+    -->
 
 
-	<!-- New (empty / from template) -->
-	<item
-		android:id="@id/action_new"
-		android:showAsAction="never"
-		android:title="@string/action_new">
-		<menu>
-			<item
-				android:id="@id/action_new_empty"
-				android:title="@string/action_new_empty"/>
-			<item
-				android:id="@id/action_new_template"
-				android:title="@string/action_new_template">
-				<menu>
-				</menu>
-			</item>
-		</menu>
-	</item>
+    <!-- New (empty / from template) -->
+    <item
+        android:id="@id/action_new"
+        android:showAsAction="never"
+        android:title="@string/action_new">
+        <menu>
+            <item
+                android:id="@id/action_new_empty"
+                android:title="@string/action_new_empty"/>
+            <item
+                android:id="@id/action_new_template"
+                android:title="@string/action_new_template">
+                <menu>
+                </menu>
+            </item>
+        </menu>
+    </item>
 
-	<!-- Open (document / recent) -->
-	<item
-		android:id="@id/action_open"
-		android:showAsAction="never"
-		android:title="@string/action_open">
-		<menu>
-			<item
-				android:id="@id/action_open_file"
-				android:title="@string/action_open_file"/>
-			<item
-				android:id="@id/action_open_recent"
-				android:title="@string/action_open_recent"/>
-		</menu>
-	</item>
+    <!-- Open (document / recent) -->
+    <item
+        android:id="@id/action_open"
+        android:showAsAction="never"
+        android:title="@string/action_open">
+        <menu>
+            <item
+                android:id="@id/action_open_file"
+                android:title="@string/action_open_file"/>
+            <item
+                android:id="@id/action_open_recent"
+                android:title="@string/action_open_recent">
+                <menu>
+                </menu>
+            </item>
+        </menu>
+    </item>
 
-	<!-- Save -->
-	<item
-		android:id="@id/action_save"
-		android:showAsAction="never"
-		android:title="@string/action_save"/>
+    <!-- Save -->
+    <item
+        android:id="@id/action_save"
+        android:showAsAction="never"
+        android:title="@string/action_save"/>
 
-	<!-- Save as -->
-	<item
-		android:id="@id/action_save_as"
-		android:showAsAction="never"
-		android:title="@string/action_save_as">
-		<menu>
-			<item
-				android:id="@id/action_save_as_file"
-				android:title="@string/action_save_as_file"/>
-			<item
-				android:id="@id/action_save_as_template"
-				android:title="@string/action_save_as_template"/>
-		</menu>
-	</item>
+    <!-- Save as -->
+    <item
+        android:id="@id/action_save_as"
+        android:showAsAction="never"
+        android:title="@string/action_save_as">
+        <menu>
+            <item
+                android:id="@id/action_save_as_file"
+                android:title="@string/action_save_as_file"/>
+            <item
+                android:id="@id/action_save_as_template"
+                android:title="@string/action_save_as_template"/>
+        </menu>
+    </item>
 
-	<!-- Preview -->
-	<item
-		android:id="@id/action_preview_in_browser"
-		android:showAsAction="never"
-		android:title="@string/action_preview"/>
+    <!-- Preview -->
+    <item
+        android:id="@id/action_preview_in_browser"
+        android:showAsAction="never"
+        android:title="@string/action_preview"/>
 
-	<!-- Preferences -->
-	<item
-		android:id="@id/action_settings"
-		android:title="@string/action_settings"/>
+    <!-- Preferences -->
+    <item
+        android:id="@id/action_settings"
+        android:title="@string/action_settings"/>
 
-	<!-- Help -->
-	<item
-		android:id="@id/action_help"
-		android:title="@string/ui_help"/>
-	<!-- About -->
-	<item
-		android:id="@id/action_about"
-		android:title="@string/action_about"/>
+    <!-- Help -->
+    <item
+        android:id="@id/action_help"
+        android:title="@string/ui_help"/>
+    <!-- About -->
+    <item
+        android:id="@id/action_about"
+        android:title="@string/action_about"/>
 
 </menu>

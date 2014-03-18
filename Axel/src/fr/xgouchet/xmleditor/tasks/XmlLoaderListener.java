@@ -10,12 +10,12 @@ public interface XmlLoaderListener {
     /**
      * Called when the XML document has been loaded successfully
      */
-    void onXmlFileLoaded(XmlNode root, Uri uri, String hash,
+    void onXmlDocumentLoaded(XmlNode root, Uri uri, String hash,
             String encoding, boolean readOnly);
     
     /**
      * Called when an error occured while trying to read the document
      */
-    void onXmlFileLoadError(Uri uri, Throwable throwable, String message);
+    void onXmlDocumentLoadError(Uri uri, Throwable throwable, String message);
     
 }

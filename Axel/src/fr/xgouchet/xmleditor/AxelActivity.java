@@ -126,7 +126,7 @@ public class AxelActivity extends Activity implements
         super.onResume();
         
         if (mEditor.hasRoot()) {
-            if (mEditor.hasPath()) {
+            if (mEditor.canSave()) {
                 if (mEditor.fileExists()) {
                     if (mEditor.fileChanged()) {
                         promptFileChanged();
@@ -203,7 +203,7 @@ public class AxelActivity extends Activity implements
             if (extras != null) {
                 switch (requestCode) {
                     case Constants.REQUEST_SAVE_AS:
-                        mEditor.doSaveFile(extras.getString(Constants.EXTRA_PATH));
+//                        mEditor.doSaveFile(extras.getString(Constants.EXTRA_PATH));
                         break;
 //                    case Constants.REQUEST_OPEN:
 //                        File file = new File(extras.getString(Constants.EXTRA_PATH));
@@ -262,8 +262,8 @@ public class AxelActivity extends Activity implements
         menu.findItem(R.id.action_save).setEnabled(!mEditor.isReadOnly());
         
         // disable preview for non previewable files (duh...)
-        menu.findItem(R.id.action_preview_in_browser).setEnabled(
-                getAxelApplication().canBePreviewed());
+//        menu.findItem(R.id.action_preview_in_browser).setEnabled(
+//                getAxelApplication().canBePreviewed());
         
         // add templates as submenus
         MenuItem newTemplate = menu.findItem(R.id.action_new_template);
@@ -295,7 +295,8 @@ public class AxelActivity extends Activity implements
                 
                 @Override
                 public void run() {
-                    mEditor.doOpenFile(file, true);
+//                  TODO  mEditor.doOpenFile(file, true);
+                	
                 }
             };
             
@@ -591,7 +592,7 @@ public class AxelActivity extends Activity implements
                 || (action.equals(Intent.ACTION_EDIT))) {
             try {
                 file = new File(new URI(intent.getData().toString()));
-                mEditor.doOpenFile(file, false);
+//                mEditor.doOpenFile(file, false);
             }
             catch (URISyntaxException e) {
                 Crouton.makeText(this, R.string.toast_intent_invalid_uri,
@@ -676,7 +677,7 @@ public class AxelActivity extends Activity implements
             
             @Override
             public void run() {
-                if (mEditor.hasPath()) {
+                if (mEditor.canSave()) {
                     doPreviewFile();
                 } else {
                     Crouton.showText(AxelActivity.this,
@@ -693,8 +694,8 @@ public class AxelActivity extends Activity implements
      * then save it , else invoke the {@link AxelActivity#saveContentAs()} method
      */
     private void saveContent() {
-        if (mEditor.hasPath()) {
-            mEditor.doSaveFile();
+        if (mEditor.canSave()) {
+//            mEditor.doSaveFile();
         } else {
             saveContentAs();
         }
@@ -955,7 +956,7 @@ public class AxelActivity extends Activity implements
     private void doSaveTemplate(final String fileName) {
         String path = TemplateFiles.getOuputPath(this, fileName);
         
-        mEditor.doSaveFile(path, false);
+//        mEditor.doSaveFile(path, false);
     }
     
     /**

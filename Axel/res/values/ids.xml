@@ -37,6 +37,7 @@
     <item name="action_doctype_xhtml_1_1" type="id"/>
     <item name="action_search" type="id"/>
     <item name="action_group_template" type="id"/>
+    <item name="action_group_recents" type="id"/>
     <item name="action_xsl_link" type="id"/>
 
     <!-- UIs -->

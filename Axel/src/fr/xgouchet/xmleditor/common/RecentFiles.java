@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
@@ -11,6 +12,10 @@ import android.content.SharedPreferences.Editor;
  * Storage for a recent files list
  */
 public final class RecentFiles {
+
+	public static void updateRecentFiles(final Context context) {
+
+	}
 
 	/**
 	 * loads the recent files from shared preferences

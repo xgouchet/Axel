@@ -371,48 +371,8 @@ public class AxelNodeEditorActivity extends Activity {
 		case XmlData.XML_ELEMENT:
 			result = validateElement();
 			break;
-		case XmlData.XML_PROCESSING_INSTRUCTION:
-			result = validateProcessingInstruction();
-			break;
-		case XmlData.XML_CDATA:
-			result = validateCData();
-			break;
-		case XmlData.XML_COMMENT:
-			result = validateComment();
-			break;
-		case XmlData.XML_DOCUMENT_DECLARATION:
-			result = validateDocumentDeclaration();
-			break;
-		case XmlData.XML_TEXT:
-			result = validateText();
-			break;
 		default:
 			break;
-		}
-
-		return result;
-	}
-
-	/**
-	 * @return if the current document declaration is valid
-	 */
-	protected boolean validateDocumentDeclaration() {
-		boolean result;
-
-		result = true;
-
-		if (!XmlValidator.isValidVersionNumber(mEditVersion.getText().toString())) {
-			mEditVersion.setError(getString(R.string.ui_invalid_syntax));
-			result = false;
-		} else {
-			mEditVersion.setError(null);
-		}
-
-		if (!XmlValidator.isValidEncoding(mEditEncoding.getText().toString())) {
-			mEditEncoding.setError(getString(R.string.ui_invalid_syntax));
-			result = false;
-		} else {
-			mEditEncoding.setError(null);
 		}
 
 		return result;
@@ -447,85 +407,6 @@ public class AxelNodeEditorActivity extends Activity {
 	}
 
 	/**
-	 * @return if the current processing instruction is valid
-	 */
-	protected boolean validateProcessingInstruction() {
-		boolean result;
-
-		result = true;
-
-		if (!XmlValidator.isValidPITargetName(mEditName.getText().toString())) {
-			mEditName.setError(getString(R.string.ui_invalid_syntax));
-			result = false;
-		}
-
-		if (!XmlValidator.isValidPIContent(mEditText.getText().toString())) {
-			mEditText.setError(getString(R.string.ui_invalid_syntax));
-			result = false;
-		}
-
-		return result;
-	}
-
-	/**
-	 * @return if the current comment is valid
-	 */
-	protected boolean validateCData() {
-		boolean result;
-
-		result = true;
-
-		if (!XmlValidator.isValidCDataContent(mEditText.getText().toString())) {
-			mEditText.setError(getString(R.string.ui_invalid_syntax));
-			result = false;
-		}
-
-		return result;
-	}
-
-	/**
-	 * @return if the current text is valid
-	 */
-	protected boolean validateText() {
-		boolean result;
-
-		result = true;
-
-		String text = mEditText.getText().toString();
-		if (Settings.sEscapeTextContent) {
-			text = XmlValidator.escapeTextContent(text);
-
-		}
-
-		if (!XmlValidator.isValidText(text)) {
-			mEditText.setError(getString(R.string.ui_invalid_syntax));
-			result = false;
-		}
-
-		if (result) {
-			mEditText.setText(text);
-		}
-
-		return result;
-	}
-
-	/**
-	 * @return if the current comment is valid
-	 */
-	protected boolean validateComment() {
-		boolean result;
-
-		result = true;
-
-		if (!XmlValidator.isValidComment(mEditText.getText().toString())) {
-			mEditText.setError(getString(R.string.ui_invalid_syntax));
-			result = false;
-		}
-
-		return result;
-	}
-
-	/**
 	 * apply the modifications before quitting the activity
 	 */
 	protected void applyModifications() {
@@ -535,24 +416,6 @@ public class AxelNodeEditorActivity extends Activity {
 			mData.setName(mEditName.getText().toString());
 			mData.getAttributes().clear();
 			mData.getAttributes().addAll(mAttributes);
-			break;
-		case XmlData.XML_PROCESSING_INSTRUCTION:
-			mData.setName(mEditName.getText().toString());
-			mData.setText(mEditText.getText().toString());
-			break;
-		case XmlData.XML_DOCUMENT_DECLARATION:
-			mData.setAttribute("version", mEditVersion.getText().toString());
-			mData.setAttribute("encoding", mEditEncoding.getText().toString());
-			if (mCheckStandalone.isEnabled()) {
-				mData.setAttribute("standalone",
-						mCheckStandalone.isChecked() ? "yes" : "no");
-			}
-			break;
-		case XmlData.XML_COMMENT:
-		case XmlData.XML_TEXT:
-		case XmlData.XML_CDATA:
-		case XmlData.XML_DOCTYPE:
-			mData.setText(mEditText.getText().toString());
 			break;
 		default:
 			break;

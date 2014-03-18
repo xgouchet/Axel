@@ -1,7 +1,6 @@
 package fr.xgouchet.xmleditor.ui.fragment;
 
 import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,11 +18,18 @@ import fr.xgouchet.xmleditor.R;
 public abstract class ASingleNodeEditorFragment extends ANodeEditorFragment {
 
 	@Override
-	public void onAttach(final Activity activity) {
-		super.onAttach(activity);
-
+	public void onResume() {
+		super.onResume();
+		
 		// show the done / discard pattern
 		showDoneDiscardButtons();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		hideDoneDiscardButton();
+		hideSoftKeyboard();
 	}
 
 	// ////////////////////////////////////////////////////////////////////////////////////
@@ -94,8 +100,6 @@ public abstract class ASingleNodeEditorFragment extends ANodeEditorFragment {
 
 			if (close) {
 				getFragmentManager().popBackStack();
-				hideDoneDiscardButton();
-				hideSoftKeyboard();
 			}
 		}
 	};

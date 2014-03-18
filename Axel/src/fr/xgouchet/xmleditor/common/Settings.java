@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 /**
  * The settings fields
  */
+@Deprecated
 public final class Settings {
 
 	/** */
