@@ -1,5 +1,6 @@
 package fr.xgouchet.xmleditor.ui.fragment;
 
+import android.app.FragmentManager;
 import android.app.FragmentManager.OnBackStackChangedListener;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -83,6 +84,12 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
 		if (getView() != null) {
 			// Reset bread crumbs
 			mBreadCrumbsView.clearBreadCrumbs();
+
+			// Clear fragment backstack
+			FragmentManager fm = getFragmentManager();
+			while (fm.getBackStackEntryCount() > 0) {
+				fm.popBackStackImmediate();
+			}
 
 			// display root
 			displayNodeChildren(mXmlRoot, false);
