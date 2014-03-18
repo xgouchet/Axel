@@ -577,6 +577,7 @@ public class XmlEditor {
 				final String hash, final String encoding, final boolean readOnly) {
 
 			mRoot = root;
+			mDirty = false;
 
 			if (uri == null) {
 				mCurrentDocumentUri = null;
@@ -663,13 +664,13 @@ public class XmlEditor {
 		@Override
 		public void onXmlDocumentWritten(final Uri uri, final String hash) {
 
+			mDirty = false;
+
 			if (uri != null) {
 				mCurrentDocumentUri = uri;
 				mCurrentDocumentName = AxelUtils.getUriFileName(
 						mCurrentDocumentUri, mContext);
 				mCurrentDocumentHash = hash;
-
-				mDirty = false;
 
 				RecentUtils.updateRecentUris(mContext, mCurrentDocumentUri,
 						mCurrentDocumentName);

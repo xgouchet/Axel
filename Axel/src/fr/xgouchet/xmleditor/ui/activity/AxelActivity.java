@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -459,6 +460,19 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 				});
 	}
 
+	private void updateTitle() {
+		String name = mXmlEditor.getCurrentDocumentName();
+		if (TextUtils.isEmpty(name)) {
+			name = "?";
+		}
+
+		int titleId = mXmlEditor.isReadOnly() ? R.string.title_editor_readonly
+				: (mXmlEditor.isDirty() ? R.string.title_editor_dirty
+						: R.string.title_editor);
+
+		setTitle(getString(titleId, name));
+	}
+
 	// ////////////////////////////////////////////////////////////////////////////////////
 	// XmlEditorListener Implementation
 	// ////////////////////////////////////////////////////////////////////////////////////
@@ -466,20 +480,20 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 	@Override
 	public void onXmlDocumentChanged(final XmlNode root, final String name,
 			final Uri uri) {
-		// Nothing to do at this level
 		invalidateOptionsMenu();
+		updateTitle();
 	}
 
 	@Override
 	public void onXmlContentChanged() {
-		// Nothing to do at this level
 		invalidateOptionsMenu();
+		updateTitle();
 	}
 
 	@Override
 	public void onXmlDocumentSaved() {
-		// Nothing to do at this level
 		invalidateOptionsMenu();
+		updateTitle();
 	}
 
 	@Override
