@@ -375,18 +375,13 @@ public class AxelUtils {
 
 		// Exctract name from provider
 		int index;
-		String[] proj = { MediaColumns.TITLE, MediaColumns.DISPLAY_NAME };
+		String[] proj = { MediaColumns.DISPLAY_NAME };
 		Cursor cursor = context.getContentResolver().query(uri, proj, null,
 				null, null);
 
 		// only if a match is found
 		if ((cursor != null) && (cursor.getCount() != 0)) {
 			cursor.moveToFirst();
-
-			if (TextUtils.isEmpty(name)) {
-				index = cursor.getColumnIndexOrThrow(MediaColumns.TITLE);
-				name = cursor.getString(index);
-			}
 
 			if (TextUtils.isEmpty(name)) {
 				index = cursor.getColumnIndexOrThrow(MediaColumns.DISPLAY_NAME);

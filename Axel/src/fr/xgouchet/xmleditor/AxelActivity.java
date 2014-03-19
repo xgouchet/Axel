@@ -234,7 +234,7 @@ public class AxelActivity extends Activity implements
         super.onCreateOptionsMenu(menu);
         
         MenuInflater inflater = new MenuInflater(this);
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.activity_main, menu);
         
         // generate search view for the search menu
         SearchView search;

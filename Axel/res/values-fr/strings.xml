@@ -28,7 +28,8 @@
 	<string name="action_save_as">Sauver sous</string>
 	<string name="action_save_as_file">Sauver comme document</string>
 	<string name="action_save_as_template">Sauver comme modèle</string>
-	<string name="action_settings">Paramètres</string>
+	<string name="action_validate">Valider la syntaxe</string>
+	<string name="action_preferences">Préférences</string>
 	<string name="action_about">A propos</string>
 	<string name="action_expand_all">Tout déplier</string>
 	<string name="action_preview">Aperçu</string>

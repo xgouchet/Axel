@@ -157,7 +157,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 			}
 		};
 
-		promptSaveIfDirty();
+		promptSaveIfDirty(true);
 	}
 
 	// ////////////////////////////////////////////////////////////////////////////////////
@@ -168,7 +168,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 	public boolean onCreateOptionsMenu(final Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-		getMenuInflater().inflate(R.menu.main, menu);
+		getMenuInflater().inflate(R.menu.activity_main, menu);
 
 		return true;
 	}
@@ -252,11 +252,14 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 		case R.id.action_preview_in_browser:
 			// TODO previewFile();
 			break;
+		case R.id.action_validate:
+			validateCurrentDocument();
+			break;
 		case R.id.action_help:
 			startActivity(new Intent(getApplicationContext(),
 					AxelHelpActivity.class));
 			break;
-		case R.id.action_settings:
+		case R.id.action_preferences:
 			startActivity(new Intent(getApplicationContext(),
 					AxelSettingsActivity.class));
 			break;
@@ -324,7 +327,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 			}
 		};
 
-		promptSaveIfDirty();
+		promptSaveIfDirty(true);
 	}
 
 	/**
@@ -366,7 +369,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 			}
 		};
 
-		promptSaveIfDirty();
+		promptSaveIfDirty(true);
 	}
 
 	/**
@@ -386,7 +389,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 			}
 		};
 
-		promptSaveIfDirty();
+		promptSaveIfDirty(true);
 	}
 
 	/**
@@ -423,15 +426,34 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 		// Limit to openable data
 		save.addCategory(Intent.CATEGORY_OPENABLE);
 
+		// set default name
+		if (!TextUtils.isEmpty(mXmlEditor.getCurrentDocumentName())) {
+			save.putExtra(Intent.EXTRA_TITLE,
+					mXmlEditor.getCurrentDocumentName());
+		}
+
 		// Set Mime Type
 		save.setType(AxelUtils.getMimeType(mXmlEditor.getCurrentDocumentNode(),
 				mXmlEditor.getCurrentDocumentUri()));
 		startActivityForResult(save, requestCode);
 	}
 
+	private void validateCurrentDocument() {
+		mAfterSave = new Runnable() {
+
+			@Override
+			public void run() {
+				validateDocument(mXmlEditor.getCurrentDocumentUri());
+			}
+		};
+
+		promptSaveIfDirty(false);
+	}
+
 	/**
-	 * TODO add an option to validate from action bar Validates a file with the
-	 * W3C validator API
+	 * TODO add an option to validate from action bar
+	 * 
+	 * Validates a file with the W3C validator API
 	 * 
 	 * @param file
 	 *            the file to validate
@@ -446,31 +468,33 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 	 * If the current document is dirty, prompts the user to save it. Then runs
 	 * the After Save Action
 	 */
-	private void promptSaveIfDirty() {
+	private void promptSaveIfDirty(final boolean allowNoSave) {
 		if (!mXmlEditor.isDirty()) {
 			runAfterSave();
 			return;
 		}
 
-		PromptDialogHelper.promptDirtyDocumentAction(this,
-				new PromptListener() {
+		PromptListener listener = new PromptListener() {
 
-					@Override
-					public void onPromptEvent(final int id, final int choice,
-							final Object result) {
-						switch (choice) {
-						case PromptDialogHelper.CHOICE_SAVE:
-							saveDocument();
-							break;
-						case PromptDialogHelper.CHOICE_DONT_SAVE:
-							runAfterSave();
-							break;
-						case PromptDialogHelper.CHOICE_CANCEL_IGNORE:
-							mAfterSave = null;
-							break;
-						}
-					}
-				});
+			@Override
+			public void onPromptEvent(final int id, final int choice,
+					final Object result) {
+				switch (choice) {
+				case PromptDialogHelper.CHOICE_SAVE:
+					saveDocument();
+					break;
+				case PromptDialogHelper.CHOICE_DONT_SAVE:
+					runAfterSave();
+					break;
+				case PromptDialogHelper.CHOICE_CANCEL_IGNORE:
+					mAfterSave = null;
+					break;
+				}
+			}
+		};
+
+		PromptDialogHelper.promptDirtyDocumentAction(this, listener,
+				allowNoSave);
 	}
 
 	private void updateTitle() {

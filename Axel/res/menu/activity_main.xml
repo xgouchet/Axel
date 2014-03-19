@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <!--
-    <item
-        android:id="@id/action_search"
-        android:icon="@drawable/ic_action_search"
-        android:showAsAction="always"
-        android:title="@android:string/search_go">
-    </item>
-    -->
-
-
     <!-- New (empty / from template) -->
     <item
         android:id="@id/action_new"
@@ -74,10 +64,16 @@
         android:showAsAction="never"
         android:title="@string/action_preview"/>
 
+    <!-- Validate -->
+    <item
+        android:id="@+id/action_validate"
+        android:showAsAction="never"
+        android:title="@string/action_validate"/>
+
     <!-- Preferences -->
     <item
-        android:id="@id/action_settings"
-        android:title="@string/action_settings"/>
+        android:id="@+id/action_preferences"
+        android:title="@string/action_preferences"/>
 
     <!-- Help -->
     <item

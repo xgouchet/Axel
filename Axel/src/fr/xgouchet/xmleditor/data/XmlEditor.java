@@ -10,6 +10,7 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import fr.xgouchet.androidlib.data.ClipboardUtils;
 import fr.xgouchet.androidlib.data.ClipboardUtils.ClipboardProxy;
 import fr.xgouchet.androidlib.data.FileUtils;
@@ -613,9 +614,6 @@ public class XmlEditor {
 
 			mLoader = null;
 
-			// DEBUG
-			throwable.printStackTrace();
-
 			// Check for parsing error
 			if (throwable instanceof XmlPullParserException) {
 				if (AxelUtils.isHtmlDocument(uri)) {
@@ -650,7 +648,9 @@ public class XmlEditor {
 			// TODO handle other errors
 
 			// Default, lets just print the error and hope for the best
-			fireOnErrorNotification(throwable.getMessage());
+			Log.e("XmlEditor", "Unknown load error for Uri " + uri, throwable);
+			fireOnErrorNotification(mContext
+					.getString(R.string.toast_open_error));
 
 		}
 
