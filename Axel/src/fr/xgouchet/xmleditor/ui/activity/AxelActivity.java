@@ -147,6 +147,19 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 
 	}
 
+	@Override
+	public void onBackPressed() {
+		mAfterSave = new Runnable() {
+
+			@Override
+			public void run() {
+				finish();
+			}
+		};
+
+		promptSaveIfDirty();
+	}
+
 	// ////////////////////////////////////////////////////////////////////////////////////
 	// OPTIONS MENU
 	// ////////////////////////////////////////////////////////////////////////////////////
@@ -447,7 +460,7 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 							final Object result) {
 						switch (choice) {
 						case PromptDialogHelper.CHOICE_SAVE:
-							// TODO saveContent();
+							saveDocument();
 							break;
 						case PromptDialogHelper.CHOICE_DONT_SAVE:
 							runAfterSave();
