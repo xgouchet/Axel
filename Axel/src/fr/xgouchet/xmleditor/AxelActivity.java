@@ -961,14 +961,10 @@ public class AxelActivity extends Activity implements
 	private void doEditNode() {
 		getAxelApplication().setCurrentSelection(mEditor.getSelection());
 
-		Intent edit = new Intent(getApplicationContext(),
-				AxelNodeEditorActivity.class);
-		edit.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-		startActivityForResult(edit, Constants.REQUEST_EDIT_NODE);
 	}
 
 	/**
-	 * Opens an editor to sort an element's children;
+	 * Ops an editor to sort an element's children;
 	 */
 	private void doSortChildren() {
 		getAxelApplication().setCurrentSelection(mEditor.getSelection());

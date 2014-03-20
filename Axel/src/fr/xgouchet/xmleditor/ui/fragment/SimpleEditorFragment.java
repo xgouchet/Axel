@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import fr.xgouchet.xmleditor.R;
 import fr.xgouchet.xmleditor.data.tree.TreeNode;
 import fr.xgouchet.xmleditor.data.xml.XmlData;
@@ -26,6 +27,8 @@ import fr.xgouchet.xmleditor.ui.adapter.NodeViewListener;
  */
 public class SimpleEditorFragment extends ADocumentEditorFragment {
 
+	private TextView mTextXPath;
+
 	// ////////////////////////////////////////////////////////////////////////////////////
 	// FRAGMENT LIFECYCLE
 	// ////////////////////////////////////////////////////////////////////////////////////
@@ -36,6 +39,8 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
 
 		View root = inflater.inflate(R.layout.fragment_breadcrumb_editor,
 				container, false);
+
+		mTextXPath = (TextView) root.findViewById(R.id.text_xpath);
 
 		return root;
 	}
@@ -150,17 +155,19 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
 	 *            the fragment
 	 * @param name
 	 *            the fragment name (for backstack use)
+	 * @param the
+	 *            full unique xpath of the node
 	 */
 	private void displayNodeFragment(final ANodeEditorFragment fragment,
-			final String name, final String tag) {
+			final String name, final String xpath) {
 
 		FragmentTransaction transaction = getFragmentManager()
 				.beginTransaction();
 
-		transaction.replace(R.id.frame_sub_fragment, fragment, tag);
+		transaction.replace(R.id.frame_sub_fragment, fragment, xpath);
 
 		if (!TextUtils.isEmpty(name)) {
-			transaction.addToBackStack(name);
+			transaction.addToBackStack(xpath);
 		}
 		transaction.commit();
 
@@ -215,5 +222,4 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
 
 		}
 	};
-
 }

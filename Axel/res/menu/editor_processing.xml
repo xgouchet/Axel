@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
+    <!-- Icons ? -->
     <item
-        android:id="@+id/action_xsl_link"
-        android:showAsAction="never"
+        android:id="@+id/action_pi_xsl_link"
+        android:showAsAction="ifRoom"
         android:title="@string/action_xsl_link">
     </item>
 

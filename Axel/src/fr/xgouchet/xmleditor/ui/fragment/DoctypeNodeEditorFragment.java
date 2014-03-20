@@ -2,6 +2,9 @@ package fr.xgouchet.xmleditor.ui.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -9,13 +12,32 @@ import fr.xgouchet.xmleditor.R;
 import fr.xgouchet.xmleditor.data.xml.XmlValidator;
 import fr.xgouchet.xmleditor.data.xml.XmlValidator.InvalidRegion;
 
+/**
+ * TODO add a generic known Doctype map, with more doctypes
+ */
 public class DoctypeNodeEditorFragment extends ASingleNodeEditorFragment {
+
+	/** XHTML Strict dtd declaration */
+	protected static final String DTD_XHTML_STRICT_1_0 = "html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"";
+	/** XHTML Transitional dtd declaration */
+	protected static final String DTD_XHTML_TRANSITIONAL_1_0 = "html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"";
+	/** XHTML Frameset dtd declaration */
+	protected static final String DTD_XHTML_FRAMESET_1_0 = "html PUBLIC \"-//W3C//DTD XHTML 1.0 Frameset//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd\"";
+	/** XHTML 1.1 dtd declaration */
+	protected static final String DTD_XHTML_1_1 = "html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml11.dtd\"";
 
 	private EditText mEditText;
 
 	// ////////////////////////////////////////////////////////////////////////////////////
 	// FRAGMENT LIFECYCLE
 	// ////////////////////////////////////////////////////////////////////////////////////
+
+	@Override
+	public void onCreate(final Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		setHasOptionsMenu(true);
+	}
 
 	@Override
 	public View onCreateView(final LayoutInflater inflater,
@@ -30,6 +52,51 @@ public class DoctypeNodeEditorFragment extends ASingleNodeEditorFragment {
 
 		return root;
 	}
+
+	// ////////////////////////////////////////////////////////////////////////////////////
+	// OPTIONS MENU
+	// ////////////////////////////////////////////////////////////////////////////////////
+
+	@Override
+	public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+
+		inflater.inflate(R.menu.editor_doctype, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem item) {
+
+		boolean res = true;
+
+		switch (item.getItemId()) {
+		case R.id.action_doctype_xhtml_strict:
+			setDoctype(DTD_XHTML_STRICT_1_0);
+			break;
+		case R.id.action_doctype_xhtml_transitional:
+			setDoctype(DTD_XHTML_TRANSITIONAL_1_0);
+			break;
+		case R.id.action_doctype_xhtml_frameset:
+			setDoctype(DTD_XHTML_FRAMESET_1_0);
+			break;
+		case R.id.action_doctype_xhtml_1_1:
+			setDoctype(DTD_XHTML_1_1);
+			break;
+		default:
+			res = super.onOptionsItemSelected(item);
+			break;
+		}
+
+		return res;
+	}
+
+	private void setDoctype(final String doctype) {
+		mEditText.setText(doctype);
+	}
+
+	// ////////////////////////////////////////////////////////////////////////////////////
+	// NODE EDITING
+	// ////////////////////////////////////////////////////////////////////////////////////
 
 	@Override
 	protected boolean onValidate() {

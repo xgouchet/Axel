@@ -8,15 +8,15 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin" >
 
-    <!--
-	<fr.xgouchet.xmleditor.ui.widget.BreadCrumbsView
-		android:id="@+id/bread_crumbs"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_alignParentLeft="true"
-		android:layout_alignParentRight="true"
-		android:layout_alignParentTop="true" />
-    -->
+    <EditText
+        android:id="@+id/text_xpath"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:enabled="false"
+        android:inputType="textUri" />
 
     <FrameLayout
         android:id="@+id/frame_sub_fragment"
@@ -25,7 +25,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" > <!-- android:layout_below="@id/bread_crumbs" -->
+        android:layout_below="@id/text_xpath" >
     </FrameLayout>
 
 </RelativeLayout>

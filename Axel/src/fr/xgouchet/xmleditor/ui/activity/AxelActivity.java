@@ -149,6 +149,9 @@ public class AxelActivity extends Activity implements XmlEditorListener {
 
 	@Override
 	public void onBackPressed() {
+		if (getFragmentManager().popBackStackImmediate()) {
+			return;
+		}
 		mAfterSave = new Runnable() {
 
 			@Override
