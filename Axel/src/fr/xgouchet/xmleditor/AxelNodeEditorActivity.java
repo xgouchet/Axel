@@ -100,11 +100,11 @@ public class AxelNodeEditorActivity extends Activity {
 		MenuInflater inflater = new MenuInflater(this);
 
 		if (mData.isElement()) {
-			inflater.inflate(R.menu.editor_tag_menu, menu);
+			inflater.inflate(R.menu.editor_element, menu);
 		} else if (mData.isDoctype()) {
-			inflater.inflate(R.menu.editor_doctype_menu, menu);
+			inflater.inflate(R.menu.editor_doctype, menu);
 		} else if (mData.isProcessingInstruction()) {
-			inflater.inflate(R.menu.editor_processing_menu, menu);
+			inflater.inflate(R.menu.editor_processing, menu);
 		}
 
 		return true;

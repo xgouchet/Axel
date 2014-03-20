@@ -3,15 +3,15 @@
 
     <!-- New (empty / from template) -->
     <item
-        android:id="@id/action_new"
+        android:id="@+id/action_new"
         android:showAsAction="never"
         android:title="@string/action_new">
         <menu>
             <item
-                android:id="@id/action_new_empty"
+                android:id="@+id/action_new_empty"
                 android:title="@string/action_new_empty"/>
             <item
-                android:id="@id/action_new_template"
+                android:id="@+id/action_new_template"
                 android:title="@string/action_new_template">
                 <menu>
                 </menu>
@@ -21,15 +21,15 @@
 
     <!-- Open (document / recent) -->
     <item
-        android:id="@id/action_open"
+        android:id="@+id/action_open"
         android:showAsAction="never"
         android:title="@string/action_open">
         <menu>
             <item
-                android:id="@id/action_open_file"
+                android:id="@+id/action_open_file"
                 android:title="@string/action_open_file"/>
             <item
-                android:id="@id/action_open_recent"
+                android:id="@+id/action_open_recent"
                 android:title="@string/action_open_recent">
                 <menu>
                 </menu>
@@ -39,28 +39,28 @@
 
     <!-- Save -->
     <item
-        android:id="@id/action_save"
+        android:id="@+id/action_save"
         android:showAsAction="never"
         android:title="@string/action_save"/>
 
     <!-- Save as -->
     <item
-        android:id="@id/action_save_as"
+        android:id="@+id/action_save_as"
         android:showAsAction="never"
         android:title="@string/action_save_as">
         <menu>
             <item
-                android:id="@id/action_save_as_file"
+                android:id="@+id/action_save_as_file"
                 android:title="@string/action_save_as_file"/>
             <item
-                android:id="@id/action_save_as_template"
+                android:id="@+id/action_save_as_template"
                 android:title="@string/action_save_as_template"/>
         </menu>
     </item>
 
     <!-- Preview -->
     <item
-        android:id="@id/action_preview_in_browser"
+        android:id="@+id/action_preview_in_browser"
         android:showAsAction="never"
         android:title="@string/action_preview"/>
 
@@ -77,11 +77,11 @@
 
     <!-- Help -->
     <item
-        android:id="@id/action_help"
+        android:id="@+id/action_help"
         android:title="@string/ui_help"/>
     <!-- About -->
     <item
-        android:id="@id/action_about"
+        android:id="@+id/action_about"
         android:title="@string/action_about"/>
 
 </menu>

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
 	<item
-		android:id="@id/action_add_child"
+		android:id="@+id/action_add_child"
 		android:icon="@drawable/ic_action_add_child"
 		android:showAsAction="ifRoom"
 		android:title="@string/action_add_child">

@@ -77,7 +77,7 @@ public class ElementChildrenEditorFragment extends ANodeEditorFragment {
 			return;
 		}
 
-		inflater.inflate(R.menu.node_children_editor, menu);
+		inflater.inflate(R.menu.editor_element_children, menu);
 
 		Menu submenu = menu.findItem(R.id.action_add_child).getSubMenu();
 		submenu.setGroupVisible(R.id.action_group_common_add_child, true);
@@ -118,7 +118,7 @@ public class ElementChildrenEditorFragment extends ANodeEditorFragment {
 	public void setNodeListener(final NodeViewListener<XmlData> nodeListener) {
 		mNodeViewListener = nodeListener;
 	}
-	
+
 	public void setParentNodeListener(
 			final NodeViewListener<XmlData> parentNodeViewListener) {
 		mParentNodeViewListener = parentNodeViewListener;
@@ -139,7 +139,7 @@ public class ElementChildrenEditorFragment extends ANodeEditorFragment {
 		holder.position = 0;
 		holder.node = mXmlNode;
 		holder.displayNode(new XmlNodeStyler(), getActivity(), 0);
-		
+
 	}
 
 	private void setupChildrenListView() {
@@ -155,6 +155,5 @@ public class ElementChildrenEditorFragment extends ANodeEditorFragment {
 		mListView.setAdapter(mAdapter);
 
 	}
-
 
 }

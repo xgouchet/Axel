@@ -2,39 +2,39 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@id/action_edit"
+        android:id="@+id/action_node_edit"
         android:icon="@drawable/ic_action_edit"
         android:title="@string/action_edit"/>
     <item
-        android:id="@id/action_add_child"
+        android:id="@+id/action_node_add_child"
         android:icon="@drawable/ic_action_add_child"
         android:title="@string/action_add_child"/>
     <item
-        android:id="@id/action_copy"
+        android:id="@+id/action_node_copy"
         android:icon="@drawable/ic_action_copy"
         android:title="@string/action_copy"/>
     <item
-        android:id="@id/action_cut"
+        android:id="@+id/action_node_cut"
         android:icon="@drawable/ic_action_cut"
         android:title="@string/action_cut"/>
     <item
-        android:id="@id/action_paste"
+        android:id="@+id/action_node_paste"
         android:icon="@drawable/ic_action_paste"
         android:title="@string/action_paste"/>
     <item
-        android:id="@id/action_comment"
+        android:id="@+id/action_node_comment"
         android:icon="@drawable/ic_action_comment"
         android:title="@string/action_comment"/>
     <item
-        android:id="@id/action_add_attr"
+        android:id="@+id/action_node_add_attribute"
         android:icon="@drawable/ic_action_add_attr"
         android:title="@string/action_add_attribute"/>
     <item
-        android:id="@id/action_sort_children"
+        android:id="@+id/action_sort_children"
         android:icon="@drawable/ic_action_sort"
         android:title="@string/action_sort_children"/>
     <item
-        android:id="@id/action_delete"
+        android:id="@+id/action_node_delete"
         android:icon="@drawable/ic_action_delete"
         android:title="@string/action_delete"/>
 

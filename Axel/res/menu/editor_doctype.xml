@@ -4,16 +4,16 @@
     <item android:title="@string/action_presets">
         <menu>
             <item
-                android:id="@id/action_doctype_xhtml_strict"
+                android:id="@+id/action_doctype_xhtml_strict"
                 android:title="XHTML Strict 1.0"/>
             <item
-                android:id="@id/action_doctype_xhtml_transitional"
+                android:id="@+id/action_doctype_xhtml_transitional"
                 android:title="XHTML Transitional 1.0"/>
             <item
-                android:id="@id/action_doctype_xhtml_frameset"
+                android:id="@+id/action_doctype_xhtml_frameset"
                 android:title="XHTML Frameset 1.0"/>
             <item
-                android:id="@id/action_doctype_xhtml_1_1"
+                android:id="@+id/action_doctype_xhtml_1_1"
                 android:title="XHTML 1.1"/>
         </menu>
     </item>

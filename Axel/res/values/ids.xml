@@ -1,44 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Actions -->
-    <item name="action_add_child" type="id"/>
-    <item name="action_add_attr" type="id"/>
-    <item name="action_comment" type="id"/>
-    <item name="action_delete" type="id"/>
-    <item name="action_edit" type="id"/>
-    <item name="action_sort_children" type="id"/>
-    <item name="action_cut" type="id"/>
-    <item name="action_copy" type="id"/>
-    <item name="action_paste" type="id"/>
-    <item name="action_new" type="id"/>
-    <item name="action_new_empty" type="id"/>
-    <item name="action_new_template" type="id"/>
-    <item name="action_open" type="id"/>
-    <item name="action_open_file" type="id"/>
-    <item name="action_open_recent" type="id"/>
-    <item name="action_save" type="id"/>
-    <item name="action_save_as" type="id"/>
-    <item name="action_save_as_file" type="id"/>
-    <item name="action_save_as_template" type="id"/>
-    <item name="action_preview_in_browser" type="id"/>
-    <item name="action_help" type="id"/>
-    <item name="action_settings" type="id"/>
-    <item name="action_about" type="id"/>
-    <item name="action_add_attribute" type="id"/>
-    <item name="action_attr_custom" type="id"/>
-    <item name="action_attr_namespace" type="id"/>
-    <item name="action_attr_default_namespace" type="id"/>
-    <item name="action_attr_xml_schema_public" type="id"/>
-    <item name="action_attr_xml_schema_local" type="id"/>
-    <item name="action_doctype_xhtml_strict" type="id"/>
-    <item name="action_doctype_xhtml_transitional" type="id"/>
-    <item name="action_doctype_xhtml_frameset" type="id"/>
-    <item name="action_doctype_xhtml_1_1" type="id"/>
-    <item name="action_search" type="id"/>
+    <!-- Dynamic groups -->
     <item name="action_group_template" type="id"/>
     <item name="action_group_recents" type="id"/>
-    <item name="action_xsl_link" type="id"/>
 
     <!-- UIs -->
     <item name="buttonDone" type="id"/>
