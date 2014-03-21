@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_node_add_child"
+        android:icon="@drawable/ic_action_add_child"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_add_child"/>
+    <item
+        android:id="@+id/action_node_comment"
+        android:icon="@drawable/ic_action_comment"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_comment"/>
+    <item
+        android:id="@+id/action_node_add_attribute"
+        android:icon="@drawable/ic_action_add_attr"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_add_attribute"/>
+    <item
+        android:id="@+id/action_node_copy"
+        android:icon="@drawable/ic_action_copy"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_copy"/>
+    <item
+        android:id="@+id/action_node_cut"
+        android:icon="@drawable/ic_action_cut"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_cut"/>
+    <item
+        android:id="@+id/action_node_paste"
+        android:icon="@drawable/ic_action_paste"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_paste"/>
+    <item
+        android:id="@+id/action_node_delete"
+        android:icon="@drawable/ic_action_delete"
+        android:showAsAction="never"
+        android:title="@string/action_delete"/>
+
+</menu>

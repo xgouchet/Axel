@@ -4,6 +4,7 @@
     <!-- Dynamic groups -->
     <item name="action_group_template" type="id"/>
     <item name="action_group_recents" type="id"/>
+    <item name="action_group_write" type="id"/>
 
     <!-- UIs -->
     <item name="buttonDone" type="id"/>

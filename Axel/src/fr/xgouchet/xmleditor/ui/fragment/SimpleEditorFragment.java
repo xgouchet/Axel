@@ -1,6 +1,7 @@
 package fr.xgouchet.xmleditor.ui.fragment;
 
 import android.app.FragmentManager;
+import android.app.FragmentManager.OnBackStackChangedListener;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -27,199 +28,230 @@ import fr.xgouchet.xmleditor.ui.adapter.NodeViewListener;
  */
 public class SimpleEditorFragment extends ADocumentEditorFragment {
 
-	private TextView mTextXPath;
+    private TextView mTextXPath;
+    private final NodeActionMode mActionModeCallback = new NodeActionMode();
 
-	// ////////////////////////////////////////////////////////////////////////////////////
-	// FRAGMENT LIFECYCLE
-	// ////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+    // FRAGMENT LIFECYCLE
+    //////////////////////////////////////////////////////////////////////////////////////
 
-	@Override
-	public View onCreateView(final LayoutInflater inflater,
-			final ViewGroup container, final Bundle savedInstanceState) {
+    @Override
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+            final Bundle savedInstanceState) {
 
-		View root = inflater.inflate(R.layout.fragment_breadcrumb_editor,
-				container, false);
+        View root = inflater.inflate(R.layout.fragment_breadcrumb_editor, container, false);
 
-		mTextXPath = (TextView) root.findViewById(R.id.text_xpath);
+        mTextXPath = (TextView) root.findViewById(R.id.text_xpath);
 
-		return root;
-	}
+        getFragmentManager().addOnBackStackChangedListener(mBackStackChangedListener);
 
-	@Override
-	public void onViewCreated(final View view, final Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
+        return root;
+    }
 
-		if (mXmlRoot != null) {
-			displayXmlRoot();
-		}
-	}
+    @Override
+    public void onViewCreated(final View view, final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-	// ////////////////////////////////////////////////////////////////////////////////////
-	// OPTIONS MENU
-	// ////////////////////////////////////////////////////////////////////////////////////
+        if (mXmlRoot != null) {
+            displayXmlRoot();
+        }
+    }
 
-	@Override
-	public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
+    //////////////////////////////////////////////////////////////////////////////////////
+    // OPTIONS MENU
+    //////////////////////////////////////////////////////////////////////////////////////
 
-		// TODO add options for the current node (add children, ...)
-	}
+    @Override
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
 
-	// ////////////////////////////////////////////////////////////////////////////////////
-	// XML EDITOR EVENTS
-	// ////////////////////////////////////////////////////////////////////////////////////
+        // TODO add options for the current node (add children, ...)
+    }
 
-	@Override
-	protected void displayXmlRoot() {
-		if (getView() != null) {
+    //////////////////////////////////////////////////////////////////////////////////////
+    // XML EDITOR EVENTS
+    //////////////////////////////////////////////////////////////////////////////////////
 
-			// Clear fragment backstack
-			FragmentManager fm = getFragmentManager();
-			while (fm.getBackStackEntryCount() > 0) {
-				fm.popBackStackImmediate();
-			}
+    @Override
+    protected void displayXmlRoot() {
+        if (getView() != null) {
 
-			// display root
-			displayNodeChildren(mXmlRoot);
-		}
-	}
+            // Clear fragment backstack
+            FragmentManager fm = getFragmentManager();
+            while (fm.getBackStackEntryCount() > 0) {
+                fm.popBackStackImmediate();
+            }
 
-	/**
-	 * Displays the children of the given node
-	 * 
-	 * @param node
-	 */
-	private void displayNodeChildren(final XmlNode node) {
+            // display root
+            displayNodeChildren(mXmlRoot);
+        }
+    }
 
-		// create the fragment node
-		ElementChildrenEditorFragment fragment = new ElementChildrenEditorFragment();
-		fragment.setXmlNode(node);
-		fragment.setNodeListener(mNodeListener);
-		fragment.setParentNodeListener(mParentNodeListener);
-		fragment.setXmlEditor(mXmlEditor);
+    /**
+     * Displays the children of the given node
+     * 
+     * @param node
+     */
+    private void displayNodeChildren(final XmlNode node) {
 
-		displayNodeFragment(fragment, node.getXPathName(), node.getXPath());
+        // create the fragment node
+        ElementChildrenEditorFragment fragment = new ElementChildrenEditorFragment();
+        fragment.setXmlNode(node);
+        fragment.setNodeListener(mNodeListener);
+        fragment.setParentNodeListener(mParentNodeListener);
+        fragment.setXmlEditor(mXmlEditor);
 
-	}
+        displayNodeFragment(fragment, node.getXPathName(), node.getXPath());
 
-	/**
-	 * Displays the content of a node to be edited
-	 * 
-	 * @param node
-	 *            the node to display
-	 */
-	private void displayNodeEditor(final XmlNode node) {
+    }
 
-		ANodeEditorFragment fragment;
+    /**
+     * Displays the content of a node to be edited
+     * 
+     * @param node
+     *            the node to display
+     */
+    private void displayNodeEditor(final XmlNode node) {
 
-		// select next fragment
-		switch (node.getContent().getType()) {
-		case XmlData.XML_ELEMENT:
-			fragment = new ElementNodeEditorFragment();
-			break;
-		case XmlData.XML_TEXT:
-			fragment = new TextNodeEditorFragment();
-			break;
-		case XmlData.XML_CDATA:
-			fragment = new CDataNodeEditorFragment();
-			break;
-		case XmlData.XML_COMMENT:
-			fragment = new CommentNodeEditorFragment();
-			break;
-		case XmlData.XML_PROCESSING_INSTRUCTION:
-			fragment = new ProcessingInstructionNodeEditorFragment();
-			break;
-		case XmlData.XML_DOCTYPE:
-			fragment = new DoctypeNodeEditorFragment();
-			break;
-		case XmlData.XML_DOCUMENT_DECLARATION:
-			fragment = new DocumentDeclarationNodeEditorFragment();
-			break;
-		default:
-			Log.w("SimpleEditor", "Unknown editor for node " + node);
-			return;
-		}
+        ANodeEditorFragment fragment;
 
-		// set the node
-		fragment.setXmlNode(node);
-		fragment.setXmlEditor(mXmlEditor);
+        // select next fragment
+        switch (node.getContent().getType()) {
+            case XmlData.XML_ELEMENT:
+                fragment = new ElementNodeEditorFragment();
+                break;
+            case XmlData.XML_TEXT:
+                fragment = new TextNodeEditorFragment();
+                break;
+            case XmlData.XML_CDATA:
+                fragment = new CDataNodeEditorFragment();
+                break;
+            case XmlData.XML_COMMENT:
+                fragment = new CommentNodeEditorFragment();
+                break;
+            case XmlData.XML_PROCESSING_INSTRUCTION:
+                fragment = new ProcessingInstructionNodeEditorFragment();
+                break;
+            case XmlData.XML_DOCTYPE:
+                fragment = new DoctypeNodeEditorFragment();
+                break;
+            case XmlData.XML_DOCUMENT_DECLARATION:
+                fragment = new DocumentDeclarationNodeEditorFragment();
+                break;
+            default:
+                Log.w("SimpleEditor", "Unknown editor for node " + node);
+                return;
+        }
 
-		displayNodeFragment(fragment, node.getXPathName(), node.getXPath());
+        // set the node
+        fragment.setXmlNode(node);
+        fragment.setXmlEditor(mXmlEditor);
 
-	}
+        displayNodeFragment(fragment, node.getXPathName(), node.getXPath());
 
-	/**
-	 * Displays the given fragment and add it to the backstack
-	 * 
-	 * @param fragment
-	 *            the fragment
-	 * @param name
-	 *            the fragment name (for backstack use)
-	 * @param the
-	 *            full unique xpath of the node
-	 */
-	private void displayNodeFragment(final ANodeEditorFragment fragment,
-			final String name, final String xpath) {
+    }
 
-		FragmentTransaction transaction = getFragmentManager()
-				.beginTransaction();
+    /**
+     * Displays the given fragment and add it to the backstack
+     * 
+     * @param fragment
+     *            the fragment
+     * @param name
+     *            the fragment name (for backstack use)
+     * @param the
+     *            full unique xpath of the node
+     */
+    private void displayNodeFragment(final ANodeEditorFragment fragment, final String name,
+            final String xpath) {
 
-		transaction.replace(R.id.frame_sub_fragment, fragment, xpath);
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-		if (!TextUtils.isEmpty(name)) {
-			transaction.addToBackStack(xpath);
-		}
-		transaction.commit();
+        transaction.replace(R.id.frame_sub_fragment, fragment, xpath);
 
-	}
+        if (!TextUtils.isEmpty(name)) {
+            transaction.addToBackStack(xpath);
+        }
+        transaction.commit();
 
-	// ////////////////////////////////////////////////////////////////////////////////////
-	// UI EVENT
-	// ////////////////////////////////////////////////////////////////////////////////////
+    }
 
-	private NodeViewListener<XmlData> mNodeListener = new NodeViewListener<XmlData>() {
+    //////////////////////////////////////////////////////////////////////////////////////
+    // NODE EVENTS LISTENERS
+    //////////////////////////////////////////////////////////////////////////////////////
 
-		@Override
-		public void onNodeTapped(final TreeNode<XmlData> node, final View view,
-				final int position) {
-			if (node.getContent().isElement()) {
-				displayNodeChildren((XmlNode) node);
-			} else {
-				displayNodeEditor((XmlNode) node);
-			}
-		}
+    private final NodeViewListener<XmlData> mNodeListener = new NodeViewListener<XmlData>() {
 
-		@Override
-		public void onNodeLongPressed(final TreeNode<XmlData> node,
-				final View view, final int position) {
-			// TODO onNodeDoubleLongPressed
-		}
+        @Override
+        public void onNodeTapped(final TreeNode<XmlData> node, final View view, final int position) {
+            if (!mActionModeCallback.isActionModeDisplayed()) {
+                if (node.getContent().isElement()) {
+                    displayNodeChildren((XmlNode) node);
+                } else {
+                    if (!mXmlEditor.isReadOnly()) {
+                        displayNodeEditor((XmlNode) node);
+                    }
+                }
+            }
+        }
 
-		@Override
-		public void onNodeDoubleTapped(final TreeNode<XmlData> node,
-				final View view, final int position) {
-			// TODO onNodeDoubleTapped
-		}
-	};
+        @Override
+        public void onNodeLongPressed(final TreeNode<XmlData> node, final View view,
+                final int position) {
+            if (!mActionModeCallback.isActionModeDisplayed()) {
+                mActionModeCallback.setTargetNode((XmlNode) node);
+                mActionModeCallback.setXmlEditor(mXmlEditor);
+                getActivity().startActionMode(mActionModeCallback);
+            }
+        }
 
-	private NodeViewListener<XmlData> mParentNodeListener = new NodeViewListener<XmlData>() {
+        @Override
+        public void onNodeDoubleTapped(final TreeNode<XmlData> node, final View view,
+                final int position) {
+            // TODO onNodeDoubleTapped
+        }
+    };
 
-		@Override
-		public void onNodeTapped(final TreeNode<XmlData> node, final View view,
-				final int position) {
-			displayNodeEditor((XmlNode) node);
-		}
+    private final NodeViewListener<XmlData> mParentNodeListener = new NodeViewListener<XmlData>() {
 
-		@Override
-		public void onNodeLongPressed(final TreeNode<XmlData> node,
-				final View view, final int position) {
+        @Override
+        public void onNodeTapped(final TreeNode<XmlData> node, final View view, final int position) {
+            if (!mActionModeCallback.isActionModeDisplayed()) {
+                if (!mXmlEditor.isReadOnly()) {
+                    displayNodeEditor((XmlNode) node);
+                }
+            }
+        }
 
-		}
+        @Override
+        public void onNodeLongPressed(final TreeNode<XmlData> node, final View view,
+                final int position) {
 
-		@Override
-		public void onNodeDoubleTapped(final TreeNode<XmlData> node,
-				final View view, final int position) {
+        }
 
-		}
-	};
+        @Override
+        public void onNodeDoubleTapped(final TreeNode<XmlData> node, final View view,
+                final int position) {
+
+        }
+    };
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    // FRAGMENT BACKSTACK LISTENERS
+    //////////////////////////////////////////////////////////////////////////////////////
+
+    private final OnBackStackChangedListener mBackStackChangedListener = new OnBackStackChangedListener() {
+
+        @Override
+        public void onBackStackChanged() {
+
+            ANodeEditorFragment fragment = (ANodeEditorFragment) getFragmentManager()
+                    .findFragmentById(R.id.frame_sub_fragment);
+            if (fragment == null) {
+                return;
+            }
+
+            mTextXPath.setText(fragment.getXmlNode().getXPath());
+        }
+    };
+
 }
