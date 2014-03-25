@@ -12,56 +12,56 @@
         android:padding="4dp" >
 
         <TextView
-            style="@style/TextTitle"
+            style="@style/Axel.TextView.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/ui_help" />
 
         <TextView
-            style="@style/TextSubTitle"
+            style="@style/Axel.TextView.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/help_edit_title" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/help_edit_content" />
 
         <TextView
-            style="@style/TextSubTitle"
+            style="@style/Axel.TextView.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/help_preview_title" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/help_preview_content" />
 
         <TextView
-            style="@style/TextSubTitle"
+            style="@style/Axel.TextView.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/help_format_title" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/help_format_content" />
-        
-                <TextView
-            style="@style/TextSubTitle"
+
+        <TextView
+            style="@style/Axel.TextView.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/help_binary_title" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/help_binary_content" />

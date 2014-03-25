@@ -20,7 +20,6 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.builder.Builders.Any.B;
 
-import fr.xgouchet.androidlib.ui.Toaster;
 import fr.xgouchet.xmleditor.network.ValidateFileTask;
 import fr.xgouchet.xmleditor.network.ValidateFileTask.ValidationListener;
 import fr.xgouchet.xmleditor.parser.validator.ValidatorEntry;
@@ -102,10 +101,10 @@ public class AxelValidatorActivity extends Activity implements
 						mCurrentFile.getName()));
 				validateCurrentFile();
 			} catch (URISyntaxException e) {
-				Toaster.showToast(this, R.string.toast_intent_invalid_uri, true);
+//				Toaster.showToast(this, R.string.toast_intent_invalid_uri, true);
 				finish();
 			} catch (IllegalArgumentException e) {
-				Toaster.showToast(this, R.string.toast_intent_illegal, true);
+//				Toaster.showToast(this, R.string.toast_intent_illegal, true);
 				finish();
 			}
 		}

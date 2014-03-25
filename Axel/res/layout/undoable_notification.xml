@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|center_horizontal"
+    android:layout_margin="16dp"
+    android:background="@drawable/toast_frame"
+    android:gravity="bottom|center_horizontal"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@android:id/message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:shadowColor="#BB000000"
+        android:shadowRadius="2.75"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#ffffffff" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="#CCC" />
+
+    <Button
+        android:id="@+id/notification_undo"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@android:drawable/list_selector_background"
+        android:drawableLeft="@drawable/ic_action_undo"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:textStyle="bold"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:shadowColor="#BB000000"
+        android:shadowRadius="2.75"
+        android:text="@string/ui_undo"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#ffffffff" />
+
+</LinearLayout>

@@ -10,10 +10,95 @@
         android:orientation="vertical"
         android:padding="4dp" >
 
-        <include layout="@layout/about_generic" />
+        <TextView
+            style="@style/Axel.TextView.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/ui_donate_title" />
 
         <TextView
-            style="@style/TextTitle"
+            style="@style/Axel.TextView.Content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/ui_donate_content" />
+
+        <Button
+            android:id="@+id/button_donate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:drawableLeft="@drawable/ic_donate"
+            android:text="@string/ui_donate_title" />
+
+        <TextView
+            style="@style/Axel.TextView.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/ui_contact_title" />
+
+        <TextView
+            style="@style/Axel.TextView.Content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ui_feedback" />
+
+        <Button
+            android:id="@+id/button_mail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:drawableLeft="@drawable/ic_mail"
+            android:text="@string/ui_mail" />
+
+        <Button
+            android:id="@+id/button_rate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:drawableLeft="@drawable/ic_rating"
+            android:text="@string/ui_app_rating" />
+
+        <Button
+            android:id="@+id/button_play_store"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" 
+            android:layout_gravity="center_horizontal"
+            android:drawableLeft="@drawable/ic_play_store"
+            android:text="@string/ui_market" />
+
+        <TextView
+            style="@style/Axel.TextView.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/ui_licence_title" />
+
+        <TextView
+            style="@style/Axel.TextView.Content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="email"
+            android:text="@string/ui_licence_content" />
+
+        <TextView
+            style="@style/Axel.TextView.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/ui_art_licence_title" />
+
+        <TextView
+            style="@style/Axel.TextView.Content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoLink="email"
+            android:text="@string/ui_art_licence_content" />
+
+        <TextView
+            style="@style/Axel.TextView.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -21,7 +106,7 @@
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="email"
@@ -29,7 +114,7 @@
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="email"
@@ -37,7 +122,7 @@
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="email"
@@ -45,7 +130,7 @@
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autoLink="email"
@@ -53,7 +138,8 @@
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextTitle"
+            
+            style="@style/Axel.TextView.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -61,140 +147,140 @@
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextSubTitle"
+            style="@style/Axel.TextView.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release13"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release13_log"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextSubTitle"
+            style="@style/Axel.TextView.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release12"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release12_log"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextSubTitle"
+            style="@style/Axel.TextView.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release11"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release11_log"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextSubTitle"
+            style="@style/Axel.TextView.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release7"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release7_log"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextSubTitle"
+            style="@style/Axel.TextView.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release6"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release6_log"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextSubTitle"
+            style="@style/Axel.TextView.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release5"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release5_log"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextSubTitle"
+            style="@style/Axel.TextView.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release4"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release4_log"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextSubTitle"
+            style="@style/Axel.TextView.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release3"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release3_log"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextSubTitle"
+            style="@style/Axel.TextView.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release2"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release2_log"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextSubTitle"
+            style="@style/Axel.TextView.SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release1"
             android:textIsSelectable="true" />
 
         <TextView
-            style="@style/TextContent"
+            style="@style/Axel.TextView.Content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/release1_log"

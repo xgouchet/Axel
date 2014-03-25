@@ -65,7 +65,6 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
     public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        // TODO add options for the current node (add children, ...)
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
@@ -207,7 +206,6 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
         @Override
         public void onNodeDoubleTapped(final TreeNode<XmlData> node, final View view,
                 final int position) {
-            // TODO onNodeDoubleTapped
         }
     };
 
@@ -225,7 +223,11 @@ public class SimpleEditorFragment extends ADocumentEditorFragment {
         @Override
         public void onNodeLongPressed(final TreeNode<XmlData> node, final View view,
                 final int position) {
-
+            if (!mActionModeCallback.isActionModeDisplayed()) {
+                mActionModeCallback.setTargetNode((XmlNode) node);
+                mActionModeCallback.setXmlEditor(mXmlEditor);
+                getActivity().startActionMode(mActionModeCallback);
+            }
         }
 
         @Override

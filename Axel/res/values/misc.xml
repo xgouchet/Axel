@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="integer" name="undo_notification_length">5000</item>
+    <item type="integer" name="undo_notification_animation">500</item>
+    
+</resources>

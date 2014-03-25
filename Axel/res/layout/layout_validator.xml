@@ -15,7 +15,6 @@
         android:layout_centerInParent="true"
         android:drawableTop="@drawable/ic_validated"
         android:padding="16dp"
-        android:text="@string/ui_valid"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:visibility="gone" />
 

@@ -17,14 +17,11 @@
     <string name="toast_intent_illegal">Unable to open the file</string>
 
     <!--  -->
-    <string name="toast_open_memory_error">Unable to open the file, not enough memory</string>
     <string name="toast_open_not_found_error">"Unable to open the file, the source file can't be found"</string>
     <string name="toast_open_error">Unable to open the file (maybe the file is too big, or corrupted)</string>
-    <string name="toast_save_null">Unable to save, path is null</string>
     <string name="toast_save_temp">Unable to save to temp file</string>
     <string name="toast_save_delete">Unable to save (error while copying temp file to save location)</string>
     <string name="toast_save_rename">Unable to save (error while copying temp file to save location)</string>
-    <string name="toast_save_success">File saved</string>
     <string name="toast_save_template_error">Unable to save template</string>
     <string name="toast_save_template_success">Template saved</string>
     <string name="toast_folder_cant_write">"Can't use this folder cause it isn't writeable"</string>
@@ -33,13 +30,11 @@
     <string name="toast_write_memory_error">Unable to write the file, not enough memory</string>
 
     <!--  -->
-    <string name="toast_xml_unknown_format">"Unable to read the document, unknown format"</string>
     <string name="toast_xml_no_parser_found">Unable to read the XML input, no available parser</string>
     <string name="toast_xml_unsupported_feature">"Unable to create parser, this device doesn't support required features"</string>
     <string name="toast_xml_parse_error">Parse error while reading the XML input, the document may be malformed</string>
     <string name="toast_xml_io_exception">Unable to read from input</string>
     <string name="toast_xml_uncomment">Unable to uncomment this node at this location</string>
-    <string name="toast_open_read_only">This file is opened in read only mode. \nTo modify this document, you must first use the Save as menu option.</string>
     <string name="toast_html_soup">This is a new, well formed version of your document. Please check that nothing was lost before saving.</string>
     
     <!--  -->

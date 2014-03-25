@@ -1,7 +1,9 @@
 package fr.xgouchet.xmleditor.ui.fragment;
 
 import android.app.Fragment;
+import android.net.Uri;
 import fr.xgouchet.xmleditor.data.XmlEditor;
+import fr.xgouchet.xmleditor.data.XmlEditorListener;
 import fr.xgouchet.xmleditor.data.xml.XmlNode;
 
 /**
@@ -10,29 +12,77 @@ import fr.xgouchet.xmleditor.data.xml.XmlNode;
  * @author Xavier Gouchet
  * 
  */
-public abstract class ANodeEditorFragment extends Fragment {
+public abstract class ANodeEditorFragment extends Fragment implements XmlEditorListener {
 
-	protected XmlNode mXmlNode;
-	protected XmlEditor mXmlEditor;
+    protected XmlNode mXmlNode;
+    protected XmlEditor mXmlEditor;
 
-	// ////////////////////////////////////////////////////////////////////////////////////
-	// GETTERS / SETTERS
-	// ////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////
+    // FRAGMENT LIFECYCLE
+    //////////////////////////////////////////////////////////////////////////////////////
 
-	public void setXmlEditor(final XmlEditor xmlEditor) {
-		mXmlEditor = xmlEditor;
-	}
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mXmlEditor.removeListener(this);
+    }
 
-	public void setXmlNode(final XmlNode node) {
-		mXmlNode = node;
-	}
+    //////////////////////////////////////////////////////////////////////////////////////
+    // GETTERS / SETTERS
+    //////////////////////////////////////////////////////////////////////////////////////
 
-	public XmlEditor getXmlEditor() {
-		return mXmlEditor;
-	}
+    public void setXmlEditor(final XmlEditor xmlEditor) {
+        mXmlEditor = xmlEditor;
+        mXmlEditor.addListener(this);
+    }
 
-	public XmlNode getXmlNode() {
-		return mXmlNode;
-	}
+    public void setXmlNode(final XmlNode node) {
+        mXmlNode = node;
+    }
 
+    public XmlEditor getXmlEditor() {
+        return mXmlEditor;
+    }
+
+    public XmlNode getXmlNode() {
+        return mXmlNode;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////
+    // XML EDITOR LISTENER IMPLEMENTATION
+    //////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public void onXmlDocumentChanged(final XmlNode root, final String name, final Uri uri) {
+    }
+
+    @Override
+    public void onXmlContentChanged() {
+
+    }
+
+    @Override
+    public void onXmlDocumentSaved() {
+
+    }
+
+    @Override
+    public void onXmlParseError(final Uri uri, final String message) {
+    }
+
+    @Override
+    public void onHtmlParseError(final Uri uri, final String message) {
+    }
+
+    @Override
+    public void onErrorNotification(final String message) {
+    }
+
+    @Override
+    public void onInfoNotification(final String message) {
+    }
+
+    @Override
+    public void onConfirmNotification(final String message, final Runnable undo) {
+    }
 }

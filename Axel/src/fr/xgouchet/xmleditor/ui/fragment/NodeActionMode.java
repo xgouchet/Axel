@@ -43,11 +43,21 @@ public class NodeActionMode implements Callback {
             return false;
         }
 
+        // set the current selection
+        mXmlEditor.setSelection(mTargetNode);
+
         // choose the menu
         int actionMenu;
         switch (mTargetNode.getContent().getType()) {
             case XmlData.XML_ELEMENT:
                 actionMenu = R.menu.action_element;
+                break;
+            case XmlData.XML_TEXT:
+            case XmlData.XML_CDATA:
+            case XmlData.XML_PROCESSING_INSTRUCTION:
+            case XmlData.XML_COMMENT:
+            case XmlData.XML_DOCTYPE:
+                actionMenu = R.menu.action_basic_node;
                 break;
             default:
                 return false;
@@ -78,6 +88,30 @@ public class NodeActionMode implements Callback {
     @Override
     public boolean onActionItemClicked(final ActionMode mode, final MenuItem item) {
 
+        switch (item.getItemId()) {
+            case R.id.action_node_delete:
+                mXmlEditor.performDelete();
+                break;
+            case R.id.action_add_child:
+                // TODO promptNodeAddChild();
+                break;
+            case R.id.action_node_add_attribute:
+                // TODO promptElementAddAttribute();
+                break;
+            case R.id.action_node_comment:
+                mXmlEditor.performCommentUncomment();
+                break;
+            case R.id.action_node_cut:
+                mXmlEditor.performClipboardCut();
+                break;
+            case R.id.action_node_copy:
+                mXmlEditor.performClipboardCopy();
+                break;
+            case R.id.action_node_paste:
+                mXmlEditor.performClipboardPaste();
+                break;
+        }
+
         // stops the action mode
         mode.finish();
         return true;
@@ -86,6 +120,8 @@ public class NodeActionMode implements Callback {
     @Override
     public void onDestroyActionMode(final ActionMode mode) {
         mActionModeDisplayed = false;
+        mXmlEditor.setSelection(null);
+        mTargetNode = null;
     }
 
 }

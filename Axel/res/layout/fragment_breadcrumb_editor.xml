@@ -24,7 +24,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/text_xpath" >
+        android:layout_below="@id/text_xpath">
     </FrameLayout>
 
 </RelativeLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- DOCUMENT OPEN -->
+    <string name="notif_doc_open_read_only">"This file is opened in read only mode. \nTo modify this document, you must first use the 'Save As' menu option."</string>
+    <string name="notif_doc_open_error_memory">"There was not enough memory to open your document."</string>
+    <string name="notif_doc_open_error_format">"Your document is in an unknown format and cannot be openned."</string>
+    <string name="notif_doc_open_error_io">"Your document could not be read from its source."</string>
+    <string name="notif_doc_open_error_unknown">"Your document could not be read for an unknwon reason."</string>
+
+    <!-- DOCUMENT SAVE -->
+    <string name="notif_doc_save_null_uri">"The selected destination is null, your document can't be saved. \n Try saving your document in another location."</string>
+    <string name="notif_doc_saved">"Your document has been saved."</string>
+    <string name="notif_doc_already_saving">"A document is already being saved, try again later."</string>
+
+    <!-- CLIPBOARD -->
+    <string name="notif_clipboard_cut">"The node content (%1$s) has been cut and put into your clipboard."</string>
+    <string name="notif_clipboard_copy">"The node content (%1$s) has been copied to your clipboard."</string>
+
+    <!--  -->
+    <string name="notif_node_deleted">"The node (%1$s) has been deleted."</string>
+
+</resources>

@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<!-- THEMES ICS / JB + -->
+    <!-- THEMES ICS / JB + -->
 
-	<style name="Axel" parent="@android:style/Theme.Holo.Light.DarkActionBar"></style>
+    <style name="Axel" parent="@android:style/Theme.Holo.Light.DarkActionBar"></style>
 
-	<style name="Axel.Dark" parent="@android:style/Theme.Holo"></style>
+    <style name="Axel.Dark" parent="@android:style/Theme.Holo"></style>
+
+    <style name="Axel.TextView.Title" parent="@android:style/Widget.TextView">
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Axel.TextView.SubTitle" parent="@android:style/Widget.TextView">
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Axel.TextView.Content" parent="@android:style/Widget.TextView">
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 
 </resources>
